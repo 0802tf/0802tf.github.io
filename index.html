@@ -21,16 +21,15 @@
                 a.setAttribute('href', name);
                 li.appendChild(a);
                 fetch(name).then(response => response.text()).then(text => {
+                    let title = '';
                     if (name.endsWith('.html')) {
                         const result = /<title>(.+?)<\/title>/.exec(text);
-                        a.textContent = result[1] || value;
+                        title = result[1];
                     } else if (name.endsWith('.md')) {
                         const lines = text.split('\n')
-                        const title = lines[0].replace('\r', '').replace('# ', '');
-                        a.textContent = title || value;
-                    } else {
-                        a.textContent = value;
+                        title = lines[0].replace('\r', '').replace('# ', '');
                     }
+                    a.textContent = title || value;
                 });
             });
         });

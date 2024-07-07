@@ -27,7 +27,6 @@
 ./md/OpenPyXL.md
 ./md/Python_Web.md
 ./md/Python_ファイル操作.md
-./md/README.md
 ./md/セット図.md
 ./md/正規表現.md
 ./md/コード理論.md
