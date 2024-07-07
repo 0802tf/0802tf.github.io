@@ -9,7 +9,38 @@
 
 <body>
     <div>
-        <select>
+        <span>Key=</span>
+        <select id="key">
+            <option>C</option>
+            <option>D♭</option>
+            <option>D</option>
+            <option>E♭</option>
+            <option>E</option>
+            <option>F</option>
+            <option>G♭</option>
+            <option>G</option>
+            <option>A♭</option>
+            <option>A</option>
+            <option>B♭</option>
+            <option>B</option>
+            <option>Cm</option>
+            <option>C#m</option>
+            <option>Dm</option>
+            <option>E♭m</option>
+            <option>Em</option>
+            <option>Fm</option>
+            <option>F#m</option>
+            <option>Gm</option>
+            <option>G#m</option>
+            <option>Am</option>
+            <option>B♭m</option>
+            <option>Bm</option>
+        </select>
+        <span>BPM=</span>
+        <input type="number" id="bpm" value="120">
+    </div>
+    <div>
+        <select id="chord1">
             <option>C</option>
             <option>D</option>
             <option>E</option>
@@ -18,12 +49,12 @@
             <option>A</option>
             <option>B</option>
         </select>
-        <select>
+        <select id="chord2">
             <option></option>
             <option>#</option>
             <option>♭</option>
         </select>
-        <select>
+        <select id="chord3">
             <option></option>
             <option>m</option>
             <option>7</option>
@@ -38,17 +69,67 @@
             <option>dim</option>
             <option>aug</option>
         </select>
-        <select>
+        <span>(</span>
+        <select id="tension" multiple>
             <option></option>
-            <option>9</option>
             <option>♭9</option>
+            <option>9</option>
             <option>#9</option>
             <option>#11</option>
             <option>♭13</option>
             <option>13</option>
         </select>
-        <button>Add</button>
+        <span>)on</span>
+        <select id="onchord1">
+            <option></option>
+            <option>C</option>
+            <option>D</option>
+            <option>E</option>
+            <option>F</option>
+            <option>G</option>
+            <option>A</option>
+            <option>B</option>
+        </select>
+        <select id="onchord2">
+            <option></option>
+            <option>#</option>
+            <option>♭</option>
+        </select>
+        <button id="add">Add</button>
     </div>
+    <div id="result"></div>
+    <script>
+        const chord1 = document.querySelector('#chord1');
+        const chord2 = document.querySelector('#chord2');
+        const chord3 = document.querySelector('#chord3');
+        const tension = document.querySelector('#tension');
+        const onchord1 = document.querySelector('#onchord1');
+        const onchord2 = document.querySelector('#onchord2');
+        const add = document.querySelector('#add');
+        const result = document.querySelector('#result');
+        add.addEventListener('click', () => {
+            const span = document.createElement('span');
+            let chordValue = `${chord1.value}${chord2.value}${chord3.value}`;
+            let tensionList = [];
+            tension.options.array.forEach(element => {
+                if (element.selected) {
+                    tensionList.push(element.value);
+                }
+            });
+            span.textContent = chordValue;
+            result.append(span);
+        });
+        onchord1.addEventListener('change', () => {
+            if (!onchord1.value) {
+                onchord2.value = '';
+            }
+        });
+        onchord2.addEventListener('change', () => {
+            if (!onchord1.value) {
+                onchord2.value = '';
+            }
+        });
+    </script>
 </body>
 
 </html>
