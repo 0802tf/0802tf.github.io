@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mermaid Editor</title>
+  <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+  <textarea></textarea>
+  <div class="mermaid"></div>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+    const textarea = document.querySelector('textarea');
+    const result = document.querySelector('.mermaid');
+    setTimeout(() => {
+      textarea.style.setProperty('width', `${innerWidth * 0.9}px`);
+      textarea.style.setProperty('height', `${innerHeight / 2}px`);
+    }, 100);
+    textarea.value = 'flowchart TD\nA[PA]\nB[Keyboard\nnord electro]\nC[PC\nMacbook Pro]\nD[Audio Interface\nUR24C]\nE[DJ Pad\nKAOSS PAD]\nB==>D\nC-->D\nD==>E\nE==>|Stereo|A';
+    textarea.addEventListener('input', async () => {
+      delete result.dataset.processed;
+      result.textContent = textarea.value;
+      await mermaid.run();
+    });
+    textarea.dispatchEvent(new Event('input'));
+  </script>
+</body>
+
+</html>
