@@ -18,7 +18,7 @@
                 document.querySelector('ul').appendChild(li);
                 const a = document.createElement('a');
                 const name = `./${value}`;
-                a.setAttribute('href', name);
+                a.setAttribute('href', name.replace('.md', '.html'));
                 li.appendChild(a);
                 fetch(name).then(response => response.text()).then(text => {
                     let title = '';
