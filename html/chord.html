@@ -97,6 +97,7 @@
         </select>
         <button id="add">Add</button>
     </div>
+    <hr>
     <div id="result"></div>
     <script>
         const chord1 = document.querySelector('#chord1');
@@ -105,19 +106,25 @@
         const tension = document.querySelector('#tension');
         const onchord1 = document.querySelector('#onchord1');
         const onchord2 = document.querySelector('#onchord2');
-        const add = document.querySelector('#add');
         const result = document.querySelector('#result');
-        add.addEventListener('click', () => {
+        document.querySelector('#add').addEventListener('click', () => {
             const span = document.createElement('span');
             let chordValue = `${chord1.value}${chord2.value}${chord3.value}`;
             let tensionList = [];
-            tension.options.array.forEach(element => {
+            for (const element of tension.children) {
                 if (element.selected) {
                     tensionList.push(element.value);
                 }
-            });
-            span.textContent = chordValue;
+            }
+            if (tensionList.length) {
+                chordValue += `(${tensionList.join(',')})`;
+            }
+            if (onchord1.value) {
+                chordValue += `on${onchord1.value}${onchord2.value}`;
+            }
+            span.textContent = `${chordValue} `;
             result.append(span);
+            span.addEventListener('dblclick', e => e.target.remove());
         });
         onchord1.addEventListener('change', () => {
             if (!onchord1.value) {
