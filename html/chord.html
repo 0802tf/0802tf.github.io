@@ -96,22 +96,23 @@
             <option>♭</option>
         </select>
         <button id="add">Add</button>
+        <button id="addRow">AddRow</button>
     </div>
     <hr>
-    <div id="result"></div>
+    <table>
+        <tbody id="result">
+            <tr></tr>
+        </tbody>
+    </table>
     <script>
-        const chord1 = document.querySelector('#chord1');
-        const chord2 = document.querySelector('#chord2');
-        const chord3 = document.querySelector('#chord3');
-        const tension = document.querySelector('#tension');
+        let index = 0;
         const onchord1 = document.querySelector('#onchord1');
         const onchord2 = document.querySelector('#onchord2');
-        const result = document.querySelector('#result');
         document.querySelector('#add').addEventListener('click', () => {
-            const span = document.createElement('span');
-            let chordValue = `${chord1.value}${chord2.value}${chord3.value}`;
+            const td = document.createElement('td');
+            let chordValue = `${document.querySelector('#chord1').value}${document.querySelector('#chord2').value}${document.querySelector('#chord3').value}`;
             let tensionList = [];
-            for (const element of tension.children) {
+            for (const element of document.querySelector('#tension').children) {
                 if (element.selected) {
                     tensionList.push(element.value);
                 }
@@ -122,9 +123,21 @@
             if (onchord1.value) {
                 chordValue += `on${onchord1.value}${onchord2.value}`;
             }
-            span.textContent = `${chordValue} `;
-            result.append(span);
-            span.addEventListener('dblclick', e => e.target.remove());
+            td.textContent = chordValue;
+            td.addEventListener('click', e => {
+                index = e.target.parentElement.rowIndex;
+                e.target.remove()
+            });
+            document.querySelectorAll('tr').forEach(row => {
+                if (row.rowIndex === index) {
+                    row.append(td);
+                }
+            });
+        });
+        document.querySelector('#addRow').addEventListener('click', () => {
+            const tr = document.createElement('tr');
+            document.querySelector('#result').append(tr);
+            index = tr.rowIndex;
         });
         onchord1.addEventListener('change', () => {
             if (!onchord1.value) {
