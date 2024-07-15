@@ -9,23 +9,51 @@
 </head>
 
 <body>
+  <div>
+    <select>
+      <option>flowchart TD</option>
+      <option>flowchart LR</option>
+      <option>graph TD</option>
+      <option>graph LR</option>
+      <option>sequenceDiagram</option>
+      <option>gantt</option>
+      <option>classDiagram</option>
+      <option>stateDiagram</option>
+      <option>pie</option>
+      <option>gitGraph</option>
+      <option>journey</option>
+      <option>erDiagram</option>
+      <option>quadrantChart</option>
+      <option>xychart</option>
+      <option>C4Context</option>
+    </select>
+  </div>
   <textarea></textarea>
   <div class="mermaid"></div>
   <script>
     mermaid.initialize({ startOnLoad: false });
+    const select = document.querySelector('select');
     const textarea = document.querySelector('textarea');
     const result = document.querySelector('.mermaid');
     setTimeout(() => {
       textarea.style.setProperty('width', `${innerWidth * 0.9}px`);
       textarea.style.setProperty('height', `${innerHeight / 2}px`);
     }, 100);
-    textarea.value = 'flowchart TD\nA[PA]\nB[Keyboard\nnord electro]\nC[PC\nMacbook Pro]\nD[Audio Interface\nUR24C]\nE[DJ Pad\nKAOSS PAD]\nB==>D\nC-->D\nD==>E\nE==>|Stereo|A';
     textarea.addEventListener('input', async () => {
-      delete result.dataset.processed;
-      result.textContent = textarea.value;
-      await mermaid.run();
+      try {
+        delete result.dataset.processed;
+        result.textContent = `${select.value}\n${textarea.value}`;
+        await mermaid.run();
+      } catch (error) {
+        const errorStr = error.str;
+        if (errorStr && errorStr.startsWith('Parse')) {
+          result.textContent = errorStr;
+        }
+      }
     });
-    textarea.dispatchEvent(new Event('input'));
+    select.addEventListener('change', () => {
+      textarea.dispatchEvent(new Event('input'));
+    });
   </script>
 </body>
 
