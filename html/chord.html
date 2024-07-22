@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>コード進行</title>
+    <style>
+        td{
+            padding: 0 4px;
+        }
+    </style>
 </head>
 
 <body>
@@ -95,17 +100,12 @@
             <option>#</option>
             <option>♭</option>
         </select>
-        <button id="add">Add</button>
-        <button id="addRow">AddRow</button>
+        <button id="add">add</button>
+        <button id="space">space</button>
+        <button id="bar">|</button>
     </div>
-    <hr>
-    <table>
-        <tbody id="result">
-            <tr></tr>
-        </tbody>
-    </table>
+    <textarea></textarea>
     <script>
-        let index = 0;
         const onchord1 = document.querySelector('#onchord1');
         const onchord2 = document.querySelector('#onchord2');
         document.querySelector('#add').addEventListener('click', () => {
@@ -123,32 +123,14 @@
             if (onchord1.value) {
                 chordValue += `on${onchord1.value}${onchord2.value}`;
             }
-            td.textContent = chordValue;
-            td.addEventListener('click', e => {
-                index = e.target.parentElement.rowIndex;
-                e.target.remove()
-            });
-            document.querySelectorAll('tr').forEach(row => {
-                if (row.rowIndex === index) {
-                    row.append(td);
-                }
-            });
         });
-        document.querySelector('#addRow').addEventListener('click', () => {
-            const tr = document.createElement('tr');
-            document.querySelector('#result').append(tr);
-            index = tr.rowIndex;
-        });
-        onchord1.addEventListener('change', () => {
+        onchord1.addEventListener('change', handleOnchord);
+        onchord2.addEventListener('change', handleOnchord);
+        function handleOnchord() {
             if (!onchord1.value) {
                 onchord2.value = '';
             }
-        });
-        onchord2.addEventListener('change', () => {
-            if (!onchord1.value) {
-                onchord2.value = '';
-            }
-        });
+        };
     </script>
 </body>
 
