@@ -5,15 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>コード進行</title>
-    <style>
-        td{
-            padding: 0 4px;
-        }
-    </style>
 </head>
 
 <body>
-    <div>
+    <div id="header">
         <span>Key=</span>
         <select id="key">
             <option>C</option>
@@ -43,8 +38,7 @@
         </select>
         <span>BPM=</span>
         <input type="number" id="bpm" value="120">
-    </div>
-    <div>
+        <br>
         <select id="chord1">
             <option>C</option>
             <option>D</option>
@@ -101,15 +95,25 @@
             <option>♭</option>
         </select>
         <button id="add">add</button>
-        <button id="space">space</button>
         <button id="bar">|</button>
+        <br>
+        <button id="undo">undo</button>
+        <button id="redo">redo</button>       
+        <button id="copy">copy</button>
+        <button id="clear">clear</button>
     </div>
     <textarea></textarea>
     <script>
+        let stateList = [];
+        const textarea = document.querySelector('textarea');
         const onchord1 = document.querySelector('#onchord1');
         const onchord2 = document.querySelector('#onchord2');
+        textarea.addEventListener('input', () => stateList.push(textarea.value));
+        setTimeout(() => {
+            textarea.style.setProperty('width', `${innerWidth}px`);
+            textarea.style.setProperty('height', `${innerHeight - document.querySelector('#header').clientHeight}px`);
+        }, 100);
         document.querySelector('#add').addEventListener('click', () => {
-            const td = document.createElement('td');
             let chordValue = `${document.querySelector('#chord1').value}${document.querySelector('#chord2').value}${document.querySelector('#chord3').value}`;
             let tensionList = [];
             for (const element of document.querySelector('#tension').children) {
@@ -117,13 +121,22 @@
                     tensionList.push(element.value);
                 }
             }
-            if (tensionList.length) {
-                chordValue += `(${tensionList.join(',')})`;
+            const tension = tensionList.join(',');
+            if (tension) {
+                chordValue += `(${tension})`;
             }
             if (onchord1.value) {
                 chordValue += `on${onchord1.value}${onchord2.value}`;
             }
+            insert(chordValue);
         });
+        document.querySelector('#bar').addEventListener('click', () => insert('|'));
+        function insert(value) {
+            const tempValue = textarea.value;
+            const prefix = tempValue.substring(0, textarea.selectionStart);
+            const suffix = tempValue.substring(textarea.selectionEnd);
+            textarea.value = `${prefix}${prefix.endsWith(' ') ? '' : ' '}${value}${suffix.startsWith(' ') ? '' : ' '}${suffix}`;
+        }
         onchord1.addEventListener('change', handleOnchord);
         onchord2.addEventListener('change', handleOnchord);
         function handleOnchord() {
@@ -131,6 +144,14 @@
                 onchord2.value = '';
             }
         };
+        document.querySelector('#copy').addEventListener('click', () => {
+            textarea.select();
+            document.execCommand('copy');
+            alert(`Copied\n\n${textarea.value}`);
+        })
+        document.querySelector('#clear').addEventListener('click', () => {
+            textarea.value = '';
+        });
     </script>
 </body>
 
