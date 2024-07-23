@@ -105,10 +105,14 @@
     <textarea></textarea>
     <script>
         let stateList = [];
+        let stateIndex = 0;
         const textarea = document.querySelector('textarea');
         const onchord1 = document.querySelector('#onchord1');
         const onchord2 = document.querySelector('#onchord2');
-        textarea.addEventListener('input', () => stateList.push(textarea.value));
+        textarea.addEventListener('input', () => {
+            stateIndex++;
+            stateList.push(textarea.value);
+        });
         setTimeout(() => {
             textarea.style.setProperty('width', `${innerWidth}px`);
             textarea.style.setProperty('height', `${innerHeight - document.querySelector('#header').clientHeight}px`);
@@ -144,11 +148,15 @@
                 onchord2.value = '';
             }
         };
+        document.querySelector('#undo').addEventListener('click', () => {
+            stateIndex--;
+            textarea.value = stateList[stateIndex];
+        });
         document.querySelector('#copy').addEventListener('click', () => {
             textarea.select();
             document.execCommand('copy');
             alert(`Copied\n\n${textarea.value}`);
-        })
+        });
         document.querySelector('#clear').addEventListener('click', () => {
             textarea.value = '';
         });
