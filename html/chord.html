@@ -9,153 +9,101 @@
 
 <body>
     <div id="header">
-        <span>Key=</span>
-        <select id="key">
-            <option>C</option>
-            <option>D♭</option>
-            <option>D</option>
-            <option>E♭</option>
-            <option>E</option>
-            <option>F</option>
-            <option>G♭</option>
-            <option>G</option>
-            <option>A♭</option>
-            <option>A</option>
-            <option>B♭</option>
-            <option>B</option>
-            <option>Cm</option>
-            <option>C#m</option>
-            <option>Dm</option>
-            <option>E♭m</option>
-            <option>Em</option>
-            <option>Fm</option>
-            <option>F#m</option>
-            <option>Gm</option>
-            <option>G#m</option>
-            <option>Am</option>
-            <option>B♭m</option>
-            <option>Bm</option>
-        </select>
-        <span>BPM=</span>
-        <input type="number" id="bpm" value="120">
-        <br>
-        <select id="chord1">
-            <option>C</option>
-            <option>D</option>
-            <option>E</option>
-            <option>F</option>
-            <option>G</option>
-            <option>A</option>
-            <option>B</option>
-        </select>
-        <select id="chord2">
-            <option></option>
-            <option>#</option>
-            <option>♭</option>
-        </select>
-        <select id="chord3">
-            <option></option>
-            <option>m</option>
-            <option>7</option>
-            <option>m7</option>
-            <option>M7</option>
-            <option>mM7</option>
-            <option>6</option>
-            <option>m6</option>
-            <option>sus4</option>
-            <option>7sus4</option>
-            <option>m7-5</option>
-            <option>dim</option>
-            <option>aug</option>
-        </select>
-        <span>(</span>
-        <select id="tension" multiple>
-            <option></option>
-            <option>♭9</option>
-            <option>9</option>
-            <option>#9</option>
-            <option>#11</option>
-            <option>♭13</option>
-            <option>13</option>
-        </select>
-        <span>)on</span>
-        <select id="onchord1">
-            <option></option>
-            <option>C</option>
-            <option>D</option>
-            <option>E</option>
-            <option>F</option>
-            <option>G</option>
-            <option>A</option>
-            <option>B</option>
-        </select>
-        <select id="onchord2">
-            <option></option>
-            <option>#</option>
-            <option>♭</option>
-        </select>
-        <button id="add">add</button>
-        <button id="bar">|</button>
-        <br>
-        <button id="undo">undo</button>
-        <button id="redo">redo</button>       
+        <button class="chord">C</button>
+        <button class="chord">D</button>
+        <button class="chord">E</button>
+        <button class="chord">F</button>
+        <button class="chord">G</button>
+        <button class="chord">A</button>
+        <button class="chord">B</button>
+        <button class="chord">#</button>
+        <button class="chord">♭</button>
+        <hr>
+        <button class="chord">m</button>
+        <button class="chord">7</button>
+        <button class="chord">m7</button>
+        <button class="chord">M7</button>
+        <button class="chord">mM7</button>
+        <button class="chord">6</button>
+        <button class="chord">m6</button>
+        <button class="chord">sus4</button>
+        <button class="chord">7sus4</button>
+        <button class="chord">m7-5</button>
+        <button class="chord">dim</button>
+        <button class="chord">aug</button>
+        <button class="chord">add2</button>
+        <hr>
+        <button class="chord">(</button>
+        <button class="chord">)</button>
+        <button class="chord">,</button>
+        <button class="chord">♭9</button>
+        <button class="chord">9</button>
+        <button class="chord">#9</button>
+        <button class="chord">#11</button>
+        <button class="chord">♭13</button>
+        <button class="chord">13</button>
+        <button class="chord">on</button>
+        <button class="chord"> |</button>
+        <hr>
+        <button class="chord">イントロ</button>
+        <button class="chord">Aメロ</button>
+        <button class="chord">Bメロ</button>
+        <button class="chord">サビ</button>
+        <button class="chord">Cメロ</button>
+        <button class="chord">ソロ</button>
+        <button class="chord">アウトロ</button>
+        <hr>
+        <button id="load">load</button>
+        <button id="save">save</button>
         <button id="copy">copy</button>
         <button id="clear">clear</button>
     </div>
+    <input type="text" id="title" placeholder="タイトル">
     <textarea></textarea>
     <script>
-        let stateList = [];
-        let stateIndex = 0;
+        const titlearea = document.querySelector('#title');
         const textarea = document.querySelector('textarea');
-        const onchord1 = document.querySelector('#onchord1');
-        const onchord2 = document.querySelector('#onchord2');
-        textarea.addEventListener('input', () => {
-            stateIndex++;
-            stateList.push(textarea.value);
-        });
         setTimeout(() => {
+            const height = innerHeight - document.querySelector('#header').clientHeight - titlearea.clientHeight;
+            titlearea.style.setProperty('width', `${innerWidth}px`);
             textarea.style.setProperty('width', `${innerWidth}px`);
-            textarea.style.setProperty('height', `${innerHeight - document.querySelector('#header').clientHeight}px`);
+            textarea.style.setProperty('height', `${height}px`);
         }, 100);
-        document.querySelector('#add').addEventListener('click', () => {
-            let chordValue = `${document.querySelector('#chord1').value}${document.querySelector('#chord2').value}${document.querySelector('#chord3').value}`;
-            let tensionList = [];
-            for (const element of document.querySelector('#tension').children) {
-                if (element.selected) {
-                    tensionList.push(element.value);
-                }
-            }
-            const tension = tensionList.join(',');
-            if (tension) {
-                chordValue += `(${tension})`;
-            }
-            if (onchord1.value) {
-                chordValue += `on${onchord1.value}${onchord2.value}`;
-            }
-            insert(chordValue);
+        document.querySelectorAll('.chord').forEach(element => {
+            element.addEventListener('click', e => {
+                const text = e.target.textContent;
+                const tempValue = textarea.value;
+                const tempPos = textarea.selectionStart;
+                const prefix = tempValue.substring(0, tempPos);
+                const suffix = tempValue.substring(textarea.selectionEnd);
+                const chords = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+                const space = chords.includes(text) && !prefix.endsWith(' ') && !prefix.endsWith('on') && !prefix.endsWith('\n') && prefix !== '' ? ' ' : '';
+                const insertText = `${space}${text}`;
+                textarea.value = `${prefix}${insertText}${suffix}`;
+                const pos = tempPos + insertText.length;
+                textarea.selectionStart = pos;
+                textarea.selectionEnd = pos;
+            });
         });
-        document.querySelector('#bar').addEventListener('click', () => insert('|'));
-        function insert(value) {
-            const tempValue = textarea.value;
-            const prefix = tempValue.substring(0, textarea.selectionStart);
-            const suffix = tempValue.substring(textarea.selectionEnd);
-            textarea.value = `${prefix}${prefix.endsWith(' ') ? '' : ' '}${value}${suffix.startsWith(' ') ? '' : ' '}${suffix}`;
-        }
-        onchord1.addEventListener('change', handleOnchord);
-        onchord2.addEventListener('change', handleOnchord);
-        function handleOnchord() {
-            if (!onchord1.value) {
-                onchord2.value = '';
+        document.querySelector('#load').addEventListener('click', () => {
+            textarea.value = localStorage.getItem(titlearea.value);
+        });
+        document.querySelector('#save').addEventListener('click', () => {
+            const title = titlearea.value;
+            const text = textarea.value;
+            if (title === '') {
+                return;
             }
-        };
-        document.querySelector('#undo').addEventListener('click', () => {
-            stateIndex--;
-            textarea.value = stateList[stateIndex];
+            if (text === '' && localStorage.getItem(title)) {
+                localStorage.removeItem(title)
+            } else {
+                localStorage.setItem(title, text);
+            }
         });
         document.querySelector('#copy').addEventListener('click', () => {
             textarea.select();
             document.execCommand('copy');
-            alert(`Copied\n\n${textarea.value}`);
+            alert(`Copied!\n\n${textarea.value}`);
         });
         document.querySelector('#clear').addEventListener('click', () => {
             textarea.value = '';
