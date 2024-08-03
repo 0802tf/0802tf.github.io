@@ -43,7 +43,7 @@
         <button class="chord">♭13</button>
         <button class="chord">13</button>
         <button class="chord">on</button>
-        <button class="chord"> |</button>
+        <button class="chord">|</button>
         <hr>
         <button class="chord">イントロ</button>
         <button class="chord">Aメロ</button>
@@ -76,10 +76,11 @@
                 const tempPos = textarea.selectionStart;
                 const prefix = tempValue.substring(0, tempPos);
                 const suffix = tempValue.substring(textarea.selectionEnd);
-                const chords = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-                const space = chords.includes(text) && !prefix.endsWith(' ') && !prefix.endsWith('on') && !prefix.endsWith('\n') && prefix !== '' ? ' ' : '';
-                const insertText = `${space}${text}`;
-                textarea.value = `${prefix}${insertText}${suffix}`;
+                const chords = ['C', 'D', 'E', 'F', 'G', 'A', 'B', '|'];
+                const prefixSpace = chords.includes(text) && !prefix.endsWith(' ') && !prefix.endsWith('on') && !prefix.endsWith('\n') && prefix !== '' ? ' ' : '';
+                const suffixSpace = chords.includes(suffix.substring(0, 1)) && !text.endsWith(' ') && !text.endsWith('on') ? ' ' : '';
+                const insertText = `${prefixSpace}${text}`;
+                textarea.value = `${prefix}${insertText}${suffixSpace}${suffix}`;
                 const pos = tempPos + insertText.length;
                 textarea.selectionStart = pos;
                 textarea.selectionEnd = pos;
