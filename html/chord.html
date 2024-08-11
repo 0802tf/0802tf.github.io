@@ -5,54 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>コード進行</title>
+    <style>
+        #controller {
+            border-style: solid;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
 </head>
 
 <body>
     <div id="header">
-        <button class="chord">C</button>
-        <button class="chord">D</button>
-        <button class="chord">E</button>
-        <button class="chord">F</button>
-        <button class="chord">G</button>
-        <button class="chord">A</button>
-        <button class="chord">B</button>
-        <button class="chord">#</button>
-        <button class="chord">♭</button>
-        <hr>
-        <button class="chord">m</button>
-        <button class="chord">7</button>
-        <button class="chord">m7</button>
-        <button class="chord">M7</button>
-        <button class="chord">mM7</button>
-        <button class="chord">6</button>
-        <button class="chord">m6</button>
-        <button class="chord">sus4</button>
-        <button class="chord">7sus4</button>
-        <button class="chord">m7-5</button>
-        <button class="chord">dim</button>
-        <button class="chord">aug</button>
-        <button class="chord">add2</button>
-        <hr>
-        <button class="chord">(</button>
-        <button class="chord">)</button>
-        <button class="chord">,</button>
-        <button class="chord">♭9</button>
-        <button class="chord">9</button>
-        <button class="chord">#9</button>
-        <button class="chord">#11</button>
-        <button class="chord">♭13</button>
-        <button class="chord">13</button>
-        <button class="chord">on</button>
-        <button class="chord">|</button>
-        <hr>
-        <button class="chord">イントロ</button>
-        <button class="chord">Aメロ</button>
-        <button class="chord">Bメロ</button>
-        <button class="chord">サビ</button>
-        <button class="chord">Cメロ</button>
-        <button class="chord">ソロ</button>
-        <button class="chord">アウトロ</button>
-        <hr>
         <button id="load">load</button>
         <button id="save">save</button>
         <button id="copy">copy</button>
@@ -60,7 +23,12 @@
     </div>
     <input type="text" id="title" placeholder="タイトル">
     <textarea></textarea>
+    <div id="controller"></div>
     <script>
+        const chords = ['|', 'C', 'D', 'E', 'F', 'G', 'A', 'B'];
+        const options = ['#', '♭', 'm', '7', 'm7', 'M7', 'mM7', '6', 'm6', 'sus4', '7sus4', 'm7-5', 'dim', 'aug', 'add2'];
+        const tensions = ['(', ')', ',', '♭9', '9', '#9', '#11', '♭13', '13', 'on'];
+        const sections = ['イントロ', 'Aメロ', 'Bメロ', 'サビ', '間奏', 'Cメロ', 'ソロ', 'アウトロ', '\n'];
         const titlearea = document.querySelector('#title');
         const textarea = document.querySelector('textarea');
         setTimeout(() => {
@@ -69,17 +37,18 @@
             textarea.style.setProperty('width', `${innerWidth}px`);
             textarea.style.setProperty('height', `${height}px`);
         }, 100);
-        document.querySelectorAll('.chord').forEach(element => {
-            element.addEventListener('click', e => {
-                const text = e.target.textContent;
+        chords.concat(options).concat(tensions).concat(sections).forEach(value => {
+            const button = document.createElement('button');
+            button.textContent = value.replace(/\n/, '改行');
+            document.querySelector('#controller').append(button);
+            button.addEventListener('click', e => {
                 const tempValue = textarea.value;
                 const tempPos = textarea.selectionStart;
                 const prefix = tempValue.substring(0, tempPos);
                 const suffix = tempValue.substring(textarea.selectionEnd);
-                const chords = ['C', 'D', 'E', 'F', 'G', 'A', 'B', '|'];
-                const prefixSpace = chords.includes(text) && !prefix.endsWith(' ') && !prefix.endsWith('on') && !prefix.endsWith('\n') && prefix !== '' ? ' ' : '';
-                const suffixSpace = chords.includes(suffix.substring(0, 1)) && !text.endsWith(' ') && !text.endsWith('on') ? ' ' : '';
-                const insertText = `${prefixSpace}${text}`;
+                const prefixSpace = chords.includes(value) && !prefix.endsWith(' ') && !prefix.endsWith('on') && !prefix.endsWith('\n') && prefix !== '' ? ' ' : '';
+                const suffixSpace = chords.includes(suffix.substring(0, 1)) && !value.endsWith(' ') && !value.endsWith('on') ? ' ' : '';
+                const insertText = `${prefixSpace}${value}`;
                 textarea.value = `${prefix}${insertText}${suffixSpace}${suffix}`;
                 const pos = tempPos + insertText.length;
                 textarea.selectionStart = pos;
