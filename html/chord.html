@@ -54,6 +54,9 @@
                 textarea.selectionEnd = pos;
             });
         });
+        textarea.addEventListener('focus', e => {
+            e.preventDefault();
+        });
         document.querySelector('#load').addEventListener('click', () => {
             textarea.value = localStorage.getItem(titlearea.value);
         });
