@@ -6,40 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>コード進行</title>
     <style>
-        #header {
+        #controller {
             border-style: solid;
             position: sticky;
-            top: 0;
+            bottom: 0;
         }
     </style>
 </head>
 
 <body>
     <div id="header">
-        <input type="text" id="title" placeholder="タイトル">
         <button id="load">load</button>
         <button id="save">save</button>
         <button id="copy">copy</button>
         <button id="clear">clear</button>
     </div>
+    <input type="text" id="title" placeholder="タイトル">
     <textarea></textarea>
+    <div id="controller"></div>
     <script>
         const chords = ['|', 'C', 'D', 'E', 'F', 'G', 'A', 'B'];
         const options = ['#', '♭', 'm', '7', 'm7', 'M7', 'mM7', '6', 'm6', 'sus4', '7sus4', 'm7-5', 'dim', 'aug', 'add2'];
         const tensions = ['(', ')', ',', '♭9', '9', '#9', '#11', '♭13', '13', 'on'];
         const sections = ['イントロ', 'Aメロ', 'Bメロ', 'サビ', '間奏', 'Cメロ', 'ソロ', 'アウトロ', '\n'];
-        const header = document.querySelector('#header');
         const titlearea = document.querySelector('#title');
         const textarea = document.querySelector('textarea');
         setTimeout(() => {
-            titlearea.style.setProperty('width', `${header.clientWidth}px`);
+            const height = innerHeight - document.querySelector('#header').clientHeight - titlearea.clientHeight;
+            titlearea.style.setProperty('width', `${innerWidth}px`);
             textarea.style.setProperty('width', `${innerWidth}px`);
-            textarea.style.setProperty('height', `${innerHeight}px`);
+            textarea.style.setProperty('height', `${height}px`);
         }, 100);
         chords.concat(options).concat(tensions).concat(sections).forEach(value => {
             const button = document.createElement('button');
             button.textContent = value.replace(/\n/, '改行');
-            header.append(button);
+            document.querySelector('#controller').append(button);
             button.addEventListener('click', e => {
                 const tempValue = textarea.value;
                 const tempPos = textarea.selectionStart;
