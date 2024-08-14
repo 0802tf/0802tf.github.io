@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>コード進行</title>
-    <style>
-        #controller {
-            border-style: solid;
-            position: fixed;
-        }
-    </style>
 </head>
 
 <body>
@@ -51,9 +45,7 @@
                 textarea.selectionEnd = pos;
             });
         });
-        document.querySelector('#load').addEventListener('click', () => {
-            textarea.value = localStorage.getItem(titlearea.value);
-        });
+        document.querySelector('#load').addEventListener('click', () => textarea.value = localStorage.getItem(titlearea.value));
         document.querySelector('#save').addEventListener('click', () => {
             const title = titlearea.value;
             const text = textarea.value;
@@ -71,17 +63,14 @@
             document.execCommand('copy');
             alert(`Copied!\n\n${textarea.value}`);
         });
-        document.querySelector('#clear').addEventListener('click', () => {
-            textarea.value = '';
-        });
+        document.querySelector('#clear').addEventListener('click', () => textarea.value = '');
         function setSize() {
-            const height = visualViewport.height - document.querySelector('#header').clientHeight - titlearea.clientHeight;
             const width = visualViewport.width;
             titlearea.style.setProperty('width', `${width}px`);
             textarea.style.setProperty('width', `${width}px`);
-            textarea.style.setProperty('height', `${height}px`);
             controller.style.setProperty('width', `${width}px`);
             controller.style.setProperty('top', `${visualViewport.height - controller.clientHeight}px`);
+            textarea.style.setProperty('height', `${visualViewport.height - document.querySelector('#header').clientHeight - titlearea.clientHeight - controller.clientHeight}px`);
         }
     </script>
 </body>
