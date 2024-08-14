@@ -8,7 +8,7 @@
     <style>
         #controller {
             border-style: solid;
-            position: sticky;
+            position: fixed;
         }
     </style>
 </head>
@@ -81,7 +81,7 @@
             textarea.style.setProperty('width', `${width}px`);
             textarea.style.setProperty('height', `${height}px`);
             controller.style.setProperty('width', `${width}px`);
-            controller.style.setProperty('bottom', `${innerHeight - visualViewport.height}px`);
+            controller.style.setProperty('top', `${visualViewport.height - controller.clientHeight}px`);
         }
     </script>
 </body>
