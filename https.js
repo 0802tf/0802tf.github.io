@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 const zipcode = '8100064';
 const url = `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipcode}`;
