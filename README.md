@@ -1,3 +1,3 @@
 # 0802tf.github.io
 
-[index](./index.html)
+[Index](https://0802tf.github.io/index.html)
