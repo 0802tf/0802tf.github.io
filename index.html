@@ -11,10 +11,8 @@
     <a href="https://github.com/0802tf/0802tf.github.io/wiki">wiki</a>
     <ul></ul>
     <script>
-        fetch('./index.txt').then(response => response.text()).then(data => {
-            const list = data.split('\n');
-            list.pop();
-            list.forEach(value => {
+        fetch('./index.json').then(response => response.json()).then(data => {
+            data.forEach(value => {
                 const li = document.createElement('li');
                 document.querySelector('ul').appendChild(li);
                 const a = document.createElement('a');
