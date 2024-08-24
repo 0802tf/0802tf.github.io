@@ -76,11 +76,11 @@
     });
 
     function encodeBase64(value) {
-      return btoa(encodeURIComponent(value));
+      return btoa(unescape(encodeURIComponent(value)));
     }
 
     function decodeBase64(value) {
-      return decodeURIComponent(atob(value));
+      return decodeURIComponent(escape(atob(value)));
     }
 
     function encodeBase64Url(value) {
