@@ -19,19 +19,19 @@
         document.querySelector('#output').addEventListener('click', () => {
             let range1 = document.querySelector('#range1').value?.codePointAt(0);
             let range2 = document.querySelector('#range2').value?.codePointAt(0);
-            if (!range1 || !range2){
+            if (!range1 || !range2) {
                 return;
             }
-            if (range1 > range2){
+            if (range1 > range2) {
                 let temp = range1;
                 range1 = range2;
                 range2 = temp;
             }
             document.querySelector('#result').value = getRandomString(range1, range2, document.querySelector('#digit').value);
         });
-        function getRandomString(range1, range2, digit){
+        function getRandomString(range1, range2, digit) {
             let list = [];
-            for(let i = range1; i <= range2; i++){
+            for (let i = range1; i <= range2; i++) {
                 list.push(String.fromCharCode(i));
             }
             let ret = '';
