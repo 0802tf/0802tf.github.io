@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>整形</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify.min.js"></script>
+</head>
+
+<body>
+  <textarea></textarea>
+  <input id="indent" type="number" placeholder="インデント" value="4">
+  <button id="html">HTML整形</button>
+  <button id="css">CSS整形</button>
+  <button id="js">JavaScript整形</button>
+  <button id="json">JSON整形</button>
+  <button id="unjson">JSON整形解除</button>
+  <script>
+    const textarea = document.querySelector('textarea');
+    const indent = document.querySelector('#indent');
+    setTimeout(() => {
+      textarea.style.setProperty('width', `${innerWidth}px`);
+      textarea.style.setProperty('height', `${innerHeight / 2}px`);
+    }, 100);
+    document.querySelector('#html').addEventListener('click', () => {
+      const result = html_beautify(textarea.value, {
+        indent_size: Number(indent.value),
+        space_in_empty_paren: true
+      });
+      textarea.value = result;
+    });
+    document.querySelector('#css').addEventListener('click', () => {
+      const result = css_beautify(textarea.value, {
+        indent_size: Number(indent.value),
+        space_in_empty_paren: true
+      });
+      textarea.value = result;
+    });
+    document.querySelector('#js').addEventListener('click', () => {
+      const result = js_beautify(textarea.value, {
+        indent_size: Number(indent.value),
+        space_in_empty_paren: true
+      });
+      textarea.value = result;
+    });
+    document.querySelector('#json').addEventListener('click', () => {
+      const result = JSON.stringify(JSON.parse(textarea.value), null, Number(indent.value));
+      textarea.value = result;
+    });
+    document.querySelector('#unjson').addEventListener('click', () => {
+      const result = JSON.stringify(JSON.parse(textarea.value));
+      textarea.value = result;
+    })
+  </script>
+</body>
+
+</html>
