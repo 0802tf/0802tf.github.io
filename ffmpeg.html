@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>FFmpeg</title>
+    <meta content="width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover" name="viewport" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+  </head>
+
+<body class="markdown-body">
+    <h1>
+        <span id="紹介" class="fragment"></span><a href="#%E7%B4%B9%E4%BB%8B"><i class="fa fa-link"></i></a>FFmpeg
+    </h1>
+
+    <p>動画や音声を加工するのに強力で万能な簡単ツール<a href="https://www.ffmpeg.org/" rel="nofollow noopener"
+            target="_blank">FFmpeg</a>について便利すぎるのでいつも使っているものをまとめようと思います。
+    </p>
+
+    <p><a href="https://www.ffmpeg.org/" rel="nofollow noopener"
+            target="_blank">FFmpeg</a>を使えるようになれば、用途ごとにフリーソフトをインストールしたり、重いGUIソフトを立ち上げる必要が無くなるかも？
+    </p>
+
+    <p>※このツールは基本的にコマンドラインインターフェースから使うのでコマンドラインインターフェースが苦手無理って人のために、GUIで扱えるものあります。
+    </p>
+
+    <h1>
+        <span id="インストール" class="fragment"></span><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><i
+                class="fa fa-link"></i></a>インストール
+    </h1>
+
+    <p>FFmpegのいいところは
+        <strong>WindowsでもmacOSでもUbuntuでも使えるところ</strong><br>
+        便利フリーソフトはだいたい限られたOSでしか使えないこと思えば、どのOSでも使えることは大きい。
+    </p>
+
+    <p>macOSでのインストールはターミナルをひらいてこんな感じ(筆者はのPCはmacOSなので...)</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">インストール</span></div>
+        <div class="highlight">
+            <pre><code>brew <span class="nb">install </span>ffmpeg
+</code></pre>
+        </div>
+    </div>
+
+    <p><code>-bash: brew: command not found</code> になる場合は<a
+            href="https://qiita.com/pypypyo14/items/4bf3b8bd511b6e93c9f9" id="reference-4eff39cd702042adeda8">こちら</a>
+    </p>
+
+    <p>WindowsとLinuxについては公式ページを参照してください。<br>
+        <a href="https://trac.ffmpeg.org/wiki/CompilationGuide" class="autolink" rel="nofollow noopener"
+            target="_blank">https://trac.ffmpeg.org/wiki/CompilationGuide</a>
+    </p>
+
+    <h1>
+        <span id="基本的な使い方" class="fragment"></span><a
+            href="#%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9"><i
+                class="fa fa-link"></i></a>基本的な使い方
+    </h1>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">基本的な使い方</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg 入力オプション <span class="nt">-i</span> 入力ファイル名 出力オプション 出力ファイル名
+</code></pre>
+        </div>
+    </div>
+
+    <p>オプションはなくてもいい(ツールが自動で認識してくれる)</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">MP4動画をAVI動画に変換する</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 output.avi
+</code></pre>
+        </div>
+    </div>
+
+    <h1>
+        <span id="1動画のサイズやコーディックを知りたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B91%E5%8B%95%E7%94%BB%E3%81%AE%E3%82%B5%E3%82%A4%E3%82%BA%E3%82%84%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%83%E3%82%AF%E3%82%92%E7%9F%A5%E3%82%8A%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>1. 動画のサイズやコーディックを知りたい
+    </h1>
+
+    <p>この動画のサイズ(縦横何ピクセル)や長さ(時間)を単純に知りたいときってあるよね<br>
+        あとは、この動画なんか再生できないんだけどコーディックなんだろうとか</p>
+
+    <p>そんなときはこれ</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画の情報を調べる</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> 入力ファイル名
+</code></pre>
+        </div>
+    </div>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">結果</span>
+        </div>
+        <div class="highlight">
+            <pre><code><span class="nv">$ </span>ffmpeg <span class="nt">-i</span> input.mov 
+ffmpeg version 3.4.2 Copyright <span class="o">(</span>c<span class="o">)</span> 2000-2018 the FFmpeg developers
+  built with Apple LLVM version 9.0.0 <span class="o">(</span>clang-900.0.39.2<span class="o">)</span>
+  configuration: <span class="nt">--prefix</span><span class="o">=</span>/usr/local/Cellar/ffmpeg/3.4.2 <span class="nt">--enable-shared</span> <span class="nt">--enable-pthreads</span> <span class="nt">--enable-version3</span> <span class="nt">--enable-hardcoded-tables</span> <span class="nt">--enable-avresample</span> <span class="nt">--cc</span><span class="o">=</span>clang <span class="nt">--host-cflags</span><span class="o">=</span> <span class="nt">--host-ldflags</span><span class="o">=</span> <span class="nt">--disable-jack</span> <span class="nt">--enable-gpl</span> <span class="nt">--enable-libmp3lame</span> <span class="nt">--enable-libx264</span> <span class="nt">--enable-libxvid</span> <span class="nt">--enable-opencl</span> <span class="nt">--enable-videotoolbox</span> <span class="nt">--disable-lzma</span>
+  libavutil      55. 78.100 / 55. 78.100
+  libavcodec     57.107.100 / 57.107.100
+  libavformat    57. 83.100 / 57. 83.100
+  libavdevice    57. 10.100 / 57. 10.100
+  libavfilter     6.107.100 /  6.107.100
+  libavresample   3.  7.  0 /  3.  7.  0
+  libswscale      4.  8.100 /  4.  8.100
+  libswresample   2.  9.100 /  2.  9.100
+  libpostproc    54.  7.100 / 54.  7.100
+Input <span class="c">#0, mov,mp4,m4a,3gp,3g2,mj2, from 'input.mov':</span>
+  Metadata:
+    major_brand     : qt  
+    minor_version   : 0
+    compatible_brands: qt  
+    creation_time   : 2018-12-05T21:48:56.000000Z
+    com.apple.quicktime.make: Apple
+    com.apple.quicktime.model: MacBookPro13,3
+    com.apple.quicktime.software: Mac OS X 10.13.4 <span class="o">(</span>17E199<span class="o">)</span>
+    com.apple.quicktime.creationdate: 2018-12-06T06:47:52+0900
+  Duration: 00:00:14.02, start: <span class="nt">-0</span>.016667, bitrate: 1509 kb/s
+    Stream <span class="c">#0:0(und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, bt709), 1832x1680 [SAR 1:1 DAR 229:210], 1481 kb/s, 59.65 fps, 60 tbr, 6k tbn, 12k tbc (default)</span>
+    Metadata:
+      creation_time   : 2018-12-05T21:48:56.000000Z
+      handler_name    : Core Media Data Handler
+      encoder         : H.264
+At least one output file must be specified
+</code></pre>
+        </div>
+    </div>
+
+    <p>どうやら
+        <code>input.mov</code>は<code>Duration(長さ): 00:00:14.02</code>
+        <code>サイズ:1832x1680</code> <code>コーディック:H.264</code>
+        <code>フレームレート:59.65 fps</code>
+        <code>ビットレート:1481 kb/s</code>の動画であることがわかった。
+    </p>
+
+    <p>ただ <code>At least one output file must be specified</code>
+        これは良くないので <strong>下のが推奨</strong></p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画の情報を調べる</span></div>
+        <div class="highlight">
+            <pre><code>ffprobe <span class="nt">-i</span> 入力ファイル名
+</code></pre>
+        </div>
+    </div>
+
+    <h1>
+        <span id="2動画を変換したい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B92%E5%8B%95%E7%94%BB%E3%82%92%E5%A4%89%E6%8F%9B%E3%81%97%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>2. 動画を変換したい
+    </h1>
+
+    <p>macOSのQuick Playerでは再生できるのに、WindowsのWindows Media
+        Playerでは再生できないとか、動画をMP4形式で提出してくださいだの動画の形式を変換しないといけないことって生きていればあるよね、でもFFmpegがあれば大丈夫
+    </p>
+
+    <p>ただ <strong>単純</strong> に動画を変換するだけなら拡張子を変えるだけ</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">FLV形式の動画をMP4形式に変換する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.flv output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">MP4形式の動画をAVI形式に変換する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 output.avi
+</code></pre>
+        </div>
+    </div>
+
+    <p>拡張子から自動で判別してくれるのはありがたい。<br>
+        変換に関して <code>コーデック</code> <code>ビットレート</code>
+        <code>フレームレート</code> <code>オーディオ形式</code>
+        <code>サンプリングレート</code>等について指定があれば、出力オプションに追加する。
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">MP4形式の動画をコーディックH.265のMP4形式の動画に変換する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vcodec</span> libx265 output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">MP4形式の動画をビットレート340kbpsのMP4形式の動画に変換する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vb</span> 340k output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">MP4形式の動画をフレームレート120fpsのMP4形式の動画に変換する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-r</span> 120 output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <h1>
+        <span id="3連番画像から動画を作りたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B93%E9%80%A3%E7%95%AA%E7%94%BB%E5%83%8F%E3%81%8B%E3%82%89%E5%8B%95%E7%94%BB%E3%82%92%E4%BD%9C%E3%82%8A%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>3. 連番画像から動画を作りたい
+    </h1>
+
+    <p><code>image001.png</code> <code>image002.png</code>
+        <code>image003.png</code> … <code>imageXXX.png</code>
+        と連番の画像から動画ファイルを作りたいときもFFmpeg
+    </p>
+
+    <p>一番簡単なのは次のコマンド</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">連番ファイルから動画をつくる</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> image%03d.png output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>数字が連番になっているところを<code>%03d</code>みたいなので置換する。<br>
+        数字が0埋めされていなければ<code>%d</code><br>
+        0埋めされていれば<code>%0桁数d</code>にする</p>
+
+    <p>ただ、これだとmacOSのQuick Playerで開けないので、<br>
+        <a href="https://camo.qiitausercontent.com/7be0e744b4ffcc918e4e99372675ca677597e72a/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f3232343133342f37626135663762662d333533662d356630372d353933302d6466336362616137643338652e706e67"
+            target="_blank" rel="nofollow noopener"><img
+                src="https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.amazonaws.com%2F0%2F224134%2F7ba5f7bf-353f-5f07-5930-df3cbaa7d38e.png?ixlib=rb-4.0.0&amp;auto=format&amp;gif-q=60&amp;q=75&amp;s=7fda4497b2327e95b1623de5ce1f0d95"
+                alt="image.png"
+                data-canonical-src="https://qiita-image-store.s3.amazonaws.com/0/224134/7ba5f7bf-353f-5f07-5930-df3cbaa7d38e.png"
+                srcset="https://qiita-user-contents.imgix.net/https%3A%2F%2Fqiita-image-store.s3.amazonaws.com%2F0%2F224134%2F7ba5f7bf-353f-5f07-5930-df3cbaa7d38e.png?ixlib=rb-4.0.0&amp;auto=format&amp;gif-q=60&amp;q=75&amp;w=1400&amp;fit=max&amp;s=e8eaa92c82f4b2b3cfd497c7936ec519 1x"
+                loading="lazy"></a>
+    </p>
+
+    <p>出力オプションに<code>-pix_fmt yuv420p</code>を加える</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">連番ファイルからmacで再生できる動画をつくる</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> image%03d.png <span class="nt">-pix_fmt</span> yuv420p output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>自分の環境では、デフォルトで <code>h264 (High 4:4:4 Predictive)</code>
+        になるのですがコーデックを指定したい場合は出力オプションに
+        <code>-vcodec libx264</code>など形式を指定してあげる。
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">連番ファイルからH.264コーディックの動画をつくる</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> image%03d.png <span class="nt">-vcodec</span> libx264 output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>ただ、連番画像が何枚で1秒かっていうのはFFmpegに教えてあげないといけないので<br>
+        連番画像が60枚で1秒だった場合はこうだ！</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">60fpsの連番ファイルから動画をつくる</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-r</span> 60 <span class="nt">-i</span> image%03d.png output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <h1>
+        <span id="4動画から連番画像を作りたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B94%E5%8B%95%E7%94%BB%E3%81%8B%E3%82%89%E9%80%A3%E7%95%AA%E7%94%BB%E5%83%8F%E3%82%92%E4%BD%9C%E3%82%8A%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>4. 動画から連番画像を作りたい
+    </h1>
+
+    <p><strong>3. 連番画像から動画を作りたい</strong> の <strong>逆</strong>
+        ですね。<br>
+        入力ファイル名に動画を指定して、出力ファイル名に画像の拡張子を指定すればいいですね。</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画から連番ファイルをつくる</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 image%03d.png
+</code></pre>
+        </div>
+    </div>
+
+    <p>このままだと、動画1秒あたりフレームレートの枚数分画像が生成するので、1秒あたり何枚かは
+        <code>-r 動画一秒あたりの枚数</code> で指定すればよい
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画から1秒あたり60枚の連番ファイルをつくる</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-r</span> 60 image%03d.png
+</code></pre>
+        </div>
+    </div>
+
+    <h1>
+        <span id="5動画をgif画像にしたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B95%E5%8B%95%E7%94%BB%E3%82%92gif%E7%94%BB%E5%83%8F%E3%81%AB%E3%81%97%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>5. 動画をgif画像にしたい
+    </h1>
+
+    <p>Webページに載せたりTwitterに上げたりするときgif画像って便利<br>
+        FFmpegならgifを動画からつくるのは簡単</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画をgifに変換する</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 output.gif
+</code></pre>
+        </div>
+    </div>
+
+    <p>たったこれだけで出来るのですが、問題はそのままのサイズ、フレームレートでgifを作ってしまうため、めちゃくちゃ大きくて重いgifができてしまいます
+    </p>
+
+    <p>なのでサイズとフレームレートを指定しなければなりません。<br>
+        フレームレートは <code>-r XX</code> <br>
+        サイズは <code>-s 横幅ピクセルx縦幅ピクセル</code> <br>
+        アスペクト比固定で変えるなら<br>
+        <code>-vf scale=横幅ピクセル:-1</code><br>
+        <code>-vf scale=-1:縦幅ピクセル</code><br>
+        で指定できるので出力オプションに加えてあげます
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画をアスペクト比を保ったまま横幅640ピクセルにリサイズ、フレームレートは10fpsでgifに変換</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vf</span> <span class="nv">scale</span><span class="o">=</span>640:-1 <span class="nt">-r</span> 10 output.gif
+</code></pre>
+        </div>
+    </div>
+
+    <p>*アスペクト比を維持してサイズを変える場合は、横幅か縦幅を <code>-1</code> にします<br>
+        アスペクト比を保ったまま横幅320ピクセルにリサイズなら
+        <code>-vf scale=320:-1</code><br>
+        アスペクト比を保ったまま縦幅720ピクセルにリサイズなら
+        <code>-vf scale=-1:720</code>
+    </p>
+
+    <p>筆者はいつも <a href="https://qiita.com/wMETAw/items/fdb754022aec1da88e6e" id="reference-5dfa298e6d4e76e38413">ここ</a>
+        を参考にしている</p>
+
+    <h1>
+        <span id="6動画をリサイズしたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B96%E5%8B%95%E7%94%BB%E3%82%92%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B"><i
+                class="fa fa-link"></i></a>6. 動画をリサイズしたい
+    </h1>
+
+    <p>動画のピクセルサイズを変更するのもFFmpegならおてのもの、 出力オプションに <code>-s</code>
+        を加えてあげれるだけ</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画を横幅1920ピクセル縦幅1080ピクセルにリサイズする</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-s</span> 1920x1080 output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>ただ、横幅ピクセル数・縦幅ピクセル数を動画のアスペクト比によって計算しないといけないのは面倒なので<br>
+        アスペクト比を維持してサイズを変える場合は、<code>-vf</code>オプションを使い横幅か縦幅を
+        <code>-1</code> にします(5にかかれたとおりですね)<br>
+        アスペクト比を保ったまま横幅320ピクセルにリサイズなら
+        <code>-vf scale=320:-1</code><br>
+        アスペクト比を保ったまま縦幅720ピクセルにリサイズなら
+        <code>-vf scale=-1:720</code>
+    </p>
+
+    <h1>
+        <span id="7動画から音声を抜きだしたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B97%E5%8B%95%E7%94%BB%E3%81%8B%E3%82%89%E9%9F%B3%E5%A3%B0%E3%82%92%E6%8A%9C%E3%81%8D%E3%81%A0%E3%81%97%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>7. 動画から音声を抜きだしたい
+    </h1>
+
+    <p>GUIソフトを起動して映像部分を消して音声ファイルで書き出しよりFFmpegなら少ない手順でできます。</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画からmp3形式で音声ファイルを生成する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 output.mp3
+</code></pre>
+        </div>
+    </div>
+
+    <p>余裕ですね、ファイルの拡張子を変えるだけ<br>
+        ただ、これだと動画コンテナに入っている音声にはエンコードがかかる場合があるので<br>
+        動画コンテナに保存されている音声をエンコードせずに抜き出したい場合は一旦中の音声形式を調べて</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">中に入っている音声の形式を調べる</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4
+<span class="c">#---省略---#</span>
+Stream <span class="c">#0:1(eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 317 kb/s (default)</span>
+    Metadata:
+      creation_time   : 2018-05-15T15:48:22.000000Z
+      handler_name    : <span class="c">#Mainconcept MP4 Sound Media Handler</span>
+</code></pre>
+        </div>
+    </div>
+
+    <p>この場合は <code>AAC形式</code> なので拡張子は <code>m4a</code>
+        ですね。出力オプションに <code>-acodec copy</code> 加えて</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画コンテナに保存されている音声をエンコードせずに抜き出す</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-acodec</span> copy output.m4a
+</code></pre>
+        </div>
+    </div>
+
+    <p>ちなみに、動画から音を消す場合は <code>-an</code> のオプションを使います</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画コンテナに保存されている音声だけを消す</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vcodec</span> copy <span class="nt">-an</span> output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <h1>
+        <span id="8動画を連結したい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B98%E5%8B%95%E7%94%BB%E3%82%92%E9%80%A3%E7%B5%90%E3%81%97%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>8. 動画を連結したい
+    </h1>
+
+    <p>動画同士を連結したいときもFFmpegなら比較的簡単!</p>
+
+    <p>まずは連結したい動画のリストを作る<br>
+        <code>input01.mp4</code>と<code>input02.mp4</code>と<code>input03.mp4</code>
+        を連結したいときは以下のように <code>inputs.txt</code> に書く
+    </p>
+
+    <div class="code-frame" data-lang="text">
+        <div class="code-lang"><span class="bold">inputs.txt</span></div>
+        <div class="highlight">
+            <pre><code>file './input01.mp4'
+file './input02.mp4'
+file './input03.mp4'
+</code></pre>
+        </div>
+    </div>
+
+    <p><code>inputs.txt</code> を作成して、次のコマンドを実行すると、複数の動画が連結される。
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">inputs.txtにリストされた動画を連結してoutput.mp4を作成する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-f</span> concat <span class="nt">-safe</span> 0 <span class="nt">-i</span> inputs.txt <span class="nt">-c</span> copy output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p><code>-safe 0</code>のオプションをつけているので、動画リストのファイルパスは絶対パスでも相対パスでも良い。<br>
+        連結したい動画のコーディック(h.264やvp9など)がすべて同じなら
+        <code>-c copy</code>オプションをつけることで、
+        <strong>高速・無変換・無劣化</strong> で連結できる。
+    </p>
+
+    <p>連結する動画がたくさんあるならこのやり方でも手間はかからないが、
+        <strong>動画A+動画B=動画C</strong>みたいに、2つの動画をつなげたいときに、<strong><code>inputs.txt</code>を作成するのは手間</strong><br>
+        そんなときは以下のコマンド、<code>-filter_complexs</code>を使って結合する
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">input01.mp4とinput02.mp4をつなげてoutput.mp4を作成する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input01.mp4 <span class="nt">-i</span> input02.mp4 <span class="se">\</span>
+<span class="nt">-filter_complex</span> <span class="s2">"[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]"</span> <span class="se">\</span>
+<span class="nt">-map</span> <span class="s2">"[outv]"</span> <span class="nt">-map</span> <span class="s2">"[outa]"</span> output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>※ <code>-filter_complex</code> の詳細は長くなるので、ここでは割愛する</p>
+
+    <p><strong>拡張子・コーディックが違くても大丈夫</strong></p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">input01.mp4とinput02.webmをつなげてoutput.movを作成する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input01.mp4 <span class="nt">-i</span> input02.webm <span class="se">\</span>
+<span class="nt">-filter_complex</span> <span class="s2">"[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]"</span> <span class="se">\</span>
+<span class="nt">-map</span> <span class="s2">"[outv]"</span> <span class="nt">-map</span> <span class="s2">"[outa]"</span> output.mov
+</code></pre>
+        </div>
+    </div>
+
+    <p><strong>ただし、動画を連結する際、気をつけないと行けないのは、異なるサイズの動画は上記の方法では連結できない...</strong><br>
+        例えば、 「解像度<code>640x480</code>
+        の動画」と「解像度<code>1920x1080</code>
+        の動画」を結合することはできない。もし結合したい場合、どちらかの解像度に
+        <strong>6:動画をリサイズする</strong> を参考に、解像度を変換してから結合する。
+    </p>
+
+    <h1>
+        <span id="9動画をクロップトリミングしたい" class="fragment"></span><a
+            href="#%E3%82%B1%E3%83%BC%E3%82%B99%E5%8B%95%E7%94%BB%E3%82%92%E3%82%AF%E3%83%AD%E3%83%83%E3%83%97%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%97%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>9. 動画をクロップ(トリミング)したい
+    </h1>
+
+    <p>画像でよくするトリミングもFFmpegならコマンドだけできる！<br>
+        基本的なコマンドは次の通り</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画をクロップする</span></div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vf</span> <span class="nv">crop</span><span class="o">={</span>X size<span class="o">}</span>:<span class="o">{</span>Y size<span class="o">}</span>:<span class="o">{</span>X position<span class="o">}</span>:<span class="o">{</span>Y position<span class="o">}</span> output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>切り出す基準となる原点と、そこから切り出す動画の解像度を指定する<br>
+        <code>X size</code> : 切り出す横幅ピクセル数<br>
+        <code>Y size</code> : 切り出す横幅ピクセル数<br>
+        <code>X position</code> : 切り出すX座標原点<br>
+        <code>Y position</code> : 切り出すY座標原点
+    </p>
+
+
+
+    <p>例を挙げると次のように指定する</p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">動画を左上からX座標50ピクセル、Y座標75ピクセルの位置から横1280ピクセル、縦720ピクセルのサイズでトリミングする</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vf</span> <span class="nv">crop</span><span class="o">=</span>1280:720:50:75 output.mp4
+</code></pre>
+        </div>
+    </div>
+
+    <p>難点なのは、絵を見ながら切り抜けないところではあるが、<br>
+        半分の大きさや1/4の大きさを切り出すといったときには、とても便利</p>
+
+    <p>参考: <a href="https://w.atwiki.jp/kobapan/pages/173.html" class="autolink" rel="nofollow noopener"
+            target="_blank">https://w.atwiki.jp/kobapan/pages/173.html</a>
+    </p>
+
+    <h1>
+        <span id="10dvd-video形式の動画に変換したい" class="fragment"></span><a
+            href="#%E7%95%AA%E5%A4%96%E7%B7%A81dvd-video%E5%BD%A2%E5%BC%8F%E3%81%AE%E5%8B%95%E7%94%BB%E3%81%AB%E5%A4%89%E6%8F%9B%E3%81%97%E3%81%9F%E3%81%84"><i
+                class="fa fa-link"></i></a>10. DVD-Video形式の動画に変換したい
+    </h1>
+
+    <p>DVDに書き込まれる動画形式にFFmpegなら出力オプションに
+        <code>-target ntsc-dvd</code> を加えることで変換することができます
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">MP4形式の動画をDVD形式の動画に変換する</span>
+        </div>
+        <div class="highlight">
+            <pre><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-target</span> ntsc-dvd <span class="nt">-aspect</span> 16:9 output.mpg
+</code></pre>
+        </div>
+    </div>
+
+    <p>他にも出力オプションに <code>-target pal-dvd</code>
+        などにがあるので詳しいことは、<a href="https://ffmpeg.org/ffmpeg.html" rel="nofollow noopener" target="_blank">公式ドキュメント</a>
+        を見てください</p>
+
+    <p>DVDに書き込まれる動画の形式は、 <code>MPEG-2</code> で解像度が主に
+        <code>720x480</code> になります<br>
+        実際に変換された動画のメタ情報をみると
+    </p>
+
+    <div class="code-frame" data-lang="bash">
+        <div class="code-lang"><span class="bold">変換後のメタ情報</span></div>
+        <div class="highlight">
+            <pre><code>Output <span class="c">#0, dvd, to 'output':</span>
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 1
+    compatible_brands: mp41mp42isom
+    encoder         : Lavf58.20.100
+    Stream <span class="c">#0:0(eng): Video: mpeg2video (Main), yuv420p, 720x480 [SAR 32:27 DAR 16:9], q=2-31, 6000 kb/s, 29.97 fps, 90k tbn, 29.97 tbc (default)</span>
+</code></pre>
+        </div>
+    </div>
+
+    <p>形式が <code>mpeg2video</code> で解像度が <code>720x480</code>
+        になってることがわかります</p>
+
+
+
+</body>
+
+</html>
