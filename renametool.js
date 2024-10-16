@@ -5,13 +5,12 @@ const dir = '.';
 const filter = value => /.*\.js$/.test(value);
 const func = name => name;
 
+rename(dir, filter, func);
+
 function rename(dir, filter, func) {
     fs.readdirSync(dir).filter(filter).forEach(fileName => {
-        const parse = path.parse(fileName);
-        const name = parse.name;
-        const ext = parse.ext;
-        const newName = func(name);
-        const newFileName = newName + ext;
+        const parsedPath = path.parse(fileName);
+        const newFileName = func(parsedPath.name) + parsedPath.ext;
         const filePath = path.join(dir, fileName);
         const newFilePath = path.join(dir, newFileName);
         if (filePath !== newFilePath) {
@@ -24,5 +23,3 @@ function rename(dir, filter, func) {
         }
     });
 }
-
-rename(dir, filter, func);
