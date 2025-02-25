@@ -6,7 +6,6 @@
   "command.html",
   "convert.html",
   "detect-file-encoding.html",
-  "ffmpeg.html",
   "formatter.html",
   "google_search.html",
   "gradle.html",
@@ -15,10 +14,12 @@
   "macro.html",
   "markdown_editor.html",
   "mermaid_editor.html",
+  "python.html",
   "qrcode.html",
   "random.html",
   "recorder.html",
   "shellscript.html",
+  "spreadsheet.html",
   "strcount.html",
   "streamapi.html"
 ]

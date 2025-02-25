@@ -10,7 +10,7 @@
 <body>
     <ul></ul>
     <script>
-        const path = 'https://dl.dropboxusercontent.com/scl/fi/ts83dz1y625fwmnxx2prr/index.json?rlkey=nhjvbp3mkr1h3o5obk3h1w6ru&st=22q11h6c';
+        const path = './index.json';
         fetch(path).then(response => response.json()).then(data => {
             data.forEach(value => {
                 const li = document.createElement('li');
