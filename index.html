@@ -8,10 +8,11 @@
 </head>
 
 <body>
-    <ul></ul>
+    <ul>
+        <li><a href="https://github.com/0802tf/0802tf.github.io/wiki">wiki</a></li>
+    </ul>
     <script>
-        const path = './index.json';
-        fetch(path).then(response => response.json()).then(data => {
+        fetch('./index.json').then(response => response.json()).then(data => {
             data.forEach(value => {
                 const li = document.createElement('li');
                 document.querySelector('ul').appendChild(li);
