@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>整形</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify.min.js"></script>
+</head>
+
+<body>
+  <button id="js">JavaScript整形</button>
+  <button id="json">JSON整形</button>
+  <label for="indent">インデント</label>
+  <input id="indent" type="number" value="4" min="0" max="10" size="2">
+  <textarea style="width: 100%; height: 50vh;"></textarea>
+  <script>
+    const textarea = document.querySelector('textarea');
+    const indent = document.querySelector('#indent');
+    document.querySelector('#js').addEventListener('click', () => {
+      try {
+        textarea.value = js_beautify(textarea.value, {
+          indent_size: Number(indent.value),
+          space_in_empty_paren: true
+        });
+      } catch (e) {
+        alert(e);
+      }
+    });
+    document.querySelector('#json').addEventListener('click', () => {
+      try {
+        textarea.value = JSON.stringify(JSON.parse(textarea.value), null, Number(indent.value));
+      } catch (e) {
+        alert(e);
+      }
+    });
+  </script>
+</body>
+
+</html>

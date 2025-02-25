@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Index</title>
+</head>
+
+<body>
+    <ul></ul>
+    <script>
+        const path = 'https://dl.dropboxusercontent.com/scl/fi/ts83dz1y625fwmnxx2prr/index.json?rlkey=nhjvbp3mkr1h3o5obk3h1w6ru&st=22q11h6c';
+        fetch(path).then(response => response.json()).then(data => {
+            data.forEach(value => {
+                const li = document.createElement('li');
+                document.querySelector('ul').appendChild(li);
+                const a = document.createElement('a');
+                const name = `./${value}`;
+                a.setAttribute('href', name);
+                li.appendChild(a);
+                fetch(name).then(response => response.text()).then(text => {
+                    let title = '';
+                    const result = /<title>(.+?)<\/title>/.exec(text);
+                    title = result[1];
+                    a.textContent = title || value;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

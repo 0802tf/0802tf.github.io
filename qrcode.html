@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QRコード</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <textarea id="input" placeholder="QRコードにしたい文字列を入力" style="width: 100%;"></textarea>
+    <button id="button">QRコード生成</button>
+  </div>
+  <div id="qrcode"></div>
+  <div>
+    <input type="file" id="file" accept="image/*">
+    <a id="result"></a>
+  </div>
+  <script>
+    document.querySelector('#button').addEventListener('click', () => {
+      const qrcode = document.querySelector('#qrcode');
+      qrcode.textContent = '';
+      new QRCode(qrcode, {
+        text: document.querySelector('#input').value,
+        width: 128,
+        height: 128,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    });
+    document.querySelector('#file').addEventListener('change', e => {
+      const file = e.target.files[0];
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      }).then(data => new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = data;
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(image.error);
+      })).then(image => {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+        const a = document.querySelector('#result');
+        if (code) {
+          const data = code.data;
+          a.textContent = data;
+          a.href = data.startsWith('http') ? data : 'javascript:void(0)';
+        } else {
+          a.textContent = '';
+        }
+      }).catch(e => alert(e));
+    });
+  </script>
+</body>
+
+</html>

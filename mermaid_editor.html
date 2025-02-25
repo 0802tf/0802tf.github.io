@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mermaid Editor</title>
+  <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <select>
+      <option>flowchart TD</option>
+      <option>flowchart LR</option>
+      <option>graph TD</option>
+      <option>graph LR</option>
+      <option>sequenceDiagram</option>
+      <option>gantt</option>
+      <option>classDiagram</option>
+      <option>stateDiagram</option>
+      <option>pie</option>
+      <option>gitGraph</option>
+      <option>journey</option>
+      <option>erDiagram</option>
+      <option>quadrantChart</option>
+      <option>xychart</option>
+      <option>C4Context</option>
+    </select>
+  </div>
+  <textarea></textarea>
+  <div class="mermaid"></div>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+    const select = document.querySelector('select');
+    const textarea = document.querySelector('textarea');
+    const result = document.querySelector('.mermaid');
+    setTimeout(() => {
+      textarea.style.setProperty('width', `${innerWidth * 0.9}px`);
+      textarea.style.setProperty('height', `${innerHeight / 2}px`);
+    }, 100);
+    textarea.addEventListener('input', async () => {
+      try {
+        delete result.dataset.processed;
+        result.textContent = `${select.value}\n${textarea.value}`;
+        await mermaid.run();
+      } catch (error) {
+        const errorStr = error.str;
+        if (errorStr && errorStr.startsWith('Parse')) {
+          result.textContent = errorStr;
+        }
+      }
+    });
+    select.addEventListener('change', () => {
+      textarea.dispatchEvent(new Event('input'));
+    });
+  </script>
+</body>
+
+</html>

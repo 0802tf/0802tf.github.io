@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>コード進行エディタ</title>
+</head>
+
+<body>
+    <div id="header">
+        <button id="load">load</button>
+        <button id="save">save</button>
+        <button id="copy">copy</button>
+        <button id="clear">clear</button>
+    </div>
+    <input type="text" id="title" placeholder="タイトル">
+    <textarea></textarea>
+    <div id="controller"></div>
+    <script>
+        const chords = ['|', 'C', 'D', 'E', 'F', 'G', 'A', 'B'];
+        const options = ['#', '♭', 'm', '7', 'm7', 'M7', 'mM7', '6', 'm6', 'sus4', '7sus4', 'm7-5', 'dim', 'aug', 'add2'];
+        const tensions = ['(', ')', ',', '♭9', '9', '#9', '#11', '♭13', '13'];
+        const sections = ['イントロ', 'Aメロ', 'Bメロ', 'サビ', '間奏', 'Cメロ', 'ソロ', 'アウトロ'];
+        const miscs = ['on', '\n', ' '];
+        const titlearea = document.querySelector('#title');
+        const textarea = document.querySelector('textarea');
+        const controller = document.querySelector('#controller');
+        chords.concat(options).concat(tensions).concat(sections).concat(miscs).forEach(value => {
+            const button = document.createElement('button');
+            button.textContent = value.replace(/\n/, '改行').replace(' ', 'スペース');
+            controller.append(button);
+            button.addEventListener('click', () => {
+                const tempValue = textarea.value;
+                const tempPos = textarea.selectionStart;
+                const prefix = tempValue.substring(0, tempPos);
+                const suffix = tempValue.substring(textarea.selectionEnd);
+                const insertText = `${getSpace(prefix, value)}${value}`;
+                textarea.value = `${prefix}${insertText}${getSpace(value, suffix)}${suffix}`;
+                const pos = tempPos + insertText.length;
+                textarea.selectionStart = pos;
+                textarea.selectionEnd = pos;
+            });
+        });
+        document.querySelector('#load').addEventListener('click', () => textarea.value = localStorage.getItem(titlearea.value));
+        document.querySelector('#save').addEventListener('click', () => {
+            const title = titlearea.value;
+            const text = textarea.value;
+            if (title) {
+                if (!text && localStorage.getItem(title)) {
+                    localStorage.removeItem(title);
+                } else {
+                    localStorage.setItem(title, text);
+                }
+            }
+        });
+        document.querySelector('#copy').addEventListener('click', () => {
+            textarea.select();
+            document.execCommand('copy');
+            alert(`Copied!\n\n${textarea.value}`);
+        });
+        document.querySelector('#clear').addEventListener('click', () => textarea.value = '');
+        setTimeout(setSize, 100);
+        visualViewport.addEventListener('resize', setSize);
+        function setSize() {
+            const width = visualViewport.width;
+            titlearea.style.setProperty('width', `${width}px`);
+            textarea.style.setProperty('width', `${width}px`);
+            controller.style.setProperty('width', `${width}px`);
+            const height = visualViewport.height - controller.clientHeight;
+            controller.style.setProperty('top', `${height}px`);
+            textarea.style.setProperty('height', `${height - document.querySelector('#header').clientHeight - titlearea.clientHeight}px`);
+        }
+        function getSpace(value1, value2) {
+            if (!value1) {
+                return '';
+            }
+            for (const m of miscs) {
+                if (value1.endsWith(m)) {
+                    return '';
+                }
+            }
+            return value2 && chords.includes(value2.substring(0, 1)) ? ' ' : '';
+        }
+    </script>
+</body>
+
+</html>

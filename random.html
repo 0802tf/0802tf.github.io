@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字列生成</title>
+</head>
+
+<body>
+    <p>ランダム文字列生成</p>
+    <p>文字範囲: <input type="text" maxlength="1" id="range1"> ~ <input type="text" maxlength="1" id="range2"></p>
+    <p>桁数: <input type="number" value="100" min="1" id="digit"></p>
+    <p><button id="output">生成</button></p>
+    <p><input type="text" id="result" style="width: 90%;"></p>
+    <hr>
+    <p>Unicodeコードポイント値 ⇄ 文字</p>
+    <p><input type="number" min="0" id="charcode"> ⇄ <input type="text" id="char" maxlength="1"></p>
+    <script>
+        document.querySelector('#output').addEventListener('click', () => {
+            let range1 = document.querySelector('#range1').value?.codePointAt(0);
+            let range2 = document.querySelector('#range2').value?.codePointAt(0);
+            if (!range1 || !range2) {
+                return;
+            }
+            if (range1 > range2) {
+                let temp = range1;
+                range1 = range2;
+                range2 = temp;
+            }
+            document.querySelector('#result').value = getRandomString(range1, range2, document.querySelector('#digit').value);
+        });
+        function getRandomString(range1, range2, digit) {
+            let list = [];
+            for (let i = range1; i <= range2; i++) {
+                list.push(String.fromCharCode(i));
+            }
+            let ret = '';
+            for (let i = 0; i < digit; i++) {
+                ret += list[Math.floor(Math.random() * list.length)];
+            }
+            return ret;
+        }
+        document.querySelector('#charcode').addEventListener('input', e => {
+            document.querySelector('#char').value = String.fromCharCode(e.target.value);
+        });
+        document.querySelector('#char').addEventListener('input', e => {
+            const value = e.target.value;
+            document.querySelector('#charcode').value = value ? value.codePointAt(0) : '';
+        });
+    </script>
+</body>
+
+</html>
