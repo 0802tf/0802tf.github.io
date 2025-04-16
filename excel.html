@@ -20,60 +20,51 @@
             fileName = file.name;
             const reader = new FileReader();
             reader.onload = function (e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+                const array = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(array, { type: 'array', cellDates: true });
                 document.getElementById('sheetContainer').innerHTML = '';
                 workbook.SheetNames.forEach((sheetName, index) => {
                     const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
-                    createSheetTable(sheetName, jsonData, index);
+                    const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+                    const container = document.getElementById('sheetContainer');
+                    const sheetLabel = document.createElement('input');
+                    sheetLabel.type = 'text';
+                    sheetLabel.value = sheetName;
+                    sheetLabel.id = `sheetName-${index}`;
+                    sheetLabel.style.marginBottom = '10px';
+                    container.appendChild(sheetLabel);
+                    container.appendChild(document.createElement('br'));
+                    const table = document.createElement('table');
+                    table.id = `table-${index}`;
+                    table.border = '1';
+                    container.appendChild(table);
+                    const thead = document.createElement('thead');
+                    const tbody = document.createElement('tbody');
+                    table.appendChild(thead);
+                    table.appendChild(tbody);
+                    if (data.length === 0) return;
+                    const headerRow = document.createElement('tr');
+                    data[0].forEach(cellText => {
+                        const th = document.createElement('th');
+                        th.textContent = cellText || '';
+                        headerRow.appendChild(th);
+                    });
+                    thead.appendChild(headerRow);
+                    for (let i = 1; i < data.length; i++) {
+                        const row = document.createElement('tr');
+                        data[i].forEach(cellText => {
+                            const td = document.createElement('td');
+                            td.contentEditable = 'true';
+                            td.textContent = cellText || '';
+                            row.appendChild(td);
+                        });
+                        tbody.appendChild(row);
+                    }
+                    container.appendChild(document.createElement('br'));
                 });
             };
             reader.readAsArrayBuffer(file);
         });
-
-        function createSheetTable(sheetName, data, index) {
-            const container = document.getElementById('sheetContainer');
-            const sheetLabel = document.createElement('input');
-            sheetLabel.type = 'text';
-            sheetLabel.value = sheetName;
-            sheetLabel.id = `sheetName-${index}`;
-            sheetLabel.style.marginBottom = '10px';
-            container.appendChild(sheetLabel);
-            container.appendChild(document.createElement('br'));
-            const table = document.createElement('table');
-            table.id = `table-${index}`;
-            table.border = '1';
-            container.appendChild(table);
-            displayTable(data, table);
-            container.appendChild(document.createElement('br'));
-        }
-
-        function displayTable(data, table) {
-            const thead = document.createElement('thead');
-            const tbody = document.createElement('tbody');
-            table.appendChild(thead);
-            table.appendChild(tbody);
-            if (data.length === 0) return;
-            const headerRow = document.createElement('tr');
-            data[0].forEach(cellText => {
-                const th = document.createElement('th');
-                th.textContent = cellText || '';
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            for (let i = 1; i < data.length; i++) {
-                const row = document.createElement('tr');
-                data[i].forEach(cellText => {
-                    const td = document.createElement('td');
-                    td.contentEditable = 'true';
-                    td.textContent = cellText || '';
-                    row.appendChild(td);
-                });
-                tbody.appendChild(row);
-            }
-        }
-
         document.getElementById('saveButton').addEventListener('click', function () {
             const workbook = XLSX.utils.book_new();
             const container = document.getElementById('sheetContainer');
