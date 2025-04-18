@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>スプレッドシート</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         table {
             border-collapse: collapse;
@@ -30,16 +31,41 @@
 </head>
 
 <body>
+    <input type="file" id="file" accept=".xlsx, .xls, .xlsm">
+    <select></select>
     <table border="1">
         <tr>
             <td id="info"></td>
         </tr>
     </table>
     <script>
+        let workbook;
         const table = document.querySelector('table');
         spreadsheet(() => table.clientHeight < innerHeight, () => table.clientWidth < innerWidth);
         addEventListener('scroll', () => {
             spreadsheet(() => document.documentElement.scrollHeight - innerHeight === scrollY, () => document.documentElement.scrollWidth - innerWidth === scrollX);
+        });
+        document.querySelector('#file').addEventListener('change', e => {
+            const file = e.target.files[0];
+            new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsArrayBuffer(file);
+            }).then(data => {
+                const array = new Uint8Array(data);
+                workbook = XLSX.read(array, { type: 'array', cellDates: true });
+                workbook.SheetNames.forEach((sheetName, index) => {
+                    const option = document.createElement('option');
+                    option.textContent = sheetName;
+                    document.querySelector('select').appendChild(option);
+                });
+            }).catch(e => alert(e));
+        });
+        document.querySelector('select').addEventListener('change', () => {
+            const sheet = workbook.Sheets[document.querySelector('select').value];
+            const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+            console.log(data);
         });
 
         function spreadsheet(heightFilter, widthFilter) {
