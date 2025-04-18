@@ -32,7 +32,7 @@
 <body>
     <table border="1">
         <tr>
-            <td></td>
+            <td id="info"></td>
         </tr>
     </table>
     <script>
@@ -54,11 +54,27 @@
             }
             while (widthFilter()) {
                 table.querySelector('tr:first-child').appendChild(document.createElement('th'));
-                table.querySelectorAll('tr:not(:first-child)').forEach(tr => {
-                    tr.appendChild(document.createElement('td'));
-                });
+                table.querySelectorAll('tr:not(:first-child)').forEach(tr => tr.appendChild(document.createElement('td')));
             }
-            document.querySelectorAll('td:not(:first-child)').forEach(td => td.contentEditable = true);
+            for (let i = 1; i < table.rows.length; i++) {
+                const cells = table.rows[i].cells;
+                for (let j = 1; j < cells.length; j++) {
+                    const cell = cells[j];
+                    cell.id = getColumnName(j) + i;
+                    cell.contentEditable = true;
+                    cell.addEventListener('focus', () => document.querySelector('#info').textContent = cell.id);
+                }
+            }
+        }
+
+        function getColumnName(n) {
+            let name = '';
+            while (n > 0) {
+                n--;
+                name = String.fromCharCode(65 + (n % 26)) + name;
+                n = Math.floor(n / 26);
+            }
+            return name;
         }
     </script>
 </body>
