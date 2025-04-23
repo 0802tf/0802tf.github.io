@@ -40,8 +40,8 @@
     </table>
     <script>
         let workbook;
+        let data;
         const table = document.querySelector('table');
-        spreadsheet(() => table.clientHeight < innerHeight, () => table.clientWidth < innerWidth);
         addEventListener('scroll', () => {
             spreadsheet(() => document.documentElement.scrollHeight - innerHeight === scrollY, () => document.documentElement.scrollWidth - innerWidth === scrollX);
         });
@@ -49,23 +49,33 @@
             const file = e.target.files[0];
             new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(reader.error);
+                reader.onload = resolve;
+                reader.onerror = reject;
                 reader.readAsArrayBuffer(file);
-            }).then(data => {
-                const array = new Uint8Array(data);
+            }).then(e => {
+                const array = new Uint8Array(e.target.result);
                 workbook = XLSX.read(array, { type: 'array', cellDates: true });
                 workbook.SheetNames.forEach((sheetName, index) => {
                     const option = document.createElement('option');
                     option.textContent = sheetName;
                     document.querySelector('select').appendChild(option);
                 });
+                document.querySelector('select').dispatchEvent(new Event('change'));
             }).catch(e => alert(e));
         });
         document.querySelector('select').addEventListener('change', () => {
             const sheet = workbook.Sheets[document.querySelector('select').value];
-            const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
-            console.log(data);
+            data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+            spreadsheet(() => table.clientHeight < innerHeight, () => table.clientWidth < innerWidth);
         });
 
         function spreadsheet(heightFilter, widthFilter) {

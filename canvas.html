@@ -113,12 +113,12 @@
             const file = e.target.files[0];
             new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(reader.error);
+                reader.onload = resolve;
+                reader.onerror = reject;
                 reader.readAsDataURL(file);
-            }).then(data => {
+            }).then(e => {
                 const image = new Image();
-                image.src = data;
+                image.src = e.target.result;
                 image.onload = () => {
                     canvas.width = image.naturalWidth;
                     canvas.height = image.naturalHeight;

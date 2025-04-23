@@ -36,15 +36,16 @@
       const file = e.target.files[0];
       new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(reader.error);
+        reader.onload = resolve;
+        reader.onerror = reject;
         reader.readAsDataURL(file);
-      }).then(data => new Promise((resolve, reject) => {
+      }).then(e => new Promise((resolve, reject) => {
         const image = new Image();
-        image.src = data;
-        image.onload = () => resolve(image);
-        image.onerror = () => reject(image.error);
-      })).then(image => {
+        image.src = e.target.result;
+        image.onload = resolve;
+        image.onerror = reject;
+      })).then(e => {
+        const image = e.target;
         const canvas = document.createElement('canvas');
         canvas.width = image.naturalWidth;
         canvas.height = image.naturalHeight;
