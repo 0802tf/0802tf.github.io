@@ -40,8 +40,9 @@
     </table>
     <script>
         let workbook;
-        let data;
         const table = document.querySelector('table');
+        const select = document.querySelector('select');
+        spreadsheet(() => table.clientHeight < innerHeight, () => table.clientWidth < innerWidth);
         addEventListener('scroll', () => {
             spreadsheet(() => document.documentElement.scrollHeight - innerHeight === scrollY, () => document.documentElement.scrollWidth - innerWidth === scrollX);
         });
@@ -54,28 +55,25 @@
                 reader.readAsArrayBuffer(file);
             }).then(e => {
                 const array = new Uint8Array(e.target.result);
+                document.querySelectorAll('option').forEach(option => option.remove());
                 workbook = XLSX.read(array, { type: 'array', cellDates: true });
                 workbook.SheetNames.forEach((sheetName, index) => {
                     const option = document.createElement('option');
                     option.textContent = sheetName;
-                    document.querySelector('select').appendChild(option);
+                    select.appendChild(option);
                 });
-                document.querySelector('select').dispatchEvent(new Event('change'));
+                select.dispatchEvent(new Event('change'));
             }).catch(e => alert(e));
         });
-        document.querySelector('select').addEventListener('change', () => {
+        select.addEventListener('change', () => {
+            document.querySelectorAll('td').forEach(td => td.textContent = '');
             const sheet = workbook.Sheets[document.querySelector('select').value];
-            data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                row.forEach(cell => {
-                    const td = document.createElement('td');
-                    td.textContent = cell;
-                    tr.appendChild(td);
-                });
-                table.appendChild(tr);
-            });
-            spreadsheet(() => table.clientHeight < innerHeight, () => table.clientWidth < innerWidth);
+            const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+            for (let i = 0; i < data.length; i++) {
+                for (let j = 0; j < data[i].length; j++) {
+                    document.querySelector(`#${getColumnName(j + 1)}${i + 1}`).textContent = data[i][j];
+                }
+            }
         });
 
         function spreadsheet(heightFilter, widthFilter) {
