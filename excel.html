@@ -9,74 +9,64 @@
 </head>
 
 <body>
-    <input type="file" id="fileInput" accept=".xlsx, .xls, .xlsm">
-    <div id="sheetContainer"></div>
-    <button id="saveButton">保存</button>
+    <input type="file" id="file" accept=".xlsx, .xls, .xlsm">
+    <div id="container"></div>
+    <button id="save">保存</button>
     <script>
         let fileName = '';
-        document.getElementById('fileInput').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        new Promise(resolve => {
+            document.querySelector('#file').addEventListener('change', resolve);
+        }).then(e => new Promise((resolve, reject) => {
+            const file = e.target.files[0];
+            if (!file) {
+                reject();
+            }
             fileName = file.name;
             const reader = new FileReader();
-            reader.onload = function (e) {
-                const array = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(array, { type: 'array', cellDates: true });
-                document.getElementById('sheetContainer').innerHTML = '';
-                workbook.SheetNames.forEach((sheetName, index) => {
-                    const sheet = workbook.Sheets[sheetName];
-                    const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
-                    const container = document.getElementById('sheetContainer');
-                    const sheetLabel = document.createElement('input');
-                    sheetLabel.type = 'text';
-                    sheetLabel.value = sheetName;
-                    sheetLabel.id = `sheetName-${index}`;
-                    sheetLabel.style.marginBottom = '10px';
-                    container.appendChild(sheetLabel);
-                    container.appendChild(document.createElement('br'));
-                    const table = document.createElement('table');
-                    table.id = `table-${index}`;
-                    table.border = '1';
-                    container.appendChild(table);
-                    const thead = document.createElement('thead');
-                    const tbody = document.createElement('tbody');
-                    table.appendChild(thead);
-                    table.appendChild(tbody);
-                    if (data.length === 0) return;
-                    const headerRow = document.createElement('tr');
-                    data[0].forEach(cellText => {
-                        const th = document.createElement('th');
-                        th.textContent = cellText || '';
-                        headerRow.appendChild(th);
-                    });
-                    thead.appendChild(headerRow);
-                    for (let i = 1; i < data.length; i++) {
-                        const row = document.createElement('tr');
-                        data[i].forEach(cellText => {
-                            const td = document.createElement('td');
-                            td.contentEditable = 'true';
-                            td.textContent = cellText || '';
-                            row.appendChild(td);
-                        });
-                        tbody.appendChild(row);
-                    }
-                    container.appendChild(document.createElement('br'));
-                });
-            };
+            reader.onload = resolve;
+            reader.onerror = reject;
             reader.readAsArrayBuffer(file);
-        });
-        document.getElementById('saveButton').addEventListener('click', function () {
+        })).then(e => {
+            const array = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(array, { type: 'array', cellDates: true });
+            const container = document.querySelector('#container');
+            container.innerHTML = '';
+            workbook.SheetNames.forEach((sheetName, index) => {
+                const sheet = workbook.Sheets[sheetName];
+                const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = sheetName;
+                input.id = `sheet-${index}`;
+                container.appendChild(input);
+                const table = document.createElement('table');
+                table.id = `table-${index}`;
+                table.border = '1';
+                table.style.setProperty('border-collapse', 'collapse');
+                container.appendChild(table);
+                if (data.length === 0) {
+                    return;
+                }
+                for (let i = 0; i < data.length; i++) {
+                    const row = document.createElement('tr');
+                    data[i].forEach(cellText => {
+                        const td = document.createElement('td');
+                        td.contentEditable = true;
+                        td.textContent = cellText || '';
+                        row.appendChild(td);
+                    });
+                    table.appendChild(row);
+                }
+            });
+        }).catch(e => alert(e));
+        document.querySelector('#save').addEventListener('click', () => {
             const workbook = XLSX.utils.book_new();
-            const container = document.getElementById('sheetContainer');
-            const tables = container.querySelectorAll('table');
-            tables.forEach((table, index) => {
-                const sheetName = document.getElementById(`sheetName-${index}`).value;
+            document.querySelectorAll('table').forEach((table, index) => {
+                const sheetName = document.querySelector(`#sheet-${index}`).value;
                 const data = [];
                 table.querySelectorAll('tr').forEach(row => {
                     const rowData = [];
-                    row.querySelectorAll('th, td').forEach(cell => {
-                        rowData.push(cell.textContent.trim());
-                    });
+                    row.querySelectorAll('td').forEach(cell => rowData.push(cell.textContent.trim()));
                     data.push(rowData);
                 });
                 const worksheet = XLSX.utils.aoa_to_sheet(data);

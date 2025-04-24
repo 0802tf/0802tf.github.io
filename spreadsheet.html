@@ -31,49 +31,16 @@
 </head>
 
 <body>
-    <input type="file" id="file" accept=".xlsx, .xls, .xlsm">
-    <select></select>
     <table border="1">
         <tr>
             <td id="info"></td>
         </tr>
     </table>
     <script>
-        let workbook;
         const table = document.querySelector('table');
-        const select = document.querySelector('select');
         spreadsheet(() => table.clientHeight < innerHeight, () => table.clientWidth < innerWidth);
         addEventListener('scroll', () => {
             spreadsheet(() => document.documentElement.scrollHeight - innerHeight === scrollY, () => document.documentElement.scrollWidth - innerWidth === scrollX);
-        });
-        document.querySelector('#file').addEventListener('change', e => {
-            const file = e.target.files[0];
-            new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = resolve;
-                reader.onerror = reject;
-                reader.readAsArrayBuffer(file);
-            }).then(e => {
-                const array = new Uint8Array(e.target.result);
-                document.querySelectorAll('option').forEach(option => option.remove());
-                workbook = XLSX.read(array, { type: 'array', cellDates: true });
-                workbook.SheetNames.forEach((sheetName, index) => {
-                    const option = document.createElement('option');
-                    option.textContent = sheetName;
-                    select.appendChild(option);
-                });
-                select.dispatchEvent(new Event('change'));
-            }).catch(e => alert(e));
-        });
-        select.addEventListener('change', () => {
-            document.querySelectorAll('td').forEach(td => td.textContent = '');
-            const sheet = workbook.Sheets[document.querySelector('select').value];
-            const data = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: false });
-            for (let i = 0; i < data.length; i++) {
-                for (let j = 0; j < data[i].length; j++) {
-                    document.querySelector(`#${getColumnName(j + 1)}${i + 1}`).textContent = data[i][j];
-                }
-            }
         });
 
         function spreadsheet(heightFilter, widthFilter) {
