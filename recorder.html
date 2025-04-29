@@ -17,7 +17,7 @@
     <video id="video" autoplay muted playsinline></video>
   </div>
   <div>
-    <video id="preview"></video>
+    <video id="preview" controls></video>
   </div>
   <script>
     let recorder;
@@ -34,9 +34,8 @@
       video.srcObject = stream;
       video.play();
       recorder = new MediaRecorder(stream);
-      recorder.ondataavailable = e => resolve(e)
+      recorder.ondataavailable = resolve
     })).then(e => {
-      preview.setAttribute('controls', '');
       preview.setAttribute('width', video.videoWidth);
       preview.setAttribute('height', video.videoHeight);
       recordData.push(e.data);
@@ -54,10 +53,10 @@
       stopButton.toggleAttribute('disabled');
     });
     downloadButton.addEventListener('click', () => {
-      if(recordData.length === 0){
+      if (recordData.length) {
         return;
       }
-      const blob = new Blob(recordData, { type: 'video/webm' });
+      const blob = new Blob(recordData, { type: 'video/mp4' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       const digit = '2-digit';
@@ -69,7 +68,7 @@
         hour: digit,
         minute: digit,
         second: digit
-      }).replaceAll(/[^\d]/g, '')}.webm`;
+      }).replaceAll(/[^\d]/g, '')}.mp4`;
       a.click();
       URL.revokeObjectURL(url);
     });
