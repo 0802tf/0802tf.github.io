@@ -53,7 +53,7 @@
       stopButton.toggleAttribute('disabled');
     });
     downloadButton.addEventListener('click', () => {
-      if (recordData.length) {
+      if (!recordData.length) {
         return;
       }
       const blob = new Blob(recordData, { type: 'video/mp4' });
