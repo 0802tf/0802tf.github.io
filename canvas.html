@@ -50,11 +50,11 @@
         setTimeout(() => {
             canvas.width = innerWidth * 19 / 20;
             canvas.height = innerHeight - document.querySelector('#option').clientHeight;
-            width.setAttribute('max', canvas.width * 2);
-            height.setAttribute('max', canvas.height * 2);
+            width.max = canvas.width * 2;
+            height.max = canvas.height * 2;
             width.value = canvas.width;
             height.value = canvas.height;
-            bold.setAttribute('max', Math.min(width.value, height.value));
+            bold.max = Math.min(width.value, height.value);
             setBackgroundColor();
         }, 100);
         width.addEventListener('input', () => canvas.width = width.value);
@@ -89,10 +89,10 @@
         };
         document.querySelector('#checkbox').addEventListener('input', e => {
             const type = e.target.checked ? 'number' : 'range';
-            bold.setAttribute('type', type);
-            width.setAttribute('type', type);
-            height.setAttribute('type', type);
-        })
+            bold.type = type;
+            width.type = type;
+            height.type = type;
+        });
         document.querySelector('#clear').addEventListener('click', () => {
             context.clearRect(0, 0, width.value, height.value);
             setBackgroundColor();

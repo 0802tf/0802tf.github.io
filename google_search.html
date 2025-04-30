@@ -40,7 +40,6 @@
         };
         const input = document.querySelector('#input');
         const select = document.querySelector('#select');
-        const link = document.querySelector('#link');
         Object.values(tbms).forEach(value => {
             const option = document.createElement('option');
             option.textContent = value;
@@ -59,7 +58,7 @@
                 return obj;
             }, {});
             const queryString = new URLSearchParams(searchParams).toString();
-            link.setAttribute('href', `https://www.google.com/search?${queryString}`);
+            document.querySelector('#link').href = `https://www.google.com/search?${queryString}`;
         });
         select.addEventListener('change', () => {
             input.dispatchEvent(new Event('input'));
