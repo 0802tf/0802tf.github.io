@@ -24,7 +24,7 @@
         const digit = '2-digit';
         let date;
         navigator.mediaDevices.getUserMedia({
-            video: true,
+            video: { facingMode: 'environment' },
             audio: false
         }).then(stream => {
             video.srcObject = stream;
