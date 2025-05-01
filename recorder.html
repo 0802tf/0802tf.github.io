@@ -28,7 +28,7 @@
         const downloadButton = document.querySelector('#download');
         const preview = document.querySelector('#preview');
         navigator.mediaDevices.getUserMedia({
-            video: true,
+            video: { facingMode: 'environment' },
             audio: true
         }).then(stream => new Promise(resolve => {
             video.srcObject = stream;
