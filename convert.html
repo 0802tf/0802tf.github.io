@@ -71,7 +71,7 @@
       });
     });
     document.querySelectorAll('textarea').forEach(element => {
-      element.style.setProperty('width', '90%');
+      element.style.width = '90%';
       element.addEventListener('focus', () => element.select());
     });
 

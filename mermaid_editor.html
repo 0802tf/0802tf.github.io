@@ -36,8 +36,8 @@
     const textarea = document.querySelector('textarea');
     const result = document.querySelector('.mermaid');
     setTimeout(() => {
-      textarea.style.setProperty('width', `${innerWidth * 0.9}px`);
-      textarea.style.setProperty('height', `${innerHeight / 2}px`);
+      textarea.style.width = `${innerWidth * 0.9}px`;
+      textarea.style.height = `${innerHeight / 2}px`;
     }, 100);
     textarea.addEventListener('input', async () => {
       try {

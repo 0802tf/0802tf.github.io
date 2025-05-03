@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,7 +47,6 @@
                 const table = document.createElement('table');
                 table.id = `table-${index}`;
                 table.border = '1';
-                table.style.setProperty('border-collapse', 'collapse');
                 container.appendChild(table);
                 if (data.length === 0) {
                     return;

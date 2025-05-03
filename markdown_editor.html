@@ -43,8 +43,8 @@
     const preview = document.querySelector('.markdown-body');
     setTimeout(() => {
       const height = `${innerHeight - document.querySelector('.header').clientHeight}px`;
-      textarea.style.setProperty('height', height);
-      preview.style.setProperty('height', height);
+      textarea.style.height = height;
+      preview.style.height = height;
     }, 100);
     textarea.addEventListener('input', e => {
       preview.innerHTML = marked.parse(e.target.value);
