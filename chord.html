@@ -45,6 +45,7 @@
         document.querySelector('#clear').addEventListener('click', () => textarea.value = '');
         setTimeout(setSize, 100);
         visualViewport.addEventListener('resize', setSize);
+
         function setSize() {
             const width = visualViewport.width;
             textarea.style.width = `${width}px`;
@@ -53,6 +54,7 @@
             controller.style.top = `${height}px`;
             textarea.style.height = `${height}px`;
         }
+
         function getSpace(value1, value2) {
             if (!value1) {
                 return '';
