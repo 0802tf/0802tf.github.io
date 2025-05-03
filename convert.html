@@ -8,29 +8,9 @@
 </head>
 
 <body>
-  <h2>入力</h2>
-  <textarea id="input"></textarea>
-  <h2>結果</h2>
-  <h3>UNICODEエスケープ</h3>
-  <textarea id="escape"></textarea>
-  <h3>UNICODEアンエスケープ</h3>
-  <textarea id="unescape"></textarea>
-  <h3>URLエンコード(encodeURI)</h3>
-  <textarea id="encodeURI"></textarea>
-  <h3>URLデコード(decodeURI)</h3>
-  <textarea id="decodeURI"></textarea>
-  <h3>URLエンコード(encodeURIComponent)</h3>
-  <textarea id="encodeURIComponent"></textarea>
-  <h3>URLデコード(decodeURIComponent)</h3>
-  <textarea id="decodeURIComponent"></textarea>
-  <h3>Base64エンコード</h3>
-  <textarea id="encodeBase64"></textarea>
-  <h3>Base64デコード</h3>
-  <textarea id="decodeBase64"></textarea>
-  <h3>Base64URLエンコード</h3>
-  <textarea id="encodeBase64Url"></textarea>
-  <h3>Base64URLデコード</h3>
-  <textarea id="decodeBase64Url"></textarea>
+  <label for="input">入力</label>
+  <textarea id="input" style="width: 100%;"></textarea>
+  <div id="result"></div>
   <script>
     const obj = {
       'escape': escape,
@@ -45,6 +25,18 @@
       'decodeBase64Url': decodeBase64Url,
     }
     const input = document.querySelector('#input');
+    const result = document.querySelector('#result');
+    Object.keys(obj).forEach(key => {
+      const label = document.createElement('label');
+      label.setAttribute('for', key);
+      label.textContent = key;
+      result.append(label);
+      const textarea = document.createElement('textarea');
+      textarea.id = key;
+      textarea.style.width = '100%';
+      textarea.addEventListener('focus', e => e.target.select());
+      result.append(textarea);
+    });
     input.addEventListener('input', () => {
       const value = input.value;
       Object.entries(obj).forEach(([id, func]) => {
@@ -56,10 +48,6 @@
         }
         document.querySelector(`#${id}`).value = result;
       });
-    });
-    document.querySelectorAll('textarea').forEach(element => {
-      element.style.width = '90%';
-      element.addEventListener('focus', () => element.select());
     });
 
     function encodeBase64(value) {
