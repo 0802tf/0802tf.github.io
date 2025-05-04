@@ -2,71 +2,66 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>変換</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>変換</title>
 </head>
 
 <body>
-  <label for="input">入力</label>
-  <textarea id="input" style="width: 100%;"></textarea>
-  <div id="result"></div>
-  <script>
-    const obj = {
-      'escape': escape,
-      'unescape': unescape,
-      'encodeURI': encodeURI,
-      'decodeURI': decodeURI,
-      'encodeURIComponent': encodeURIComponent,
-      'decodeURIComponent': decodeURIComponent,
-      'encodeBase64': encodeBase64,
-      'decodeBase64': decodeBase64,
-      'encodeBase64Url': encodeBase64Url,
-      'decodeBase64Url': decodeBase64Url,
-    }
-    const input = document.querySelector('#input');
-    const result = document.querySelector('#result');
-    Object.keys(obj).forEach(key => {
-      const label = document.createElement('label');
-      label.setAttribute('for', key);
-      label.textContent = key;
-      result.append(label);
-      const textarea = document.createElement('textarea');
-      textarea.id = key;
-      textarea.style.width = '100%';
-      textarea.addEventListener('focus', e => e.target.select());
-      result.append(textarea);
-    });
-    input.addEventListener('input', () => {
-      const value = input.value;
-      Object.entries(obj).forEach(([id, func]) => {
-        let result;
-        try {
-          result = func(value);
-        } catch {
-          result = value;
+    <script>
+        const obj = {
+            'input': null,
+            'escape': escape,
+            'unescape': unescape,
+            'encodeURI': encodeURI,
+            'decodeURI': decodeURI,
+            'encodeURIComponent': encodeURIComponent,
+            'decodeURIComponent': decodeURIComponent,
+            'encodeBase64': encodeBase64,
+            'decodeBase64': decodeBase64,
+            'encodeBase64Url': encodeBase64Url,
+            'decodeBase64Url': decodeBase64Url,
         }
-        document.querySelector(`#${id}`).value = result;
-      });
-    });
+        const body = document.body;
+        Object.keys(obj).forEach(key => {
+            const label = document.createElement('label');
+            label.setAttribute('for', key);
+            label.textContent = key;
+            body.append(label);
+            const textarea = document.createElement('textarea');
+            textarea.id = key;
+            textarea.style.width = '100%';
+            textarea.addEventListener('focus', e => e.target.select());
+            body.append(textarea);
+        });
+        document.querySelector('#input').addEventListener('input', e => {
+            const value = e.target.value;
+            Object.entries(obj).forEach(([id, func]) => {
+                const element = document.querySelector(`#${id}`);
+                try {
+                    element.value = func ? func(value) : value;
+                } catch {
+                    element.value = value;
+                }
+            });
+        });
 
-    function encodeBase64(value) {
-      return btoa(unescape(encodeURIComponent(value)));
-    }
+        function encodeBase64(value) {
+            return btoa(unescape(encodeURIComponent(value)));
+        }
 
-    function decodeBase64(value) {
-      return decodeURIComponent(escape(atob(value)));
-    }
+        function decodeBase64(value) {
+            return decodeURIComponent(escape(atob(value)));
+        }
 
-    function encodeBase64Url(value) {
-      return encodeBase64(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
-    }
+        function encodeBase64Url(value) {
+            return encodeBase64(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+        }
 
-    function decodeBase64Url(value) {
-      const base64 = value.replace(/-/g, '+').replace(/_/g, '/');
-      return decodeBase64(base64);
-    }
-  </script>
+        function decodeBase64Url(value) {
+            return decodeBase64(value.replace(/-/g, '+').replace(/_/g, '/'));
+        }
+    </script>
 </body>
 
 </html>

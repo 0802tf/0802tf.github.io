@@ -7,15 +7,38 @@
 </head>
 
 <body>
-    <p>ランダム文字列生成</p>
-    <p>文字範囲: <input type="text" maxlength="1" id="range1"> ~ <input type="text" maxlength="1" id="range2"></p>
-    <p>桁数: <input type="number" value="100" min="1" id="digit"></p>
-    <p><button id="output">生成</button></p>
-    <p><input type="text" id="result" style="width: 90%;"></p>
-    <hr>
-    <p>Unicodeコードポイント値 ⇄ 文字</p>
-    <p><input type="number" min="0" id="charcode"> ⇄ <input type="text" id="char" maxlength="1"></p>
+    <div>
+        <label for="charcode">Unicodeコードポイント値 ⇄ 文字</label>
+    </div>
+    <div>
+        <input type="number" min="0" id="charcode">
+        <label for="char">⇄</label>
+        <input type="text" id="char" maxlength="1">
+    </div>
+    <div>
+        <label>ランダム文字列生成</label>
+    </div>
+    <div>
+        <label for="range1">文字範囲:</label>
+        <input type="text" maxlength="1" id="range1">
+        <label for="range2">~</label>
+        <input type="text" maxlength="1" id="range2">
+    </div>
+    <div>
+        <label for="digit">桁数:</label>
+        <input type="number" value="100" min="1" id="digit">
+    </div>
+    <div>
+        <button id="output">生成</button>
+    </div>
+    <div>
+        <input type="text" id="result" style="width: 100%;">
+    </div>
     <script>
+        const charcode = document.querySelector('#charcode');
+        const char = document.querySelector('#char');
+        charcode.addEventListener('input', () => char.value = String.fromCharCode(charcode.value));
+        char.addEventListener('input', () => charcode.value = char.value ? char.value.codePointAt(0) : '');
         document.querySelector('#output').addEventListener('click', () => {
             let range1 = document.querySelector('#range1').value?.codePointAt(0);
             let range2 = document.querySelector('#range2').value?.codePointAt(0);
@@ -27,9 +50,7 @@
                 range1 = range2;
                 range2 = temp;
             }
-            document.querySelector('#result').value = getRandomString(range1, range2, document.querySelector('#digit').value);
-        });
-        function getRandomString(range1, range2, digit) {
+            const digit = document.querySelector('#digit').value;
             let list = [];
             for (let i = range1; i <= range2; i++) {
                 list.push(String.fromCharCode(i));
@@ -38,14 +59,7 @@
             for (let i = 0; i < digit; i++) {
                 ret += list[Math.floor(Math.random() * list.length)];
             }
-            return ret;
-        }
-        document.querySelector('#charcode').addEventListener('input', e => {
-            document.querySelector('#char').value = String.fromCharCode(e.target.value);
-        });
-        document.querySelector('#char').addEventListener('input', e => {
-            const value = e.target.value;
-            document.querySelector('#charcode').value = value ? value.codePointAt(0) : '';
+            document.querySelector('#result').value = ret;
         });
     </script>
 </body>
