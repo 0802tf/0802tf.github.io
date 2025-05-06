@@ -8,11 +8,12 @@
 </head>
 
 <body>
+    <textarea></textarea>
     <div id="controller">
         <button id="copy">copy</button>
+        <button id="backspace">backspace</button>
         <button id="clear">clear</button>
     </div>
-    <textarea></textarea>
     <script>
         const chords = ['|', 'C', 'D', 'E', 'F', 'G', 'A', 'B'];
         const options = ['#', '♭', 'm', '7', 'm7', 'M7', 'mM7', '6', 'm6', 'sus4', '7sus4', 'm7-5', 'dim', 'aug', 'add2', 'omit3'];
@@ -27,12 +28,13 @@
             controller.append(button);
             button.addEventListener('click', () => {
                 const tempValue = textarea.value;
-                const tempPos = textarea.selectionStart;
-                const prefix = tempValue.substring(0, tempPos);
+                const selectionStart = textarea.selectionStart;
+                const prefix = tempValue.substring(0, selectionStart);
                 const suffix = tempValue.substring(textarea.selectionEnd);
                 const insertText = `${getSpace(prefix, value)}${value}`;
                 textarea.value = `${prefix}${insertText}${getSpace(value, suffix)}${suffix}`;
-                const pos = tempPos + insertText.length;
+                const pos = selectionStart + insertText.length;
+                textarea.focus();
                 textarea.selectionStart = pos;
                 textarea.selectionEnd = pos;
             });
@@ -42,7 +44,24 @@
             document.execCommand('copy');
             alert(`Copied!\n\n${textarea.value}`);
         });
+        document.querySelector('#backspace').addEventListener('click', () => {
+            const tempValue = textarea.value;
+            const selectionStart = textarea.selectionStart;
+            const selectionEnd = textarea.selectionEnd;
+            const prefix = tempValue.substring(0, selectionStart);
+            const suffix = tempValue.substring(selectionEnd);
+            const selectFlg = selectionStart === selectionEnd;
+            const trimPrefix = prefix.trim();
+            const trimLength = trimPrefix.length;
+            const dropPos = trimLength - 1;
+            textarea.value = `${selectFlg ? prefix.substring(0, dropPos) : trimPrefix}${suffix}`;
+            const pos = selectFlg ? dropPos : trimLength;
+            textarea.focus();
+            textarea.selectionStart = pos;
+            textarea.selectionEnd = pos;
+        })
         document.querySelector('#clear').addEventListener('click', () => textarea.value = '');
+        textarea.focus();
         setTimeout(setSize, 100);
         visualViewport.addEventListener('resize', setSize);
 
