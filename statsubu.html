@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>すたつぶ</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <style>
+        body {
+            text-align: center;
+        }
+
+        table,
+        img {
+            margin: auto;
+        }
+
+        #logo {
+            max-width: 80%;
+        }
+    </style>
+</head>
+
+<body class="markdown-body">
+    <h3>
+        <img id="logo" src="img/STATSUBU_1.jpg" />
+    </h3>
+    <p>すたつぶ</p>
+    <table border="0">
+        <tr>
+            <td>
+                <a class="youtube" href="https://www.youtube.com/channel/UCKn-SDauDg7S4eW32mNCUnw">YouTube</a>
+            </td>
+            <td>
+                <a class="x" href="https://x.com/statsubu">X(@statsubu)</a>
+            </td>
+            <td>
+                <a class="instagram" href="https://www.instagram.com/statsubu">Instagram(@statsubu)</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="youtube"></div>
+            </td>
+            <td>
+                <div class="x"></div>
+            </td>
+            <td>
+                <div class="instagram"></div>
+            </td>
+        </tr>
+    </table>
+    <table border="0">
+        <tr>
+            <td>
+                <p>FM FUKUOKA × カローラ福岡 <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
+                    第10弾アーティスト</p>
+            </td>
+            <td>
+                <p>福岡音楽都市協議会(OTOJIRO) <a class="fukuokastreetlive"
+                        href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA
+                        STREET LIVE</a> 登録アーティスト</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="key10music"></div>
+            </td>
+            <td>
+                <div class="fukuokastreetlive"></div>
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <p>各種サブスクリプションにて楽曲配信中！</p>
+    <p><a class="single-1" href="https://big-up.style/vqybJWqzZs">1st Single「ココハル / Good night, the world」(2024.03.26
+            Release)</a>
+    <div class="single-1"></div>
+    </p>
+    <p><a class="single-2" href="https://big-up.style/aHYrlgihvV">2nd Single「axis / stream」(2024.09.13 Release)</a>
+    <div class="single-2"></div>
+    </p>
+    <script>
+        const array = ['youtube', 'x', 'instagram', 'key10music', 'fukuokastreetlive', 'single-1', 'single-2'];
+        array.forEach(qrcode);
+        function qrcode(className) {
+            new QRCode(document.querySelector(`div.${className}`), {
+                text: document.querySelector(`a.${className}`).href,
+                width: 128,
+                height: 128,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+</body>
+
+</html>
