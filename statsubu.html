@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width">
     <title>すたつぶ</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
     <style>
         body {
             text-align: center;
@@ -56,13 +55,14 @@
     <table border="0">
         <tr>
             <td>
-                <p>FM FUKUOKA × カローラ福岡 <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
-                    第10弾アーティスト</p>
+                <span>FM FUKUOKA × カローラ福岡</span>
+                <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
+                <span>第10弾アーティスト</span>
             </td>
             <td>
-                <p>福岡音楽都市協議会(OTOJIRO) <a class="fukuokastreetlive"
-                        href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA
-                        STREET LIVE</a> 登録アーティスト</p>
+                <span>福岡音楽都市協議会(OTOJIRO)</span>
+                <a class="fukuokastreetlive" href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET LIVE</a>
+                <span>登録アーティスト</span>
             </td>
         </tr>
         <tr>
@@ -76,26 +76,29 @@
     </table>
     <hr>
     <p>各種サブスクリプションにて楽曲配信中！</p>
-    <p><a class="single-1" href="https://big-up.style/vqybJWqzZs">1st Single「ココハル / Good night, the world」(2024.03.26
-            Release)</a>
+    <p>1st Single「<a class="single-1" href="https://big-up.style/vqybJWqzZs">ココハル / Good night, the
+            world</a>」(2024.03.26 Release)</p>
     <div class="single-1"></div>
-    </p>
-    <p><a class="single-2" href="https://big-up.style/aHYrlgihvV">2nd Single「axis / stream」(2024.09.13 Release)</a>
+    <p>2nd Single「<a class="single-2" href="https://big-up.style/aHYrlgihvV">axis / stream</a>」(2024.09.13 Release)</p>
     <div class="single-2"></div>
-    </p>
     <script>
-        const array = ['youtube', 'x', 'instagram', 'key10music', 'fukuokastreetlive', 'single-1', 'single-2'];
-        array.forEach(qrcode);
-        function qrcode(className) {
-            new QRCode(document.querySelector(`div.${className}`), {
-                text: document.querySelector(`a.${className}`).href,
-                width: 128,
-                height: 128,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        }
+        const array = [
+            'youtube',
+            'x',
+            'instagram',
+            'key10music',
+            'fukuokastreetlive',
+            'single-1',
+            'single-2'
+        ];
+        array.forEach(className => new QRCode(document.querySelector(`div.${className}`), {
+            text: document.querySelector(`a.${className}`).href,
+            width: 128,
+            height: 128,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        }));
     </script>
 </body>
 
