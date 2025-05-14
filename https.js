@@ -20,4 +20,4 @@ new Promise((resolve, reject) => https.get(url, res => resolve(res)).on('error',
 })).then(parsedData => {
     console.log(parsedData);
     console.log(JSON.stringify(parsedData.results[0]));
-}).catch(e => console.error(e));
+}).catch(console.error);

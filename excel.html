@@ -62,7 +62,7 @@
                     table.appendChild(row);
                 }
             });
-        }).catch(e => alert(e));
+        }).catch(alert);
         document.querySelector('#save').addEventListener('click', () => {
             const workbook = XLSX.utils.book_new();
             document.querySelectorAll('table').forEach((table, index) => {

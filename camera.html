@@ -29,7 +29,7 @@
         }).then(stream => {
             video.srcObject = stream;
             video.play();
-        }).catch(e => alert(e));
+        }).catch(alert);
         document.querySelector('#capture').addEventListener('click', () => {
             date = new Date();
             canvas.width = video.videoWidth;
