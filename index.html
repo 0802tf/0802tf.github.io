@@ -19,10 +19,8 @@
                 a.href = name;
                 li.appendChild(a);
                 fetch(name).then(response => response.text()).then(text => {
-                    let title = '';
                     const result = /<title>(.+?)<\/title>/.exec(text);
-                    title = result[1];
-                    a.textContent = title || value;
+                    a.textContent = result[1] || value;
                 });
             });
         });
