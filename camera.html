@@ -13,14 +13,14 @@
         <button id="save">保存</button>
     </div>
     <div>
-        <video id="video" autoplay muted playsinline></video>
+        <video autoplay muted playsinline></video>
     </div>
     <div>
-        <canvas id="canvas"></canvas>
+        <canvas></canvas>
     </div>
     <script>
-        const video = document.querySelector('#video');
-        const canvas = document.querySelector('#canvas');
+        const video = document.querySelector('video');
+        const canvas = document.querySelector('canvas');
         const digit = '2-digit';
         let date;
         navigator.mediaDevices.getUserMedia({
