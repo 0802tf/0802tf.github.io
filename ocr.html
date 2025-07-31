@@ -33,7 +33,7 @@
                     }
                 });
             }).then(result => {
-                textarea.value = result.data.text.replace(' ', '');
+                textarea.value = result.data.text.replaceAll(' ', '');
             }).catch(alert);
         });
         textarea.style.width = `${innerWidth}px`;
