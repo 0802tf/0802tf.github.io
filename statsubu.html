@@ -3,22 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>すたつぶ</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
     <style>
         body {
             text-align: center;
         }
 
-        table,
-        img {
-            margin: auto;
+        table {
+            table-layout: fixed;
+            width: 100%;
         }
 
         td {
             width: 30%;
+            overflow-wrap: break-word;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: auto;
         }
 
         #logo {
@@ -38,10 +46,10 @@
                 <a href="https://www.youtube.com/channel/UCKn-SDauDg7S4eW32mNCUnw">YouTube</a>
             </td>
             <td>
-                <a href="https://x.com/statsubu">X(@statsubu)</a>
+                <a href="https://x.com/statsubu">X<br>@statsubu</a>
             </td>
             <td>
-                <a href="https://www.instagram.com/statsubu">Instagram(@statsubu)</a>
+                <a href="https://www.instagram.com/statsubu">Instagram<br>@statsubu</a>
             </td>
         </tr>
         <tr>
