@@ -17,6 +17,10 @@
             margin: auto;
         }
 
+        td {
+            width: 30%;
+        }
+
         #logo {
             max-width: 80%;
         }
@@ -31,24 +35,24 @@
     <table border="0">
         <tr>
             <td>
-                <a class="youtube" href="https://www.youtube.com/channel/UCKn-SDauDg7S4eW32mNCUnw">YouTube</a>
+                <a href="https://www.youtube.com/channel/UCKn-SDauDg7S4eW32mNCUnw">YouTube</a>
             </td>
             <td>
-                <a class="x" href="https://x.com/statsubu">X(@statsubu)</a>
+                <a href="https://x.com/statsubu">X(@statsubu)</a>
             </td>
             <td>
-                <a class="instagram" href="https://www.instagram.com/statsubu">Instagram(@statsubu)</a>
+                <a href="https://www.instagram.com/statsubu">Instagram(@statsubu)</a>
             </td>
         </tr>
         <tr>
             <td>
-                <div class="youtube"></div>
+                <img src="img/YouTube.png" />
             </td>
             <td>
-                <div class="x"></div>
+                <img src="img/x.png" />
             </td>
             <td>
-                <div class="instagram"></div>
+                <img src="img/Instagram.png" />
             </td>
         </tr>
     </table>
@@ -61,7 +65,9 @@
             </td>
             <td>
                 <span>福岡音楽都市協議会(OTOJIRO)</span>
-                <a class="fukuokastreetlive" href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET LIVE</a>
+                <a class="fukuokastreetlive"
+                    href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET
+                    LIVE</a>
                 <span>登録アーティスト</span>
             </td>
         </tr>
@@ -76,20 +82,47 @@
     </table>
     <hr>
     <p>各種サブスクリプションにて楽曲配信中！</p>
-    <p>1st Single「<a class="single-1" href="https://big-up.style/vqybJWqzZs">ココハル / Good night, the
-            world</a>」(2024.03.26 Release)</p>
-    <div class="single-1"></div>
-    <p>2nd Single「<a class="single-2" href="https://big-up.style/aHYrlgihvV">axis / stream</a>」(2024.09.13 Release)</p>
-    <div class="single-2"></div>
+    <table border="0">
+        <tr>
+            <td>1st Single</td>
+            <td>2nd Single</td>
+            <td>3rd Single</td>
+        </tr>
+        <tr>
+            <td>
+                <a class="single-1" href="https://big-up.style/vqybJWqzZs">ココハル / Good night, the world</a>
+            </td>
+            <td>
+                <a class="single-2" href="https://big-up.style/aHYrlgihvV">axis / stream</a>
+            </td>
+            <td>
+                <a class="single-3" href="https://big-up.style/na49wYnXdT">seven / Re:examination</a>
+            </td>
+        </tr>
+        <tr>
+            <td>2024.03.26 Release</td>
+            <td>2024.09.13 Release</td>
+            <td>2025.06.22 Release</td>
+        </tr>
+        <tr>
+            <td>
+                <div class="single-1"></div>
+            </td>
+            <td>
+                <div class="single-2"></div>
+            </td>
+            <td>
+                <div class="single-3"></div>
+            </td>
+        </tr>
+    </table>
     <script>
         const array = [
-            'youtube',
-            'x',
-            'instagram',
             'key10music',
             'fukuokastreetlive',
             'single-1',
-            'single-2'
+            'single-2',
+            'single-3'
         ];
         array.forEach(className => new QRCode(document.querySelector(`div.${className}`), {
             text: document.querySelector(`a.${className}`).href,
