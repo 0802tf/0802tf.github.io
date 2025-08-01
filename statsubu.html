@@ -70,30 +70,6 @@
             </td>
         </tr>
     </table>
-    <table border="0">
-        <tr>
-            <td>
-                <span>FM FUKUOKA × カローラ福岡</span>
-                <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
-                <span>第10弾アーティスト</span>
-            </td>
-            <td>
-                <span>福岡音楽都市協議会(OTOJIRO)</span>
-                <a class="fukuokastreetlive"
-                    href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET
-                    LIVE</a>
-                <span>登録アーティスト</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="key10music"></div>
-            </td>
-            <td>
-                <div class="fukuokastreetlive"></div>
-            </td>
-        </tr>
-    </table>
     <hr>
     <p>各種サブスクリプションにて楽曲配信中！</p>
     <table border="0">
@@ -130,13 +106,27 @@
             </td>
         </tr>
     </table>
+    <hr>
+    <div>
+        <span>FM FUKUOKA × カローラ福岡</span>
+        <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
+        <span>第10弾アーティスト</span>
+    </div>
+    <div class="key10music"></div>
+    <div>
+        <span>福岡音楽都市協議会(OTOJIRO)</span>
+        <a class="fukuokastreetlive"
+            href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET LIVE</a>
+        <span>登録アーティスト</span>
+    </div>
+    <div class="fukuokastreetlive"></div>
     <script>
         const array = [
-            'key10music',
-            'fukuokastreetlive',
             'single-1',
             'single-2',
-            'single-3'
+            'single-3',
+            'key10music',
+            'fukuokastreetlive'
         ];
         array.forEach(className => new QRCode(document.querySelector(`div.${className}`), {
             text: document.querySelector(`a.${className}`).href,
