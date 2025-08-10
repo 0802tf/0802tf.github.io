@@ -39,87 +39,110 @@
             max-width: 80%;
         }
     </style>
+    <style media="print">
+        @page {
+            size: A4 landscape;
+            margin: 0 auto;
+        }
+
+        .pop {
+            width: 297mm;
+            height: 210mm;
+            page-break-after: auto;
+        }
+
+        .footer {
+            display: none;
+            height: 0;
+            page-break-after: auto;
+        }
+    </style>
 </head>
 
 <body class="markdown-body">
-    <h3>
-        <img id="logo" src="img/STATSUBU_1.jpg" />
-    </h3>
-    <p>すたつぶ</p>
-    <table border="0">
-        <tr>
-            <td>
-                <a href="https://www.youtube.com/channel/UCKn-SDauDg7S4eW32mNCUnw">YouTube</a>
-            </td>
-            <td>
-                <a href="https://x.com/statsubu">X<br>@statsubu</a>
-            </td>
-            <td>
-                <a href="https://www.instagram.com/statsubu">Instagram<br>@statsubu</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img src="img/YouTube.png" />
-            </td>
-            <td>
-                <img src="img/x.png" />
-            </td>
-            <td>
-                <img src="img/Instagram.png" />
-            </td>
-        </tr>
-    </table>
-    <hr>
-    <p>各種サブスクリプションにて楽曲配信中！</p>
-    <table border="0">
-        <tr>
-            <td>1st Single</td>
-            <td>2nd Single</td>
-            <td>3rd Single</td>
-        </tr>
-        <tr>
-            <td>
-                <a class="single-1" href="https://big-up.style/vqybJWqzZs">ココハル / Good night, the world</a>
-            </td>
-            <td>
-                <a class="single-2" href="https://big-up.style/aHYrlgihvV">axis / stream</a>
-            </td>
-            <td>
-                <a class="single-3" href="https://big-up.style/na49wYnXdT"><span>seven / Re:examination</span></a>
-            </td>
-        </tr>
-        <tr>
-            <td>2024.03.26 Release</td>
-            <td>2024.09.13 Release</td>
-            <td>2025.06.22 Release</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="single-1"></div>
-            </td>
-            <td>
-                <div class="single-2"></div>
-            </td>
-            <td>
-                <div class="single-3"></div>
-            </td>
-        </tr>
-    </table>
-    <hr>
-    <div>
-        <span>FM FUKUOKA × カローラ福岡</span>
-        <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
-        <span>第10弾アーティスト</span>
+    <div class="pop">
+        <h3>
+            <img id="logo" src="img/STATSUBU_1.jpg" />
+        </h3>
+        <p>すたつぶ</p>
+        <table border="0">
+            <tr>
+                <td>
+                    <a href="https://www.youtube.com/channel/UCKn-SDauDg7S4eW32mNCUnw">YouTube</a>
+                </td>
+                <td>
+                    <a href="https://x.com/statsubu">X<br>@statsubu</a>
+                </td>
+                <td>
+                    <a href="https://www.instagram.com/statsubu">Instagram<br>@statsubu</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="img/YouTube.png" />
+                </td>
+                <td>
+                    <img src="img/x.png" />
+                </td>
+                <td>
+                    <img src="img/Instagram.png" />
+                </td>
+            </tr>
+        </table>
     </div>
-    <div class="key10music"></div>
-    <div>
-        <span>福岡音楽都市協議会(OTOJIRO)</span>
-        <a class="fukuokastreetlive"
-            href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET LIVE</a>
-        <span>登録アーティスト</span>
+    <div class="footer">
+        <hr>
+        <p>各種サブスクリプションにて楽曲配信中！</p>
+        <table border="0">
+            <tr>
+                <td>1st Single</td>
+                <td>2nd Single</td>
+                <td>3rd Single</td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="single-1" href="https://big-up.style/vqybJWqzZs">ココハル / Good night, the world</a>
+                </td>
+                <td>
+                    <a class="single-2" href="https://big-up.style/aHYrlgihvV">axis / stream</a>
+                </td>
+                <td>
+                    <a class="single-3" href="https://big-up.style/na49wYnXdT"><span>seven / Re:examination</span></a>
+                </td>
+            </tr>
+            <tr>
+                <td>2024.03.26 Release</td>
+                <td>2024.09.13 Release</td>
+                <td>2025.06.22 Release</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="single-1"></div>
+                </td>
+                <td>
+                    <div class="single-2"></div>
+                </td>
+                <td>
+                    <div class="single-3"></div>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <div>
+            <span>FM FUKUOKA × カローラ福岡</span>
+            <a class="key10music" href="https://key10music.jp/artist">KEY⑩Music</a>
+            <span>第10弾アーティスト</span>
+        </div>
+        <div class="key10music"></div>
+        <div>
+            <span>福岡音楽都市協議会(OTOJIRO)</span>
+            <a class="fukuokastreetlive"
+                href="https://fukuokastreetlive.jp/artist/%e3%81%99%e3%81%9f%e3%81%a4%e3%81%b6-2/">FUKUOKA STREET
+                LIVE</a>
+            <span>登録アーティスト</span>
+        </div>
+        <div class="fukuokastreetlive"></div>
     </div>
-    <div class="fukuokastreetlive"></div>
     <script>
         const array = [
             'single-1',
