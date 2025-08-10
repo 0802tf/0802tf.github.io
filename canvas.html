@@ -47,16 +47,14 @@
         const width = document.querySelector('#width');
         const height = document.querySelector('#height');
         let clickFlg = 0;
-        setTimeout(() => {
-            canvas.width = innerWidth * 19 / 20;
-            canvas.height = innerHeight - document.querySelector('#option').clientHeight;
-            width.max = canvas.width * 2;
-            height.max = canvas.height * 2;
-            width.value = canvas.width;
-            height.value = canvas.height;
-            bold.max = Math.min(width.value, height.value);
-            setBackgroundColor();
-        }, 100);
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        width.max = canvas.width * 2;
+        height.max = canvas.height * 2;
+        width.value = canvas.width;
+        height.value = canvas.height;
+        bold.max = Math.min(width.value, height.value);
+        setBackgroundColor();
         width.addEventListener('input', () => canvas.width = width.value);
         height.addEventListener('input', () => canvas.height = height.value);
         canvas.addEventListener('mousedown', () => clickFlg = 1);

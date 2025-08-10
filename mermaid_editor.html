@@ -35,10 +35,8 @@
     const select = document.querySelector('select');
     const textarea = document.querySelector('textarea');
     const result = document.querySelector('.mermaid');
-    setTimeout(() => {
-      textarea.style.width = `${innerWidth * 0.9}px`;
-      textarea.style.height = `${innerHeight / 2}px`;
-    }, 100);
+    textarea.style.width = `${innerWidth * 0.9}px`;
+    textarea.style.height = `${innerHeight / 2}px`;
     textarea.addEventListener('input', async () => {
       try {
         delete result.dataset.processed;

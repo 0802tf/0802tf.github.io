@@ -41,11 +41,9 @@
   <script>
     const textarea = document.querySelector('.textarea');
     const preview = document.querySelector('.markdown-body');
-    setTimeout(() => {
-      const height = `${innerHeight - document.querySelector('.header').clientHeight}px`;
-      textarea.style.height = height;
-      preview.style.height = height;
-    }, 100);
+    const height = `${innerHeight - document.querySelector('.header').clientHeight}px`;
+    textarea.style.height = height;
+    preview.style.height = height;
     textarea.addEventListener('input', e => {
       preview.innerHTML = marked.parse(e.target.value);
       hljs.highlightAll();

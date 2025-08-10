@@ -62,7 +62,7 @@
         })
         document.querySelector('#clear').addEventListener('click', () => textarea.value = '');
         textarea.focus();
-        setTimeout(setSize, 100);
+        setSize();
         visualViewport.addEventListener('resize', setSize);
 
         function setSize() {
