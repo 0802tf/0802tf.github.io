@@ -7,7 +7,7 @@ new Promise((resolve, reject) => {
 }).then(res => {
     return new Promise((resolve, reject) => {
         if (res.statusCode !== 200) {
-            reject(res.statusCode);
+            reject(res);
             return;
         }
         let data = '';

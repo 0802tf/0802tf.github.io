@@ -8,21 +8,19 @@
 </head>
 
 <body>
-    <textarea></textarea>
     <div id="controller">
         <button id="copy">copy</button>
         <button id="backspace">backspace</button>
         <button id="clear">clear</button>
     </div>
+    <textarea></textarea>
     <script>
         const chords = ['|', 'C', 'D', 'E', 'F', 'G', 'A', 'B'];
-        const options = ['#', '♭', 'm', '7', 'm7', 'M7', 'mM7', '6', 'm6', 'sus4', '7sus4', 'm7-5', 'dim', 'aug', 'add2', 'omit3'];
-        const tensions = ['(', ')', ',', '♭9', '9', '#9', '#11', '♭13', '13'];
-        const sections = ['イントロ', 'Aメロ', 'Bメロ', 'サビ', '間奏', 'Cメロ', 'ソロ', 'アウトロ'];
+        const options = ['#', '♭', 'm', '7', 'm7', 'M7', 'mM7', '6', 'm6', 'sus4', '7sus4', 'm7-5', 'dim', 'aug', 'add2', 'omit3', '(', ')', ',', '♭9', '9', '#9', '#11', '♭13', '13', '[イントロ]', '[Aメロ]', '[Bメロ]', '[サビ]', '[間奏]', '[Cメロ]', '[ソロ]', '[アウトロ]'];
         const miscs = ['on', '\n', ' '];
         const textarea = document.querySelector('textarea');
         const controller = document.querySelector('#controller');
-        chords.concat(options).concat(tensions).concat(sections).concat(miscs).forEach(value => {
+        chords.concat(options).concat(miscs).forEach(value => {
             const button = document.createElement('button');
             button.textContent = value.replace(/\n/, '改行').replace(' ', 'スペース');
             controller.append(button);
