@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "server.js",
+  "main": "electron.js",
   "dependencies": {
     "express": "^4.17.1",
     "mysql2": "^3.11.2"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "electron": "^37.2.5"
+  }
 }
