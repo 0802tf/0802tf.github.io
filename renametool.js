@@ -18,7 +18,7 @@ function rename(dir, filter, func) {
                 if (error) {
                     throw error;
                 }
-                console.log(`${filePath} --> ${newFilePath}`);
+                console.log(`${filePath} -> ${newFilePath}`);
             });
         }
     });
