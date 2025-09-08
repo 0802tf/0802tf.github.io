@@ -10,20 +10,22 @@
 <body>
     <ul></ul>
     <script>
-        fetch('./index.json').then(response => response.json()).then(data => {
-            data.forEach(value => {
-                const li = document.createElement('li');
-                document.querySelector('ul').appendChild(li);
-                const a = document.createElement('a');
-                const name = `./${value}`;
-                a.href = name;
-                li.appendChild(a);
-                fetch(name).then(response => response.text()).then(text => {
-                    const result = /<title>(.+?)<\/title>/.exec(text);
-                    a.textContent = result[1] || value;
+        if (prompt() === atob('MDAwMA==')) {
+            fetch(atob('Li9pbmRleC5qc29u')).then(response => response.json()).then(data => {
+                data.forEach(value => {
+                    const li = document.createElement('li');
+                    document.querySelector('ul').appendChild(li);
+                    const a = document.createElement('a');
+                    const name = `./${value}`;
+                    a.href = name;
+                    li.appendChild(a);
+                    fetch(name).then(response => response.text()).then(text => {
+                        const result = /<title>(.+?)<\/title>/.exec(text);
+                        a.textContent = result[1] || value;
+                    });
                 });
             });
-        });
+        }
     </script>
 </body>
 
