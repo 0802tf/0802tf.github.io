@@ -10,7 +10,7 @@
 <body>
     <ul></ul>
     <script>
-        if (prompt() === atob('MDAwMA==')) {
+        if (prompt('password') === atob('MDAwMA==')) {
             fetch(atob('Li9pbmRleC5qc29u')).then(response => response.json()).then(data => {
                 data.forEach(value => {
                     const li = document.createElement('li');
