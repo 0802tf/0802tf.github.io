@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
     <title>ブロック崩し</title>
     <style>
         canvas {
@@ -17,29 +18,33 @@
     <div id="info"></div>
     <canvas></canvas>
     <script>
-        const canvas = document.querySelector('canvas');
-        canvas.width = innerWidth * 0.9;
-        canvas.height = innerHeight * 0.9;
-        const ctx = canvas.getContext('2d');
-        const ballRadius = 10;
-        let x = canvas.width / 2;
-        let y = canvas.height - 30;
-        let dx = 2;
-        let dy = -2;
-        const paddleHeight = 10;
-        const paddleWidth = 75;
-        let paddleX = (canvas.width - paddleWidth) / 2;
-        let rightPressed = false;
-        let leftPressed = false;
         const brickWidth = 20;
         const brickHeight = 20;
         const brickPadding = 1;
         const brickOffsetTop = 10;
         const brickOffsetLeft = 10;
-        const brickRowCount = (canvas.width - brickOffsetLeft * 2) / (brickWidth + brickPadding);
-        const brickColumnCount = canvas.height / (2 * (brickWidth + brickPadding));
+        const brickRowCount = 20;
+        const brickColumnCount = 10;
+        const ballRadius = 10;
+        const paddleHeight = 10;
+        const paddleWidth = 75;
+        const speed = 2;
+        const paddleSpeed = 7;
+        const totalLives = 10;
+
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = brickWidth * brickRowCount + brickPadding * (brickRowCount - 1) + brickOffsetLeft * 2;
+        canvas.height = (brickHeight * brickColumnCount + brickPadding * (brickColumnCount - 1) + brickOffsetTop) * 2;
+        let x = canvas.width / 2;
+        let y = canvas.height - 30;
+        let dx = speed;
+        let dy = speed;
+        let paddleX = (canvas.width - paddleWidth) / 2;
+        let rightPressed = false;
+        let leftPressed = false;
         let score = 0;
-        let lives = 10;
+        let lives = totalLives;
         let bricks = [];
         for (let c = 0; c < brickColumnCount; c++) {
             bricks[c] = [];
@@ -107,7 +112,7 @@
                         b.status = 0;
                         score++;
                         if (score === brickRowCount * brickColumnCount) {
-                            alert('YOU WIN, CONGRATS!');
+                            alert('YOU WIN!');
                             location.reload();
                         }
                     }
@@ -129,16 +134,16 @@
                     } else {
                         x = canvas.width / 2;
                         y = canvas.height - 30;
-                        dx = 2;
-                        dy = -2;
+                        dx = speed;
+                        dy = speed;
                         paddleX = (canvas.width - paddleWidth) / 2;
                     }
                 }
             }
             if (rightPressed && paddleX < canvas.width - paddleWidth) {
-                paddleX += 7;
+                paddleX += paddleSpeed;
             } else if (leftPressed && paddleX > 0) {
-                paddleX -= 7;
+                paddleX -= paddleSpeed;
             }
             x += dx;
             y += dy;
