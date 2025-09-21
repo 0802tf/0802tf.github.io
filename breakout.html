@@ -37,7 +37,7 @@
         canvas.width = brickWidth * brickRowCount + brickPadding * (brickRowCount - 1) + brickOffsetLeft * 2;
         canvas.height = (brickHeight * brickColumnCount + brickPadding * (brickColumnCount - 1) + brickOffsetTop) * 2;
         let x = canvas.width / 2;
-        let y = canvas.height - 30;
+        let y = canvas.height - paddleHeight - ballRadius * 2;
         let dx = speed;
         let dy = speed;
         let paddleX = (canvas.width - paddleWidth) / 2;
@@ -133,7 +133,7 @@
                         location.reload();
                     } else {
                         x = canvas.width / 2;
-                        y = canvas.height - 30;
+                        y = canvas.height - paddleHeight - ballRadius * 2;
                         dx = speed;
                         dy = speed;
                         paddleX = (canvas.width - paddleWidth) / 2;
