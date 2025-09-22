@@ -16,6 +16,7 @@
 
 <body>
     <div id="info"></div>
+    <button id="toggle">pause</button>
     <canvas></canvas>
     <script>
         const brickWidth = 20;
@@ -23,14 +24,13 @@
         const brickPadding = 1;
         const brickOffsetTop = 10;
         const brickOffsetLeft = 10;
-        const brickRowCount = 20;
+        const brickRowCount = 10;
         const brickColumnCount = 10;
         const ballRadius = 10;
         const paddleHeight = 10;
-        const paddleWidth = 75;
+        const initialPaddleWidth = 100;
         const speed = 2;
-        const paddleSpeed = 7;
-        const totalLives = 10;
+        const initialLives = 10;
 
         const canvas = document.querySelector('canvas');
         const ctx = canvas.getContext('2d');
@@ -39,12 +39,12 @@
         let x = canvas.width / 2;
         let y = canvas.height - paddleHeight - ballRadius * 2;
         let dx = speed;
-        let dy = speed;
+        let dy = -speed;
+        let paddleWidth = initialPaddleWidth;
         let paddleX = (canvas.width - paddleWidth) / 2;
-        let rightPressed = false;
-        let leftPressed = false;
+        let resume = true;
         let score = 0;
-        let lives = totalLives;
+        let lives = initialLives;
         let bricks = [];
         for (let c = 0; c < brickColumnCount; c++) {
             bricks[c] = [];
@@ -52,34 +52,28 @@
                 bricks[c][r] = { x: 0, y: 0, status: 1 };
             }
         }
-        document.addEventListener('keydown', e => {
-            if (e.code === 'ArrowRight') {
-                rightPressed = true;
-            } else if (e.code === 'ArrowLeft') {
-                leftPressed = true;
-            }
-        }, false);
-        document.addEventListener('keyup', e => {
-            if (e.code === 'ArrowRight') {
-                rightPressed = false;
-            } else if (e.code === 'ArrowLeft') {
-                leftPressed = false;
-            }
-        }, false);
         canvas.addEventListener('mousemove', e => {
             e.preventDefault();
             const relativeX = e.clientX - canvas.offsetLeft;
             if (relativeX > 0 && relativeX < canvas.width) {
                 paddleX = relativeX - paddleWidth / 2;
             }
-        }, false);
+        });
         canvas.addEventListener('touchmove', e => {
             e.preventDefault();
             const relativeX = e.touches[0].clientX - canvas.offsetLeft;
             if (relativeX > 0 && relativeX < canvas.width) {
                 paddleX = relativeX - paddleWidth / 2;
             }
-        }, false);
+        });
+        const toggleButton = document.querySelector('#toggle');
+        toggleButton.addEventListener('click', () => {
+            resume = !resume;
+            toggleButton.textContent = resume ? 'pause' : 'resume';
+            if (resume) {
+                draw();
+            }
+        });
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -114,7 +108,7 @@
                         b.status = 0;
                         score++;
                         if (score === brickRowCount * brickColumnCount) {
-                            alert('YOU WIN!');
+                            alert('GAME CLEAR');
                             location.reload();
                         }
                     }
@@ -130,6 +124,7 @@
                     dy = -dy;
                 } else {
                     lives--;
+                    paddleWidth -= 10;
                     if (!lives) {
                         alert('GAME OVER');
                         location.reload();
@@ -137,21 +132,16 @@
                         x = canvas.width / 2;
                         y = canvas.height - paddleHeight - ballRadius * 2;
                         dx = speed;
-                        dy = speed;
-                        paddleX = (canvas.width - paddleWidth) / 2;
+                        dy = -speed;
                     }
                 }
             }
-            if (rightPressed && paddleX < canvas.width - paddleWidth) {
-                paddleX += paddleSpeed;
-            } else if (leftPressed && paddleX > 0) {
-                paddleX -= paddleSpeed;
-            }
             x += dx;
             y += dy;
-            requestAnimationFrame(draw);
+            if (resume) {
+                requestAnimationFrame(draw);
+            }
         }
-
         draw();
     </script>
 </body>
