@@ -66,13 +66,15 @@
                 leftPressed = false;
             }
         }, false);
-        document.addEventListener('mousemove', e => {
+        canvas.addEventListener('mousemove', e => {
+            e.preventDefault();
             const relativeX = e.clientX - canvas.offsetLeft;
             if (relativeX > 0 && relativeX < canvas.width) {
                 paddleX = relativeX - paddleWidth / 2;
             }
         }, false);
-        document.addEventListener('touchmove', e => {
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
             const relativeX = e.touches[0].clientX - canvas.offsetLeft;
             if (relativeX > 0 && relativeX < canvas.width) {
                 paddleX = relativeX - paddleWidth / 2;
