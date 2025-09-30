@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぷよぷよ</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-board {
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #gameCanvas {
+            border: 3px solid #333;
+            border-radius: 10px;
+            background: #f0f8ff;
+            display: block;
+        }
+
+        .ui-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 200px;
+        }
+
+        .score-panel {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            color: white;
+            text-align: center;
+        }
+
+        .score-panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .next-panel {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            color: white;
+            text-align: center;
+        }
+
+        #nextCanvas {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            color: white;
+            font-size: 14px;
+        }
+
+        .controls h4 {
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .controls div {
+            margin-bottom: 5px;
+        }
+
+        .game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .game-over-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes puyoPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes chainEffect {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="game-board">
+            <canvas id="gameCanvas" width="300" height="600"></canvas>
+        </div>
+        <div class="ui-panel">
+            <div class="score-panel">
+                <h3>スコア</h3>
+                <div class="score-value" id="scoreValue">0</div>
+            </div>
+            <div class="score-panel">
+                <h3>連鎖</h3>
+                <div class="score-value" id="chainValue">0</div>
+            </div>
+            <div class="next-panel">
+                <h3>NEXT</h3>
+                <canvas id="nextCanvas" width="80" height="80"></canvas>
+            </div>
+            <div class="controls">
+                <h4>操作方法</h4>
+                <div>← → : 移動</div>
+                <div>↓ : 高速落下</div>
+                <div>Z : 左回転</div>
+                <div>X : 右回転</div>
+                <div>Space : 一時停止</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-over" id="gameOverScreen">
+        <div class="game-over-panel">
+            <h2>ゲームオーバー</h2>
+            <p>最終スコア: <span id="finalScore">0</span></p>
+            <button class="restart-btn" onclick="startGame()">もう一度プレイ</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const nextCanvas = document.getElementById('nextCanvas');
+        const nextCtx = nextCanvas.getContext('2d');
+
+        const BOARD_WIDTH = 6;
+        const BOARD_HEIGHT = 12;
+        const CELL_SIZE = 50;
+        const COLORS = {
+            0: null,
+            1: '#ff6b6b', // 赤
+            2: '#4ecdc4', // 青緑
+            3: '#ffe66d', // 黄
+            4: '#95e1d3', // 緑
+            5: '#a8e6cf'  // 薄緑
+        };
+
+        let board = [];
+        let currentPuyo = null;
+        let nextPuyo = null;
+        let score = 0;
+        let chain = 0;
+        let gameRunning = true;
+        let lastTime = 0;
+        let dropTimer = 0;
+        let dropInterval = 1000;
+        let isPaused = false;
+
+        class Puyo {
+            constructor(x, y, color1, color2) {
+                this.x = x;
+                this.y = y;
+                this.color1 = color1;
+                this.color2 = color2;
+                this.rotation = 0;
+            }
+
+            getPositions() {
+                const positions = [];
+                positions.push({ x: this.x, y: this.y, color: this.color1 });
+
+                switch (this.rotation) {
+                    case 0: // 上
+                        positions.push({ x: this.x, y: this.y - 1, color: this.color2 });
+                        break;
+                    case 1: // 右
+                        positions.push({ x: this.x + 1, y: this.y, color: this.color2 });
+                        break;
+                    case 2: // 下
+                        positions.push({ x: this.x, y: this.y + 1, color: this.color2 });
+                        break;
+                    case 3: // 左
+                        positions.push({ x: this.x - 1, y: this.y, color: this.color2 });
+                        break;
+                }
+                return positions;
+            }
+
+            rotate(direction) {
+                this.rotation = (this.rotation + direction + 4) % 4;
+            }
+
+            canMove(dx, dy) {
+                const newX = this.x + dx;
+                const newY = this.y + dy;
+                const testPuyo = new Puyo(newX, newY, this.color1, this.color2);
+                testPuyo.rotation = this.rotation;
+
+                return testPuyo.getPositions().every(pos => {
+                    return pos.x >= 0 && pos.x < BOARD_WIDTH &&
+                        pos.y < BOARD_HEIGHT &&
+                        (pos.y < 0 || board[pos.y][pos.x] === 0);
+                });
+            }
+
+            canRotate(direction) {
+                const testPuyo = new Puyo(this.x, this.y, this.color1, this.color2);
+                testPuyo.rotation = (this.rotation + direction + 4) % 4;
+
+                return testPuyo.getPositions().every(pos => {
+                    return pos.x >= 0 && pos.x < BOARD_WIDTH &&
+                        pos.y < BOARD_HEIGHT &&
+                        (pos.y < 0 || board[pos.y][pos.x] === 0);
+                });
+            }
+        }
+
+        function initBoard() {
+            board = [];
+            for (let y = 0; y < BOARD_HEIGHT; y++) {
+                board[y] = new Array(BOARD_WIDTH).fill(0);
+            }
+        }
+
+        function createPuyo() {
+            const color1 = Math.floor(Math.random() * 4) + 1;
+            const color2 = Math.floor(Math.random() * 4) + 1;
+            return new Puyo(2, 0, color1, color2);
+        }
+
+        function drawPuyo(ctx, x, y, color, size = CELL_SIZE) {
+            if (!color || !COLORS[color]) return;
+
+            const centerX = x * size + size / 2;
+            const centerY = y * size + size / 2;
+            const radius = size * 0.4;
+
+            // 外側の円（影効果）
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.beginPath();
+            ctx.arc(centerX + 2, centerY + 2, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // メインの円
+            const gradient = ctx.createRadialGradient(
+                centerX - radius * 0.3, centerY - radius * 0.3, 0,
+                centerX, centerY, radius
+            );
+            gradient.addColorStop(0, COLORS[color]);
+            gradient.addColorStop(1, darkenColor(COLORS[color], 0.3));
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // ハイライト
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.beginPath();
+            ctx.arc(centerX - radius * 0.3, centerY - radius * 0.3, radius * 0.3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 境界線
+            ctx.strokeStyle = darkenColor(COLORS[color], 0.5);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function darkenColor(color, factor) {
+            const hex = color.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+
+            return `rgb(${Math.floor(r * (1 - factor))}, ${Math.floor(g * (1 - factor))}, ${Math.floor(b * (1 - factor))})`;
+        }
+
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // グリッド線
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x <= BOARD_WIDTH; x++) {
+                ctx.beginPath();
+                ctx.moveTo(x * CELL_SIZE, 0);
+                ctx.lineTo(x * CELL_SIZE, BOARD_HEIGHT * CELL_SIZE);
+                ctx.stroke();
+            }
+            for (let y = 0; y <= BOARD_HEIGHT; y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, y * CELL_SIZE);
+                ctx.lineTo(BOARD_WIDTH * CELL_SIZE, y * CELL_SIZE);
+                ctx.stroke();
+            }
+
+            // ボード上のぷよ
+            for (let y = 0; y < BOARD_HEIGHT; y++) {
+                for (let x = 0; x < BOARD_WIDTH; x++) {
+                    if (board[y][x] !== 0) {
+                        drawPuyo(ctx, x, y, board[y][x]);
+                    }
+                }
+            }
+
+            // 現在のぷよ
+            if (currentPuyo) {
+                const positions = currentPuyo.getPositions();
+                positions.forEach(pos => {
+                    if (pos.y >= 0) {
+                        drawPuyo(ctx, pos.x, pos.y, pos.color);
+                    }
+                });
+            }
+        }
+
+        function drawNextPuyo() {
+            nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
+            if (nextPuyo) {
+                const size = 30;
+                drawPuyo(nextCtx, 0.5, 0.5, nextPuyo.color1, size);
+                drawPuyo(nextCtx, 0.5, 1.5, nextPuyo.color2, size);
+            }
+        }
+
+        function placePuyo() {
+            const positions = currentPuyo.getPositions();
+            positions.forEach(pos => {
+                if (pos.y >= 0 && pos.y < BOARD_HEIGHT) {
+                    board[pos.y][pos.x] = pos.color;
+                }
+            });
+        }
+
+        function findConnectedPuyos(startX, startY, color, visited) {
+            const stack = [{ x: startX, y: startY }];
+            const connected = [];
+
+            while (stack.length > 0) {
+                const { x, y } = stack.pop();
+
+                if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) continue;
+                if (visited[y][x] || board[y][x] !== color) continue;
+
+                visited[y][x] = true;
+                connected.push({ x, y });
+
+                stack.push({ x: x + 1, y }, { x: x - 1, y }, { x, y: y + 1 }, { x, y: y - 1 });
+            }
+
+            return connected;
+        }
+
+        function removePuyos() {
+            let removed = false;
+            let chainCount = 0;
+
+            do {
+                removed = false;
+                const visited = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(false));
+                const toRemove = [];
+
+                for (let y = 0; y < BOARD_HEIGHT; y++) {
+                    for (let x = 0; x < BOARD_WIDTH; x++) {
+                        if (board[y][x] !== 0 && !visited[y][x]) {
+                            const connected = findConnectedPuyos(x, y, board[y][x], visited);
+                            if (connected.length >= 4) {
+                                toRemove.push(...connected);
+                                removed = true;
+                            }
+                        }
+                    }
+                }
+
+                if (removed) {
+                    chainCount++;
+                    toRemove.forEach(pos => {
+                        board[pos.y][pos.x] = 0;
+                    });
+
+                    applyGravity();
+                    score += toRemove.length * 10 * chainCount;
+                }
+            } while (removed);
+
+            if (chainCount > 0) {
+                chain = Math.max(chain, chainCount);
+                updateUI();
+            }
+        }
+
+        function applyGravity() {
+            for (let x = 0; x < BOARD_WIDTH; x++) {
+                let writePos = BOARD_HEIGHT - 1;
+                for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
+                    if (board[y][x] !== 0) {
+                        board[writePos][x] = board[y][x];
+                        if (writePos !== y) {
+                            board[y][x] = 0;
+                        }
+                        writePos--;
+                    }
+                }
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('chainValue').textContent = chain;
+        }
+
+        function checkGameOver() {
+            return board[0].some(cell => cell !== 0);
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOverScreen').style.display = 'flex';
+        }
+
+        function startGame() {
+            initBoard();
+            currentPuyo = createPuyo();
+            nextPuyo = createPuyo();
+            score = 0;
+            chain = 0;
+            gameRunning = true;
+            isPaused = false;
+            dropTimer = 0;
+            updateUI();
+            document.getElementById('gameOverScreen').style.display = 'none';
+            gameLoop(0);
+        }
+
+        function gameLoop(currentTime) {
+            if (!gameRunning) return;
+
+            if (!isPaused) {
+                const deltaTime = currentTime - lastTime;
+                dropTimer += deltaTime;
+
+                if (dropTimer >= dropInterval) {
+                    if (currentPuyo && currentPuyo.canMove(0, 1)) {
+                        currentPuyo.y++;
+                    } else {
+                        if (currentPuyo) {
+                            placePuyo();
+                            removePuyos();
+
+                            if (checkGameOver()) {
+                                gameOver();
+                                return;
+                            }
+
+                            currentPuyo = nextPuyo;
+                            nextPuyo = createPuyo();
+                        }
+                    }
+                    dropTimer = 0;
+                }
+            }
+
+            lastTime = currentTime;
+            drawBoard();
+            drawNextPuyo();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning) return;
+
+            // 一時停止の切り替えは常に受け付ける
+            if (e.key === ' ') {
+                isPaused = !isPaused;
+                e.preventDefault();
+                return;
+            }
+
+            // 一時停止中は他の操作を無効にする
+            if (isPaused) return;
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                    if (currentPuyo && currentPuyo.canMove(-1, 0)) {
+                        currentPuyo.x--;
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (currentPuyo && currentPuyo.canMove(1, 0)) {
+                        currentPuyo.x++;
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (currentPuyo && currentPuyo.canMove(0, 1)) {
+                        currentPuyo.y++;
+                        dropTimer = 0;
+                    }
+                    break;
+                case 'z':
+                case 'Z':
+                    if (currentPuyo && currentPuyo.canRotate(-1)) {
+                        currentPuyo.rotate(-1);
+                    }
+                    break;
+                case 'x':
+                case 'X':
+                    if (currentPuyo && currentPuyo.canRotate(1)) {
+                        currentPuyo.rotate(1);
+                    }
+                    break;
+            }
+
+            drawBoard();
+        });
+
+        startGame();
+    </script>
+</body>
+
+</html>

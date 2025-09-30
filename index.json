@@ -15,12 +15,15 @@
   "markdown_editor.html",
   "mermaid_editor.html",
   "ocr.html",
+  "puyopuyo.html",
   "python.html",
   "qrcode.html",
   "random.html",
   "recorder.html",
   "shellscript.html",
+  "snakegame.html",
   "spreadsheet.html",
   "statsubu.html",
-  "strcount.html"
+  "strcount.html",
+  "tetris.html"
 ]
