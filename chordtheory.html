@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>コード理論.md</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+	<script>
+		mermaid.initialize({ startOnLoad: true });
+	</script>
+	<h1>コード理論</h1>
+	<h2>ダイアトニックトライアド</h2>
+	<h3>和音機能の種類</h3>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>種類</th>
+				<th>説明</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>トニック(T)</td>
+				<td>調の特性を決める第三音を含み、アヴォイドノートである第四音を含まないコード。安定感があり、落ち着いたサウンドを持つ。</td>
+			</tr>
+			<tr>
+				<td>ドミナント(D)</td>
+				<td>主音へと半音上がって解決しようとする不安定な導音(第七音)を持っているコード。ⅤからⅠへの動きが最も強い解決感が得られるとされている(ドミナントモーション)。</td>
+			</tr>
+			<tr>
+				<td>サブドミナント(S)</td>
+				<td>トニック、ドミナントに分類されないコード。アヴォイドノートを持ち、第三音、導音を含まない。</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>長調<br>
+		<img src="img/majortriad.png" alt="majortriad">
+	</p>
+	<p>短調(自然短音階)<br>
+		<img src="img/minortriad.png" alt="minortriad">
+	</p>
+	<h3>カデンツ</h3>
+	<p>終止形の和音進行</p>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>型</th>
+				<th>進行</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>第1型(K1)</td>
+				<td>T→D→T</td>
+			</tr>
+			<tr>
+				<td>第2型(K2)</td>
+				<td>T→S→D→T</td>
+			</tr>
+			<tr>
+				<td>第3型(K3)</td>
+				<td>T→S→T</td>
+			</tr>
+		</tbody>
+	</table>
+	<h3>強進行</h3>
+	<p>コード同士の強い結びつきがある古典的な進行</p>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>種類</th>
+				<th>進行</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>強進行</td>
+				<td>四度上行(例:Ⅴ→Ⅰ、Ⅲm→Ⅵm)</td>
+			</tr>
+			<tr>
+				<td>準強進行</td>
+				<td>二度上行(例:Ⅳ→Ⅴ)、三度下行(例:Ⅵm→Ⅳ)、四度下行(例:Ⅰ→Ⅴ)</td>
+			</tr>
+			<tr>
+				<td>弱進行</td>
+				<td>二度下行(例:Ⅴ→Ⅳ)、三度上行(例:Ⅰ→Ⅲm)、四度下行(例:Ⅴ→Ⅱm)</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>※四度下行は基本的に弱進行であるが、Ⅰ→Ⅴ、Ⅳ→Ⅰのみ準強進行とされる</p>
+	<h2>定番コード進行</h2>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>種類</th>
+				<th>コード進行</th>
+				<th>例(Key=C)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>カノン進行</td>
+				<td>Ⅰ→Ⅴ→Ⅵm→Ⅲm→Ⅳ→Ⅰ→Ⅳ→Ⅴ</td>
+				<td>C→G→Am→Em→F→C→F→G</td>
+			</tr>
+			<tr>
+				<td>ベースが下降するカノン進行</td>
+				<td>Ⅰ→ⅤonⅦ→Ⅵm→ⅠonⅤ→Ⅳ→ⅠonⅢ→Ⅱm→Ⅴ</td>
+				<td>C→GonB→Am→ConG→F→ConE→Dm→G</td>
+			</tr>
+			<tr>
+				<td>王道進行</td>
+				<td>Ⅳ→Ⅴ→Ⅲm→Ⅵm</td>
+				<td>F→G→Em→Am</td>
+			</tr>
+			<tr>
+				<td>王道進行の派生形</td>
+				<td>Ⅱm→Ⅴ→Ⅲm→Ⅵm</td>
+				<td>Dm→G→Em→Am</td>
+			</tr>
+			<tr>
+				<td>小室進行</td>
+				<td>Ⅵm→Ⅳ→Ⅴ→Ⅰ</td>
+				<td>Am→F→G→C</td>
+			</tr>
+			<tr>
+				<td>Just The Two of Us進行(丸サ進行)</td>
+				<td>Ⅳ(M7)→Ⅲ(7)→Ⅵm(7)→Ⅰ(7)</td>
+				<td>F(M7)→E(7)→Am(7)→C(7)</td>
+			</tr>
+			<tr>
+				<td>ポップパンク進行1(Let It Be進行)</td>
+				<td>Ⅰ→Ⅴ→Ⅵm→Ⅳ</td>
+				<td>C→G→Am→F</td>
+			</tr>
+			<tr>
+				<td>ポップパンク進行2</td>
+				<td>Ⅳ→Ⅰ→Ⅴ→Ⅵm</td>
+				<td>F→C→G→Am</td>
+			</tr>
+			<tr>
+				<td>ポップパンク進行3</td>
+				<td>Ⅵm→Ⅳ→Ⅰ→Ⅴ</td>
+				<td>Am→F→C→G</td>
+			</tr>
+			<tr>
+				<td>循環進行の代表形(ブルームーン進行)</td>
+				<td>Ⅰ→Ⅵm→Ⅱm→Ⅴ</td>
+				<td>C→Am→Dm→G</td>
+			</tr>
+			<tr>
+				<td>逆循環進行の代表形</td>
+				<td>Ⅱm→Ⅴ→Ⅰ→Ⅵm</td>
+				<td>Dm→G→C→Am</td>
+			</tr>
+		</tbody>
+	</table>
+	<h2>ノンダイアトニックコード</h2>
+	<h3>
+		セカンダリードミナント</h3>
+	<p>ダイアトニックコードの「Ⅰ」以外のコードに対してドミナントモーションを作る「<code>Ⅴ7</code>」のこと</p>
+	<p>例: Key=C</p>
+	<blockquote>
+		<p>C→Am→Dm→G</p>
+	</blockquote>
+	<p>2コード目のAmに対し、Key=Amとした時のV7(=E7)を直前に加える</p>
+	<blockquote>
+		<p>C→<strong>E7</strong>→Am→Dm→G</p>
+	</blockquote>
+	<h3>リレイテッドⅡm7</h3>
+	<p>セカンダリードミナントコードを「Ⅴ7」とした時に、「<code>Ⅱm7→Ⅴ7→Ⅰ</code>」(ツーファイブワン)となるように足す「<code>Ⅱm7</code>」のこと</p>
+	<p>例: Key=C</p>
+	<blockquote>
+		<p>C→E7→Am→Dm→G</p>
+	</blockquote>
+	<p>Key=Amとした時のV7(=E7)に対し、Ⅱm7(=Bm7)を直前に加える</p>
+	<blockquote>
+		<p>C→<strong>Bm7</strong>→E7→Am→Dm→G</p>
+	</blockquote>
+
+</body>
+
+</html>
