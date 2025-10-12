@@ -1,0 +1,5431 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title>abc記譜法</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+</head>
+
+<body class="markdown-body">
+	<h1>abc記譜法</h1>
+	<h2>目次</h2>
+	<pre>
+        1. <a href="#introduction">はじめに</a>
+            1.1 <a href="#how_to_read_this_document">この文書を読む方法</a>
+            1.2 <a href="#how_to_avoid_reading_this_document">この文書を読まずに済ませる方法</a>
+            1.3 <a href="#abc_tutorials">abc チュートリアル</a>
+            1.4 <a href="#abc_extensions">abc 拡張</a>
+            1.5 <a href="#further_information_and_changes">情報を知りたい、変更を提案したい</a>
+            1.6 <a href="#document_locations">文書の場所</a>
+        2. <a href="#abc">abc ファイル、音、断片</a>
+            2.1 <a href="#abc_file_identification">abc ファイルの見分け方</a>
+            2.2 <a href="#abc_file_structure">abc ファイル構造</a>
+            2.3 <a href="#embedded_abc_and_abc_fragments">埋め込まれた abc と abc の断片</a>
+        3. <a href="#information_fields">情報フィールド</a>
+            3.1 <a href="#description_of_information_fields">情報フィールドの定義</a>
+            3.2 <a href="#use_of_fields_within_the_tune_body">曲本体でのフィールド使用</a>
+            3.3 <a href="#field_continuation">フィールド継続</a>
+        4. <a href="#tune">曲</a>
+            4.1 <a href="#pitch">ピッチ</a>
+            4.2 <a href="#Accidentals">臨時記号</a>
+            4.3 <a href="#Note-lengths">音符の長さ</a>
+            4.4 <a href="#Broken-rhythm">リズム割（付点音符など）</a>
+            4.5 <a href="#rests">休符</a>
+            4.6 <a href="#voice-modifiers_Clefs-and-transposition">声部変更子 - 音部記号と移調</a>
+              4.6.1 <a href="#clefs">音部記号</a>
+              4.6.2 <a href="#stafflines">縦線</a>
+              4.6.3 <a href="#the_octave_modifier">オクターブ変更子</a>
+              4.6.4 <a href="#scope_and_inheritance_of_modifiers">変更子のスコープと継承</a>
+              4.6.5 <a href="#application_specific_modifiers">アプリケーション依存変更子</a>
+            4.7 <a href="#beams">連桁</a>
+            4.8 <a href="#Repeat-bar-symbols">繰り返し記号</a>
+            4.9 <a href="#First-and-second-repeats">１カッコ、２カッコ</a>
+            4.10 <a href="#Variant-endings">いろいろな終わり方</a>
+            4.11 <a href="#ties_and_slurs">タイとスラー</a>
+            4.12 <a href="#grace_notes">装飾音符</a>
+            4.13 <a href="#Duplets-triplets-quadruplets">連符</a>
+            4.14 <a href="#decorations">装飾</a>
+            4.15 <a href="#symbol_lines">シンボル線</a>
+            4.16 <a href="#redefinable_symbols">再定義可能な記号</a>
+            4.17 <a href="#Chords-and-unisons">コードとユニゾン</a>
+            4.18 <a href="#chord_symbols">コード記号</a>
+            4.19 <a href="#annotations">注釈</a>
+            4.20 <a href="#order_of_abc_constructs">abc 構成の順序</a>
+        5. <a href="#lyrics">歌詞</a>
+            5.1 <a href="#alignment">行揃え</a>
+            5.2 <a href="#verses">連</a>
+            5.3 <a href="#numbering">番号付け</a>
+        6. <a href="#typesetting_and_playback">組版、再生</a>
+            6.1 <a href="#typesetting">組版</a>
+            6.2 <a href="#playback">再生</a>
+        7. <a href="#multiple_voices">多声</a>
+            7.1 <a href="#voice_properties">声部のプロパティ</a>
+            7.2 <a href="#breaking_lines">改行</a>
+            7.3 <a href="#inline_fields">インラインフィールド</a>
+            7.4 <a href="#voice_overlay">声部の重ね書き</a>
+        8. <a href="#Format">abc データフォーマット</a>
+            8.1 <a href="#tune_body">曲本体</a>
+            8.2 <a href="#text_strings">テキスト文字列</a>
+        9. <a href="#macros">マクロ</a>
+            9.1 <a href="#static_macros">静的マクロ</a>
+            9.2 <a href="#transposing_macros">移調マクロ</a>
+        10. <a href="#outdated_syntax">時代遅れのシンタックス</a>
+            10.1 <a href="#outdated_information_field_syntax">旧情報フィールド</a>
+            10.2 <a href="#outdated_dialects">旧方言</a>
+            10.3 <a href="#outdated_continuation">旧継続</a>
+            10.4 <a href="#outdated_directives">旧ディレクティブ</a>
+            10.5 <a href="#outdated_file_structure">旧ファイル構造</a>
+            10.6 <a href="#outdated_lyrics_alignment">旧歌詞そろえ</a>
+            10.7 <a href="#other_outdated_syntax">その他の旧記法</a>
+        11. <a href="#Stylesheet">スタイルシートディレクティブと疑似コメント</a>
+            11.0 <a href="#Directive">ディレクティブとは</a>
+            11.1 声のグループ化
+            11.2 命令ディレクティブ
+            11.3 臨時記号ディレクティブ
+            11.4 フォーマットディレクティブ
+            11.5 アプリケーション固有ディレクティブ
+            11.6 ディレクティブに関する進んだ情報
+        12. <a href="#dialects_strict_loose_interpretation_and_backwards_compatibility">方言、ゆるい解釈、厳密な解釈</a>
+            12.1 <a href="#dialects_differences">方言の違い</a>
+            12.2 <a href="#loose_interpretation">ゆるい解釈</a>
+            12.3 <a href="#strict_interpretation">厳密な解釈</a>
+        13. <a href="#transposition">移調</a>
+            13.1 <a href="#transposition_operator">移調オペレータ</a>
+            13.2 <a href="#transposing_a_file_tune">ファイル/曲の移調（未訳出）</a>
+            13.3 <a href="#writing_abc_code_for_transposing_instruments">移調楽器用 abc コードの記法</a>
+            13.4 <a href="#custom_transposition_for_diatonic_instruments">全音階楽器のカスタム移調（未訳出）</a>
+        14. <a href="#sample">abc 曲のサンプル</a>
+            14.1 <a href="#englishabc">English.abc</a>
+            14.2 <a href="#Strspys">Strspys.abc</a>
+            14.3 <a href="#Reels">Reels.abc</a>
+            14.4 <a href="#Canzonetta">Canzonetta.abc</a>
+        15. <a href="#Appendix">付録</a>
+            15.1 サポートしているアクセント
+            15.2 訂正
+
+</pre>
+
+	<h2 id="introduction" name="introduction">1. はじめに</h2>
+
+	<p>
+		abc はテキストベースの音楽記法であり、
+		人間にとってもコンピュータにとっても理解できるように設計されている。
+		abc の音楽は文字記号、すなわち、英文字、数字、句読点でで記述されていて、
+		紙やコンピュータファイルに入っている。
+
+		この文書は、abc 記法を理解したい人たちのために、そして abc
+		のソフトウェアアプリケーションを実装したい人たちのために作成した。
+		例のいくつかは<a href="#sample">サンプル</a>に入っている。
+	</p>
+
+	<h3>1.1 用語</h3>
+
+	<p>
+		下記用語は abc の標準で特別な意味をもっている。
+		便宜を図るため、定義にリンクを張っている。
+	</p>
+
+	<ul>
+		<li> <a href="#abc_file_definition">abc ファイル</a></li>
+		<li> <a href="#abc_fragment_definition">abc 断片</a></li>
+		<li> <a href="#abc_tune_definition">abc 曲</a></li>
+		<li> <a href="#abc_tunebook_definition">abc 曲集</a></li>
+		<li> <a href="#code_line-break_definition">コード改行</a></li>
+		<li> <a href="#comment_definition">コメント</a></li>
+		<li> <a href="#embedded_definition">埋め込み</a></li>
+		<li> <a href="#empty_line_definition">空の線</a></li>
+		<li> <a href="#file_header_definition">ファイルヘッダ</a></li>
+		<li> <a href="#free_text_definition">ファイルテキスト</a></li>
+		<li> <a href="#information_field_definition">情報フィールド</a></li>
+		<li> <a href="#inline_field_definition">inline field</a></li>
+		<li> <a href="#music_code definition">音楽コード</a></li>
+		<li> <a href="#score_line-break_definition">スコア改行</a></li>
+		<li> <a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a></li>
+		<li> <a href="#text_string_definition">テキスト文字列</a></li>
+		<li> <a href="#tune_body_definition">曲本体</a></li>
+		<li> <a href="#tune_header_definition">曲ヘッダ</a></li>
+		<li> <a href="#typeset_text_definition">組版テキスト</a></li>
+	</ul>
+	<p>
+
+		なお、<a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> も見よ。
+		ここではキーワード MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, MAY, OPTIONAL
+		の厳密な意味が定義されている。
+
+	<p>
+		最後に、単語「変動要因」 // VOLATILE // とある項は、
+		現在活発に議論されていたり、今後標準の変更が予想されていたりすることを示している。
+	</p>
+
+
+	<h3 id="how_to_avoid_reading_this_document">1.2 この文書を読まずに済ませる方法(How to avoid reading this document)</h3>
+
+	<p>
+		abc 標準は多くの情報を含んでいる。そのため初心者にとってはすぐには使いこなせないだろう。
+		それでも初心者は、
+		1. の「はじめに」にあるこの節はともかく、
+		<a href="#abc_file_structure">2.2</a>, <a href="#Information-Field">3.0</a>,
+		<a href="#description_of_information_fields">3.1</a> (特に
+		<a href="#xreference_number">3.1.1</a>,
+		<a href="#ttune_title">3.1.2</a>,
+		<a href="#mmeter">3.1.6</a>,
+		<a href="#lunit_note_length">3.1.7</a>,
+		<a href="#kkey">3.1.14</a>),
+		<a href="#use_of_fields_within_the_tune_body">3.2</a>,
+		<a href="#tune">4.</a> （特に
+		<a href="#pitch">4.1</a>,
+		<a href="#Note-lengths">4.3</a>,
+		<a href="#beams">4.7</a>,
+		<a href="#Repeat-bar-symbols">4.8</a>) を読んでほしい。
+	</p>
+
+	<p>
+		初心者は <a href="#sample">14章</a> と <a href="#tutorials">abc チュートリアル</a>を読むことをすすめる。
+	</p>
+
+	<p>
+		そのあとで、興味に応じて下記を参照してほしい。
+	</p>
+	<ul>
+		<li><a href="#lyrics">5. 歌詞</a>歌詞の記述</li>
+		<li><a href="#typesetting">6.1 組版</a>五線譜の記号を abc で表示させるため</li>
+		<li><a href="#multiple_voices">7. 多声</a> 複数声部の楽譜</li>
+	</ul>
+
+
+	<h3 id="abc_tutorials">1.3 abc チュートリアル(Abc tutorials)</h3>
+
+
+	<ul>
+		<li><a href="http://abcnotation.com/learn">http://abcnotation.com/learn</a>
+			多くのチュートリアルへのリンクがここにある</li>
+		<li><a href="http://abcplus.sourceforge.net/#ABCGuide">http://abcplus.sourceforge.net/#ABCGuide</a></li>
+		<li><a href="http://www.lesession.co.uk/abc/abc_notation.htm">
+				http://www.lesession.co.uk/abc/abc_notation.htm</a></li>
+		<li><a
+				href="http://trillian.mit.edu/~jc/music/abc/doc/ABCtutorial.html">http://trillian.mit.edu/~jc/music/abc/doc/ABCtutorial.html</a>
+		</li>
+	</ul>
+
+	<p>訳注：日本語で読める abc 記譜法について</p>
+
+	<ul>
+		<li><a href="http://abclanguage.for-our.info/">
+				ABC言語　－　テキストで「楽譜」を表現するための言語</a>(abclanguage.for-our.info) </li>
+		<li><a href="http://tutorial.jp/music/">無料チュートリアル：音楽</a>(tutorial.jp)</li>
+		<li><a href="http://www.asahi-net.or.jp/~mf4n-nmr/abc_notation.html">実用abc譜</a>
+			www.asahi-net.or.jp
+		</li>
+		<li><a href="http://web.archive.org/web/20111107170030/http://www.geocities.jp/abcmja/abc2/abc2_draft.html">
+				標準 ABC Ver. 2.0 （草稿 IV）</a>(web.archive.org)</li>
+		</li>
+	</ul>
+
+
+	<h3 id="abc_extensions">1.4 abc の拡張 (Abc extensions)</h3>
+
+
+
+
+	<p>
+		abc 記譜法システムは他の何ものにもよらず作られたので、
+		abc ソフトウェアパッケージが多く開発されている。
+		しかし、この標準ですべてを完全にフォローするのは難しい。
+		この文書のねらいは、アプリケーション間の互換性問題を解決すること、
+		少なくとも問題を減らすことにある。
+	</p>
+	<p>
+		いうまでもなく、
+		abc を使うときこのような拡張の有無に気をつけることは大事だ。
+		有名なパッケージでの拡張は下記リンクにある。
+	</p>
+
+	<ul>
+		<li><a href="http://moinejf.free.fr/abcm2ps-features.txt"> - extensions implemented by
+				[[http://abcnotation.com/software#abcm2ps|abcm2ps]]</a>(リンク切れ)</li>
+		<li><a href="http://abc.sourceforge.net/standard/abc2midi.txt"> - extensions implemented by
+				[[http://abcnotation.com/software#abcMIDI|abc2midi]]</a></li>
+		<li><a href="http://www.barfly.dial.pipex.com/bfextensions.html"> - extensions implemented by
+				[[http://abcnotation.com/software#BarFly|BarFly]]</a></li>
+		<li><a href="http://www.lautengesellschaft.de/cdmm/userguide/userguide.html"> - extensions implemented by
+				[[http://abcnotation.com/software#abctab2ps|abctab2ps]]</a></li>
+	</ul>
+
+	<h3 id="further_information_and_changes">1.5 情報を知りたい、変更を提案したい (Further information and changes)</h3>
+
+
+
+	<p>
+		この標準について、また abc 一般について知りたい場合、
+		abc ユーザーズメーリングリストや
+		abc 記譜法フォーラムを使えばいい。
+	</p>
+	<ul>
+		<li> http://groups.yahoo.com/group/abcusers/ (abcusers - subscriptions and archive of posts)</li>
+		<li> http://www.mail-archive.com/abcusers@argyll.wisemagic.com/ (abcユーザーズ - 以前の投稿のアーカイブ)</li>
+		<li> http://abcnotation.com/forums/</li>
+	</ul>
+
+	<p>
+		標準の変更を提案したい場合は、ここを読むべし。
+	</p>
+
+	<p> http://abcnotation.com/wiki/abc:standard:route-map -
+		a route map of proposed changes to the standard plus instructions for proposing changes
+	</p>
+
+	<h3 id="document_locations">1.6 文書の場所 (Document locations)</h3>
+
+	<p>この文書(の英語オリジナル)はここにある。</a>
+
+	<p>http://abcnotation.com/wiki/abc:standard:v2.2</p>
+
+	<p>最新版だけでなく過去の版も知りたい時はこちらから。</p>
+
+	<p>http://abcnotation.com/wiki/abc:standard</p>
+
+
+	<h2 id="abc" name="abc">2. abc ファイル、音、断片</h2>
+
+	<h3 id="abc_file_identification">2.1 abc ファイルの見分け方 (Abc file identification)</h3>
+
+	<p>
+		<a href="#abc_file_definition">abc ファイル</a>はすべて、
+		拡張子 &quot;.abc&quot; (すべて小文字) をどんなプラットフォームでももっている。
+	</p>
+
+	<p>
+		<em> コメント: </em> WEB サーバのなかには限られたファイルタイプしか拡張子をゆるさないものもある。
+		この場合は .txt 拡張子が最善の代替案である。
+	</p>
+
+	<p>
+		どんな<a href="#abc_file_definition">abc ファイル</a>でも文字列<code>%abc</code>で始まる。
+		同じ行にバージョン番号を入れてもよい。例：
+
+	</p>
+	<pre class="code">%abc-2.2</pre>
+
+	<p>
+		2.1 またはそれ以上のバージョン番号は、
+		<a href="#abc_file_definition">abc ファイル</a>が abc 標準にしたがって<a href="#strict_interpretation">厳格に解釈される</a>ことを表している。
+		もしバージョン番号がなければ、ファイルは<a href="#loose_interpretation">ゆるい解釈</a>とみなされる。
+		<a href="#version_field">バージョンフィールド</a>は曲ごとに使ってもよい。
+
+	<p>
+		<em> 開発者への注釈： </em>
+		もしファイルの最初の文字に<a href="http://en.wikipedia.org/wiki/Byte_order_mark">バイトオーダーマーク (BOM) </a>(en.wikipedia.org)があれば、
+		ソフトウェアはそれを無視すべきである。
+	</p>
+
+	<p>
+
+		<a href="#abc_file_definition">abc file</a> がマルチパート電子メールに含まれるとき、
+		その MIME タイプは&quot;text/vnd.abc&quot; であるべきだ(<a href="http://www.iana.org/assignments/media-types/text/vnd.abc"
+			rel="nofollow">IANA text/vnd.abc</a>
+		(www.iana.org)
+		を見よ).
+	</p>
+
+
+	<h3 id="abc_file_structure">2.2 abc ファイル構造</h3>
+
+	<dl>
+		<dt name="abc_file_definition" id="abc_file_definition">abc file</dt>
+		<dt>abc ファイル</dt>
+		<dd>
+			<p>
+				abc ファイルとは 1 つ以上の <a href="#abc_tune_definition">abc 曲</a>
+				の記述(transcriptions) からなるファイルのことである。
+				abc ファイルには、任意で散在した注釈を付け加えることができる。この注釈となるテキストは、
+				<a href="#free_text_definition">自由テキスト</a>
+				と
+				<a href="#typeset_text_definition">組版テキスト</a>である。
+				また、abc ファイルは、<a href="#file_header_definition">ファイルへッダ</a>ではじめることができる。
+				ファイルヘッダの利用は任意できる。
+				このヘッダはファイルを処理するための既定の方法を定めるためにある。
+			</p>
+
+		<dt id="abc_tunebook_definition" name="abc_tunebook_definition">abc tunebooks</dt>
+		<dt>abc 曲集</dt>
+
+		<dd>
+			<p>
+				1 つ以上の曲がある <a href="#abc_file_definition">abc ファイル</a>を abc 曲集という。
+			</p>
+		</dd>
+	</dl>
+
+
+	<h3>2.2.1 abc 曲</h3>
+
+	<dl>
+		<dt name="abc_tune_definition" id="abc_tune_definition">abc tune</dt>
+		<dt>abc 曲</dt>
+		<dd>
+			<p>
+				abc 曲 そのものは <a href="#tune_header_definition">曲ヘッダ</a> と
+				<a href="#tune_body_definition">曲本体</a>からなる。
+			</p>
+		</dd>
+
+		<dt name="tune_header_definition" id="tune_header_definition">tune header</dt>
+		<dt>曲ヘッダ</dt>
+		<dd>
+			<p>
+				**曲ヘッダ** は<a href="#information_field_definition">情報フィールド</a>行から構成される。
+			</p>
+		</dd>
+
+		<dt name="tune_body_definition" id="tune_body_definition">tune body</dt>
+		<dt>曲本体</dt>
+		<dd>
+			<p>
+				曲本体とは、<a href="#music_code_definition">音楽コード</a>を含み、すぐそのあとに続くものである。
+			</p>
+		</dd>
+
+
+		<dt name="music_code_definition" id="music_code_definition">music code</dt>
+		<dt>音楽コード</dt>
+		<dd>
+			<p>abc の音楽コード行は<a href="#tune_body_definition">曲本体</a>にある行で、
+				音符や、小節線やほかの音楽記号を含むものである。
+			</p>
+		</dd>
+	</dl>
+
+	<h4>2.2.2 ファイルヘッダ</h4>
+	<dl>
+		<dt id="file_header_definition">file header</dt>
+		<dt>ファイルヘッダ</dt>
+		<dd>
+			<p>
+				ファイルはオプションとして<b>ファイルヘッダ</b>から始めることができる
+				（バージョンフィールドのすぐ後）。
+				このヘッダは、
+				連続する<a href="#information_field_definition">情報フィールド</a>や
+				<a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a>、
+				あるいはその両方であり、<a href="#empty_line_definition">空行</a>で終わる。
+				ファイルヘッダはファイルにある曲に対して既定の値が定められている。
+			</p>
+			<p>
+				ファイルヘッダはファイルの先頭にのみ置くことができる。曲間には置けない。
+				（後略）
+			</p>
+
+		</dd>
+	</dl>
+
+
+	<h4>2.2.3 自由テキストと組版テキスト</h4>
+	<dl>
+		<dt name="free_text_definition" id="free_text_definition">free text</dt>
+		<dt>自由テキスト</dt>
+		<dd>
+			自由テキストとは今いった通りのものである。
+		</dd>
+
+
+		<dt name="typeset_text_definition" id="typeset_text_definition">typeset text</dt>
+		<dt>組版テキスト</dt>
+		<dd>
+			組版テキストとは、<a href="#text_directives">テキストディレクティブ</a>で指定されたテキストである。.
+		</dd>
+	</dl>
+	<h4>2.2.4 空行と改行</h4>
+
+
+
+	<dl>
+
+		<dt id="empty_line_definition">Empty lines</dt>
+		<dt>blank lines</dt>
+		<dt>空行</dt>
+		<dt>ブランク行</dt>
+		<dd>
+			<p>
+				空行（ブランク行）は <a href="#abc_tune_definition">abc 曲</a>と
+				<a href="#free_text_definition">フリーテキスト</a>、<a href="#file_header_definition">ファイルヘッダ</a>を分けるために用いられる。
+				空行は<a href="#abc_file_definition">abc ファイル</a>の可読性向上に寄与する。
+			</p>
+
+			<p>
+				ホワイトスペース（スペース文字とタブ文字）からのみなる行は<a href="#empty_line_definition">空行</a>とみなされる。
+			</p>
+			<p>
+				改行（new lines, line feeds, carriage returns, end-of-lines, など) は
+				<a href="#abc_file_definition">abc ファイル</a>で使われ可読性を向上させるとともに、
+				必要があれば長い入力を切るために使われる。<a href="#continuation_of_input_lines">入力行の継続</a>を見よ。
+			</p>
+			<p>
+				より細かいことをいえば、<a href="#music_code_definition">音楽コード</a>内の改行は、
+				abc 表示を構造化し、また、デフォルトでプリント音楽の改行を生成する。
+				さらに詳しくは、
+				<a href="#typesetting_line-breaks">組版改行</a>を見よ。
+			</p>
+
+		</dd>
+	</dl>
+
+	<h4 id="comments_and_remarks">2.2.5 コメントと注意</h4>
+
+	<dl>
+		<dt id="comment_definition">％記号 (''%'')</dt>
+		<dd>
+			<p>
+				% 記号から始まり、行末で終わる文字列は無視される。
+				<b>コメント</b>を付け加えたり、自身の権利を <b>コメントライン</b>で表明したりする。
+				% 記号を表示したい場合は、''\%'' とする。 <a href="#text_string_definition">テキスト文字列</a>を見よ。
+			</p>
+	</dl>
+	<h4 id="continuation_of_input_lines">2.2.6 入力行の継続</h4>
+	<p>
+		abc ソフトウェアに対して、
+		<a href="#abc_file_definition">abc ファイル</a>にある入力行が次の物理的行に継続することを伝えることが、
+		必要になるときがある。つまり、二つ（以上）の行が一つにみなされるようにしたいということだ。
+		abc 2.0 では一般継続文字がこのために使われていた
+		（<a href="#outdated_continuations">時代遅れの継続</a>を見よ）。しかし、
+		この方法は不必要で混乱を招くものということが決定された。
+	</p>
+	<p>
+		abc 2.1 では、４種類の入力タイプのどれでも継続する方法がある。このタイプとは、
+		<a href="#music_code_definition">音楽コード</a>のほか、
+		<a href="#information_field_definition">情報フィールド</a>、
+		<a href="#comment_definition">コメント</a>、
+		<a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a>である。
+	</p>
+
+	<p>
+		abc <a href="#music_code_definition">音楽コード</a>では、デフォルトは、
+		コードの改行は組版スコア内の改行を生成する。そしてこれらはバックスラッシュを使うことで、
+		（または abc 組版ソフトウェアに、''I:linebreak $'' または ''I:linebreak &lt;none&gt;''
+		を使うことで改行を無視するよう伝えることで）抑制される。
+		詳しくは<a href="#typesetting_line-breaks">組版改行</a>を見よ。
+	</p>
+	<p>
+		プログラマへのコメント：
+		バックスラッシュは継続文字として<a href="#music_code_definition">音楽コード</a>では効果的に機能する。
+		しかしながら、他のコンピュータ言語の文脈で使われることを考えるとその仕様は abc 固有である。
+		特に<a href="#music_code_definition">音楽コード</a>行を<a href="#information_field_definition">
+			情報フィールド</a>や<a href="#comment_definition">コメント</a>、
+		<a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a>を通して使った場合はそうである。
+	</p>
+
+	<p>音楽コードのほかには 3 種類の入力行タイプがある。</p>
+	<dl>
+		<dt name="information_field_definition" id="information_field_definition">情報フィールド</dt>
+		<dd>
+			情報フィールドとは、''+:'' から始まりそれに続く行である。
+			<a href="#field_continuation">フィールド継続</a> を見よ。
+		</dd>
+		<dt name="comment">コメント</dt>
+		<dd>コメントは、記号 ''%'' から始まりそれに続く行である。
+			<!-- since they are ignored by abc software it doesn't matter how many lines they are split into; -->
+		</dd>
+		<dt id="stylesheet_directive_definition">スタイルシートディレクティブ</dt>
+		<dd>スタイルシートディレクティブのほとんどは非常に短いので継続シンタックスを必要としない。
+		</dd>
+	</dl>
+	<h3 id="embedded_abc_and_abc_fragments">2.3 埋め込まれた abc と abc の断片 (Embedded abc and abc fragments)</h3>
+
+
+	<p id="embedded_definition">
+		従来、abc は abc ファイルにより記述されてきた。
+		しかし最近では、abc 曲を、そして断片でも含めるようないろいろな可能性が出てきた。
+
+		他のドキュメントに含まれる abc 要素は、そのドキュメントに<a href="#embedded_definition">埋め込まれた</a>ものとして参照される。
+	</p>
+	<p>
+		必ずではないが、
+		しばしば、マークアップされた形式のいくつかは埋め込まれた abc コードの起点や終点を示すために使われる。
+	</p>
+	<p>
+		例：ある HTML ドキュメントでは以下の曲が含まれうる。
+	</p>
+	<pre class="code">
+&lt;pre class="abc-tune"&gt;
+X:1
+T:Title
+K:C
+DEF FED:|
+&lt;/pre&gt;
+</pre>
+
+	<p>重要な注釈：
+		abc 標準は、abc コードが文書に含まれている条件については関知しない。
+		たとえば、html には、abc コードが、
+		&lt;pre&gt;, &lt;div&gt;, &lt;object&gt;, &lt;script&gt; のような、
+		あるいは他のタグの中に含まれているかもしれない。
+	</p>
+	<p>埋め込まれた abc 要素は４種類ある。
+	</p>
+	<ul>
+		<li><a href="#abc_fragment_definition">abc 断片</a>
+		</li>
+		<li><a href="#abc_tune_definition">abc 曲</a>
+		</li>
+		<li><a href="#file_header_definition">ファイルヘッダ</a>
+		</li>
+		<li>完全な <a href="#abc_file_definition">abc ファイル</a>
+		</li>
+	</ul>
+
+	<p>
+
+		すべての場合で、タイプは、処理過程で指定されなけばならない（たとえば、クラスパラメータを経由して）。
+		例外は、埋め込まれた abc 曲で、パーサーが X: フィールドが使われた場合である。
+
+	</p>
+	<p>
+
+		<!-- The following rules are applied to embedded elements: -->
+		下記規則は、埋め込まれた要素に適用される。
+	</p>
+	<h4 id="embedded_abc_fragment">2.3.1 埋め込まれた abc 断片</h4>
+
+	<dl>
+		<dt id="abc_fragment_definition" name="abc_fragment_definition">abc fragment</dt>
+		<dt>abc 断片</dt>
+		<dd>
+			<p>abc 断片とは、部分的な<a href="#abc_tune_definition">abc 曲</a>である。
+				部分的な <a href="#tune_header_definition">曲ヘッダ</a>はあるが曲本体をもたないかもしれないし、
+				<a href="#tune_body_definition">曲本体</a>オプションの<a href="#tune_header_definition">曲ヘッダ</a>や
+				<a href="#information_field_definition">情報フィールド</a>があるかもしれない。
+			</p>
+		</dd>
+	</dl>
+	<p>
+		// 例 1: // <a href="#tune_header_definition">曲ヘッダ</a>がない断片
+	</p>
+	<pre class="code">
+&lt;div class="abc-fragment"&gt;
+CDEF GABc|
+&lt;/div&gt;
+  </pre>
+
+	<p>// 例 2: // 部分的な<a href="#tune_header_definition">曲ヘッダ</a>がある断片 </p>
+
+	<pre class="code">
+  &lt;div class="abc-fragment"&gt;
+  T:Major scale in D
+  K:D
+  DEFG ABcd|
+  &lt;/div&gt;
+  </pre>
+	<p>
+
+		<code>T:</code>あるいは <code>M:</code> <code>K:</code> フィールドが存在しなければ、
+		断片はト音記号の五線譜で、それぞれタイトルなし、拍子記号なし、調性記号なしとして仮定される。
+	</p>
+
+	<p>
+		An <a href="#abc_fragment_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc fragment</a>
+		does not require an <a href="#empty_line_definition" title="abc:standard:v2.2 ↵" class="wikilink1">empty
+			line</a> to mark the end of the
+		<a href="#tune_body_definition" title="abc:standard:v2.2 ↵" class="wikilink1">tune body</a> if it is terminated
+		by the document markup.
+	</p>
+
+	<p>
+		<a href="#abc_fragment_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 断片</a>
+		は、文書のマークアップにより
+		<a href="#tune_body_definition" title="abc:standard:v2.2 ↵" class="wikilink1">曲本体</a>が終結するからといって、
+		必ずしも<a href="#empty_line_definition" title="abc:standard:v2.2 ↵" class="wikilink1">空行</a>
+		を要求することはない。
+	</p>
+
+
+	<h4 id="embedded_abc_tune">2.3.2 埋め込まれた abc 曲</h4>
+
+	<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込まれた</a>
+	<a href="#abc_tune_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 曲</a>
+	は、通常の
+	<a href="#abc_tune_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 曲</a>
+	と同じ構造を持つ。ただし、埋め込まれた abc 曲は、通常の abc 曲とは異なり、
+	<a href="#tune_body_definition" title="abc:standard:v2.2 ↵" class="wikilink1">曲の本体</a>
+	の終結記号としての
+	<a href="#empty_line_definition" title="abc:standard:v2.2 ↵" class="wikilink1">空行</a>
+	を必要とはしない。
+	</p>
+
+	<p>
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込まれた</a>
+		<a href="#abc_tune_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 曲</a>
+		はまた、必要であれば、完全性を除けば、
+		<a href="#abc_fragment_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 断片</a>
+		と同等とみなせる
+	</p>
+
+	</div>
+
+
+	<h4 id="embedded_file_header">2.3.3 埋め込まれたファイルヘッダ</h4>
+
+	<p>
+		<a href="#file_header_definition" title="abc:standard:v2.2 ↵" class="wikilink1">
+			ファイルヘッダ</a>に関しては、
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込まれた</a>
+		<a href="#file_header_definition" title="abc:standard:v2.2 ↵" class="wikilink1">ファイルヘッダ</a>
+		は、ドキュメント内で
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込まれた</a>
+		abc 曲と
+		<a href="#abc_fragment_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 断片</a>
+		とのデフォルト値として使われる。
+	</p>
+
+	<p>
+		<em> 例: </em>
+		ドキュメントの<a href="#abc_tune_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 曲</a>
+		すべてでタイトルのフォントを設定する：
+	</p>
+	<pre class="code">&lt;div class="abc-file-header"&gt;
+	%%titlefont Arial 10
+&lt;/div&gt;</pre>
+
+	<p>
+		他の同様な規則と同様に,
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込まれた</a>
+		<a href="#file_header_definition" title="abc:standard:v2.2 ↵" class="wikilink1">ファイルヘッダは</a>
+		ドキュメントに１つだけ定義すれば十分であり、
+		その定義は<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		abc 曲や
+		<a href="#abc_fragment_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc 断片</a>
+		に優先する。
+	</p>
+
+	<h4 id="embedded_abc_file">2.3.4 埋め込まれた abc ファイル</h4>
+	<p>
+		ドキュメントは 通常構造を伴う完全な
+
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		<a href="#abc_file_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc file</a>
+		を含んでよい。
+		<a href="#abc_file_structure" title="abc:standard:v2.2 ↵" class="wikilink1">abc ファイル構造</a>
+		参照。
+	</p>
+	<p><a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		<a href="#abc_file_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc ファイル</a> は
+		他の<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">embedded</a>
+		要素とは独立に扱われるべきである。
+		その結果、１つの
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		<a href="#abc_file_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc ファイル</a>
+		における設定が、
+		他の <a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		要素に影響を及ぼさないようになる。
+
+
+	</p>
+
+	<p>
+		<em> 推奨： </em>
+		結果として，
+
+		ある<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		<a href="#abc_file_definition" title="abc:standard:v2.2 ↵" class="wikilink1">abc ファイル</a>
+		を含むドキュメントで他の
+		<a href="#embedded_definition" title="abc:standard:v2.2 ↵" class="wikilink1">埋め込み</a>
+		要素を使うことは推奨されない。
+	</p>
+	<h2 id="Information-Field" name="Information-Field">3. 情報フィールド</h2>
+
+
+	<p>abc フィールドと使い方</p>
+	<table class="border">
+		<thead>
+			<tr class="row0">
+				<th class="col0 leftalign"> フィールド名 </th>
+				<th class="col1"> <a href="#file_header_definition" title="abc:standard:v2.1 ↵"
+						class="wikilink1">ファイルヘッダ</a> </th>
+				<th class="col2"> <a href="#tune_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">tune
+						header</a> </th>
+				<th class="col3"> <a href="#tune_body_definition" title="abc:standard:v2.1 ↵" class="wikilink1">tune
+						body</a></th>
+				<th class="col4"><a href="#inline_field_definition" title="abc:standard:v2.1 ↵"
+						class="wikilink1">inline</a></th>
+				<th class="col5 leftalign"> type </th>
+				<th class="col6">例と注釈</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="row1">
+				<td class="col0 leftalign"> <a href="#aarea" title="abc:standard:v2.1 ↵" class="wikilink1">A:area</a>
+				</td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6"> A:Donegal, A:Bampton (<a href="#outdated_information_field_syntax"
+						title="abc:standard:v2.1 ↵" class="wikilink1">deprecated</a>) </td>
+			</tr>
+			<tr class="row2">
+				<td class="col0 leftalign"> <a href="#bdfsbackground_information" title="abc:standard:v2.1 ↵"
+						class="wikilink1">B:book</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> B:O'Neills </td>
+			</tr>
+			<tr class="row3">
+				<td class="col0 leftalign"> <a href="#ccomposer" title="abc:standard:v2.1 ↵"
+						class="wikilink1">C:composer</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> C:Robert Jones, C:Trad. </td>
+			</tr>
+			<tr class="row4">
+				<td class="col0"> <a href="#bdfsbackground_information" title="abc:standard:v2.1 ↵"
+						class="wikilink1">D:discography</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> D:Chieftains IV </td>
+			</tr>
+			<tr class="row5">
+				<td class="col0 leftalign"> <a href="#bdfsbackground_information" title="abc:standard:v2.1 ↵"
+						class="wikilink1">F:file url</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> F:http://a.b.c/file.abc </td>
+			</tr>
+			<tr class="row6">
+				<td class="col0 leftalign"> <a href="#ggroup" title="abc:standard:v2.1 ↵" class="wikilink1">G:group</a>
+				</td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> G:flute </td>
+			</tr>
+			<tr class="row7">
+				<td class="col0 leftalign"> <a href="#hhistory" title="abc:standard:v2.1 ↵"
+						class="wikilink1">H:history</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> H:The story behind this tune … </td>
+			</tr>
+			<tr class="row8">
+				<td class="col0 leftalign"> <a href="#iinstruction" title="abc:standard:v2.1 ↵"
+						class="wikilink1">I:instruction</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> I:papersize A4, I:newpage </td>
+			</tr>
+			<tr class="row9">
+				<td class="col0 leftalign"> <a href="#kkey" title="abc:standard:v2.1 ↵" class="wikilink1">K:key</a>
+				</td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> last </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> K:G, K:Dm, K:AMix </td>
+			</tr>
+			<tr class="row10">
+				<td class="col0 leftalign"> <a href="#lunit_note_length" title="abc:standard:v2.1 ↵"
+						class="wikilink1">L:unit note length</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> L:1/4, L:1/8 </td>
+			</tr>
+			<tr class="row11">
+				<td class="col0 leftalign"> <a href="#mmeter" title="abc:standard:v2.1 ↵" class="wikilink1">M:meter</a>
+				</td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> M:3/4, M:4/4 </td>
+			</tr>
+			<tr class="row12">
+				<td class="col0 leftalign"> <a href="#macros" title="abc:standard:v2.1 ↵" class="wikilink1">m:macro</a>
+				</td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> m: ~G2 = {A}G{F}G </td>
+			</tr>
+			<tr class="row13">
+				<td class="col0 leftalign"> <a href="#nnotes" title="abc:standard:v2.1 ↵" class="wikilink1">N:notes</a>
+				</td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> N:see also O'Neills - 234 </td>
+			</tr>
+			<tr class="row14">
+				<td class="col0 leftalign"> <a href="#oorigin" title="abc:standard:v2.1 ↵"
+						class="wikilink1">O:origin</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> O:UK; Yorkshire; Bradford </td>
+			</tr>
+			<tr class="row15">
+				<td class="col0 leftalign"> <a href="#pparts" title="abc:standard:v2.1 ↵" class="wikilink1">P:parts</a>
+				</td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> P:A, P:ABAC, P:(A2B)3 </td>
+			</tr>
+			<tr class="row16">
+				<td class="col0 leftalign"> <a href="#qtempo" title="abc:standard:v2.1 ↵" class="wikilink1">Q:tempo</a>
+				</td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> Q:"allegro" 1/4=120 </td>
+			</tr>
+			<tr class="row17">
+				<td class="col0 leftalign"> <a href="#rrhythm" title="abc:standard:v2.1 ↵"
+						class="wikilink1">R:rhythm</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> R:R, R:reel </td>
+			</tr>
+			<tr class="row18">
+				<td class="col0 leftalign"> <a href="#comments_and_remarks" title="abc:standard:v2.1 ↵"
+						class="wikilink1">r:remark</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5 leftalign"> - </td>
+				<td class="col6 leftalign"> r:I love abc </td>
+			</tr>
+			<tr class="row19">
+				<td class="col0 leftalign"> <a href="#bdfsbackground_information" title="abc:standard:v2.1 ↵"
+						class="wikilink1">S:source</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> S:collected in Brittany </td>
+			</tr>
+			<tr class="row20">
+				<td class="col0 leftalign"> <a href="#Symbol_lines" title="abc:standard:v2.1 ↵"
+						class="wikilink1">s:symbol line</a> </td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> s: !pp! ** !f! </td>
+			</tr>
+			<tr class="row21">
+				<td class="col0 leftalign"> <a href="#ttune_title" title="abc:standard:v2.1 ↵" class="wikilink1">T:tune
+						title</a> </td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2"> second </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> T:Paddy O'Rafferty </td>
+			</tr>
+			<tr class="row22">
+				<td class="col0 leftalign"> <a href="#redefinable_symbols" title="abc:standard:v2.1 ↵"
+						class="wikilink1">U:user defined</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> U: T = !trill! </td>
+			</tr>
+			<tr class="row23">
+				<td class="col0 leftalign"> <a href="#multiple_voices" title="abc:standard:v2.1 ↵"
+						class="wikilink1">V:voice</a> </td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> yes </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> V:4 clef=bass </td>
+			</tr>
+			<tr class="row24">
+				<td class="col0 leftalign"> <a href="#lyrics" title="abc:standard:v2.1 ↵" class="wikilink1">W:words</a>
+				</td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> W:lyrics printed after the end of the tune </td>
+			</tr>
+			<tr class="row25">
+				<td class="col0 leftalign"> <a href="#lyrics" title="abc:standard:v2.1 ↵" class="wikilink1">w:words</a>
+				</td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> </td>
+				<td class="col3"> yes </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> w:lyrics printed aligned with the notes of a tune </td>
+			</tr>
+			<tr class="row26">
+				<td class="col0 leftalign"> <a href="#xreference_number" title="abc:standard:v2.1 ↵"
+						class="wikilink1">X:reference number</a> </td>
+				<td class="col1 leftalign"> </td>
+				<td class="col2 leftalign"> first </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5"> instruction </td>
+				<td class="col6 leftalign"> X:1, X:2 </td>
+			</tr>
+			<tr class="row27">
+				<td class="col0 leftalign"> <a href="#ztranscription" title="abc:standard:v2.1 ↵"
+						class="wikilink1">Z:transcription</a> </td>
+				<td class="col1"> yes </td>
+				<td class="col2 leftalign"> yes </td>
+				<td class="col3 leftalign"> </td>
+				<td class="col4 leftalign"> </td>
+				<td class="col5 leftalign"> string </td>
+				<td class="col6 leftalign"> Z:John Smith, &lt;j.s@mail.com&gt; </td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+
+	<h3 id="description_of_information_fields">3.1 情報フィールドの記述 (Description of information fields)</h3>
+
+	<h4 id="xreference_number" name="xreference_number">3.1.1 X: 参照番号</h4>
+
+	<p>
+		''X:'' (参照番号) フィールドは 曲集のなかでそれぞれの曲に応じて一意に割り当てられた正の整数番号である。
+		例：''X:23''。
+	</p>
+
+	<p>''X:'' フィールドは、曲の開始を示すために用いられる。
+		したがって、どの曲もすべて X で始まるし、
+		１つの曲につき X は1 つである。
+	</p>
+	<p>''X:'' フィールドはなくても許されるが、推奨されない。</p>
+
+	<h4 id="ttune_title">3.1.2 T: - 曲タイトル</h4>
+
+	<p>
+		''T:'' (タイトル) フィールドは ''X:'' フィールドの直後に記述される。
+		これは人間がその曲を識別するために使う（たとえ空であっても）。
+	</p>
+	<p>
+		曲のよっては１つ以上のタイトルをもつものもある。
+		したがって、１つの曲に対して１つ以上の代替タイトルを示すことが可能である。
+	</p>
+	<p>
+		''T:'' フィールドは１つの曲に対する各パートの名前をつけるときにも使われる。
+		この場合は調性や拍子の変化の前に置くべきである。
+	</p>
+
+	<h4 id="ccomposer">3.1.3 C: - 作曲者</h4>
+
+	<p>''C:'' フィールドは作曲者を示す。</p>
+
+	<h4 id="oorigin">3.1.4 O: - 原作</h4>
+
+	<p>''O:'' フィールドは曲の地理的発生源を示す。
+		可能であれば、次のようにデータを階層的に入れること。<br />
+		O:Canada; Nova Scotia; Halifax.<br />
+		O:England; Yorkshire; Bradford and Bingley.<br />
+	</p>
+	<p>
+		// Recommendation: //
+		セパレータとして必ず "'';''" (セミコロン)を使うことを推奨する。
+		こうしておけば、ソフトウェアがフィールドをパーシングできるようになる。
+		しかし、abc 2.0 での推奨はコンマであった。だから古いファイルは abc 2.1 ではパーシングできないかもしれない。
+	</p>
+	<p>
+		このフィールドは作曲者不明の曲（トラディショナル）を扱うときに特に有用だろう。
+		<a href="#typesetting_information_fields">組版情報フィールド</a>にある、
+		原作情報をプリントされたスコアに含めるようにする。詳細を見よ。
+	</p>
+
+	<h4 id="aarea">3.1.5 A: - エリア</h4>
+
+	<p>
+		歴史的に、"A:" フィールドは地域情報を表すために使われてきた
+		(より詳しい曲の発生地)。しかし、このフィールドは今は廃れている。
+		"O:" フィールドを使うことが推奨されている。
+	</p>
+
+	<h4 id="mmeter">3.1.6 M: - 拍子</h4>
+
+	<p>
+		''M:'' フィールドは拍子を示す。
+		通常の拍子はもちろん、（例： ''M:6/8'' あるいは ''M:4/4''）、
+		記号 ''M:C'' や ''M:C|'' はそれぞれ (4/4) と (2/2) に対応する。
+		記号 ''M:none'' は拍子を完全に省く (拍子なし).
+	</p>
+	<p>
+		複雑な拍子を指定することもできる。例：''M:(2+3+2)/8'' は
+		ビートのアクセントを明示していることを表す。分子のカッコはつけなくともよい。
+		このときの組版は次のようになる：
+	</p>
+	<pre>
+  2 + 3 + 2
+      8
+</pre>
+	<p>
+		''M:'' フィールド指定がないときは、拍子なしが仮定される。この場合は,
+		小節線は好きなところに指定してよい。
+	</p>
+
+
+
+
+	<h4 id="lunit_note_length">3.1.7 L: - 音符の単位長さ</h4>
+
+	<p>
+		''L:'' フィールドで指定されるのは音符の単位長さである。
+		ここで単位長さとは、abc 記譜法で１つの文字が表す音符の長さの単位である。
+	</p>
+	<p>
+		よく使われる単位は ''L:1/4'' - 四分音符、''L:1/8'' - 八分音符 、
+		''L:1/16'' - 十六分音符 がある。。 ''L:1'' (全音符) - やこれと同じ ''L:1/1'',
+		また ''L:1/2'' (二分音符), ''L:1/32'' (三十二分音符), ''L:1/64'', ''L:1/128'', ''L:1/256'' ,
+		''L:1/512'' も可能である。
+		とはいえ、''L:1/64'' やこれより短い音価ではソフトウェアパッケージによってはサポートされない。
+	</p>
+	<p>
+		もし''L:'' フィールドが定義されなければ, 単位長さは既定値で定義される。
+		ベースは拍子フィールド ''M:'' により定まる。
+		この既定値は拍子を十進法として解釈することで計算される。
+		すなわち、もし、拍子が 0.75 未満であれば、単位長さは十六分音符となる。
+		0.75 以上であれば, 単位長さは八分音符である。
+		たとえば、2/4 = 0.5, であるから 既定値となる単位長さは十六分音符である。
+		一方 for 4/4 = 1.0, や 6/8 = 0.75, or 3/4= 0.75, では単位長さは八分音符である。
+		''M:C'' (4/4) や ''M:C|'' (2/2) 、 ''M:none'' (自由拍子),
+		の場合は、デフォルトとなる単位長さは八分音符である。
+	</p>
+	<p>
+		拍子が曲の途中で変わっても、単位音符の長さは変わらない。
+	</p>
+
+
+	<h4 id="qtempo">3.1.8 Q: - テンポ</h4>
+
+	<p>
+		"Q:" フィールドは一分間のビートの数でテンポを定める。 例 ''Q:1/2=120'' は １分あたり120回の8分音符を表す。
+
+		4つまでのビートを定めることができる。例：<br />
+
+		Q:1/4 3/8 1/4 3/8=40
+		<br />
+		これは、あたかも''Q:5/4=40'' であるかのように曲を弾くことを意味する。
+		しかし、ユーザーによって指定した音符のテンポを示すことができる。
+	</p>
+	<p>
+		テンポの定義は、オプションを先に出したり後に続けたりできる<a href="#text_string_definition">テキスト文字列</a>を使って修飾できる。例：<br />
+
+		Q: "Allegro" 1/4=120 <br />
+		Q: 3/8=50 "Slowly"
+	</p>
+	<p>
+		テンポ指示が明示的になくても問題ない。例： ''Q:"Andante"''.
+
+	</p>
+	最後に付け加えておくが、 ''Q:'' フィールド中にはすでに廃止された使い方もある。
+	</p>
+
+	<h4 id="pparts">3.1.9 P: - パート</h4>
+
+	<p>
+		// 変動要因 //
+		１つ以上の声部がある音楽で、
+		''P:'' と ''V:'' フィールドの相互作用がどうなるかはは、abc のバージョン 2.2 で記載する。
+		単一声部での ''P:'' の使用法についてもそのとき述べよう。
+	</p>
+
+	<p>
+		''P:'' フィールドは<a href="#tune_header_definition">曲ヘッダ</a>で使われる。
+		これは、曲を繰り返す回数を定める。例：''P:A3'' は ''P:AAA'' に等しい。
+		カッコを使うこともできる。例： ''P:(AB)3'' は ''P:ABABAB''　に等しい。
+		カッコのネストも許される。
+		ドットはヘッダ''P:'' フィールドののどこに置いてもよい。これは可読性を高めるために使える。
+		例：''P:((AB)3.(CD)3)2''.
+		これらのドットはコンピュータプログラムによって無視される。
+		''P:'' 記法の使い方は、
+		<a href="#variant_endings">さまざまな終わりかた</a> と <a href="#lyrics">歌詞</a>を見よ。
+
+	</p>
+
+
+	<p>
+
+		曲の再生を完全に実行するなら、プログラムは可能であれば''P:'' フィールドを使うべきである。
+		組版プログラムは ''P:'' フィールドをプリントスコアに含めるべきである。
+
+		パート情報をプリントスコアに含める方法の詳細については、<a href="#typesetting_information_fields">組版情報フィールド</a>を見よ。
+	</p>
+	<p>
+		<code>P:</code>フィールドは、<a
+			href="#tune_header_definitiona">曲ヘッダ</a>で曲のパートを演奏する順序を決めるときに使われる。例：''P:ABABCDCD''、<br />
+		またそのとき<a href="#tune_body_definition">曲本体</a>内部で各パートをマークするときに使われる。
+		例 ''P:A'' または ''P:B''. (この文脈ではパートは曲のセクションを指す。多声音楽の１つの声部を指すのではない。）
+	</p>
+
+	<h4 id="ztranscription">3.1.10 Z: - 記述</h4>
+	<p>
+		典型的には ''Z:'' フィールドは該当曲を abc に翻訳した人名を記す。
+		そしてできれば連絡先を記載する。例. 電子メールアドレス、ホームページ URL
+		<br />
+
+		// 例: // 簡単な記述
+		Z:John Smith, <j.s@mail.com>
+
+			<h4 id="nnotes">3.1.11 N: - 参照</h4>
+
+			<p>
+				一般的な注釈を含めて、同じ他の曲に対する参照のように、
+				その曲が abc にコンバートされた元の記法を記す。
+			</p>
+			<p>
+				<a href="#typesetting_information_fields">組版情報フィールド</a>を見よ。
+				参照が印刷スコアに組み込まれる方法が詳しく記載されている。
+			</p>
+
+
+			<h4 id="ggroup">3.1.12 G: - グループ</h4>
+
+			<p>
+				データベースソフトウェアはこのフィールドを使ってもよい。曲をグループにまとめるため
+				（たとえば、楽器によって）のインデックスを作る目的である。また、
+				メドレーを作るなどの目的に使われるかもしれない。しかし、この用法は標準化されていない。
+			</p>
+
+			<h4 id="hhistory">3.1.13 H: - 履歴</h4>
+
+			<p>
+				複数段の参照、由来、小咄に用いられる。
+			</p>
+			<p>
+				''H:'' フィールドは典型的には組版に用いられることはない。
+				複数段入力のための正しい使用方法は<a href="#field_continuation">フィールド継続</a>シンタックス(''+:'')が使われる。
+				この結果、たとえば、データベースアプリケーションは二つの異なる小咄を区別できる。
+			</p>
+
+	</p>
+	<pre>
+// 例: //
+  H:this is considered
+  +:as a single entry
+
+  H:this usage is considered as two entries
+  H:rather than one
+</pre>
+
+	<h4 id="kkey">3.1.14 K: - キー</h4>
+
+	<p>
+		調性記号は大文字("A-G")に加え、必要に応じて"#"か"b"を添える。これらはそれぞれシャープとフラットに対応する。
+		モードを指定することができる。モードの指定があければ長調が仮定される。
+	</p>
+	<p>
+		例えば, ''K:C major'' のほか、 ''K:A minor'', ''K:C ionian'', ''K:A aeolian'', ''K:G mixolydian'', ''K:D dorian'',
+		''K:E phrygian'', ''K:F lydian'' , ''K:B locrian'' は、
+		シャープもフラットもない五線譜すべてである。
+		スペースは省いてもよく、モードでは大文字は無視されるし、また、実際にパーシングされるのは最初の3文字である。
+		その結果、次の例の通りとなる。
+		''K:F# mixolydian'' ''K:F#Mix'' や ''K:F#MIX'' と同じである。
+		同様に、特別な例として, "minor" は "m" と略してもよい。
+	</p>
+	<p>
+		この表は同じキーがどのように違うように表記されるかを示している。
+	</p>
+	<pre>
+^           Mode ^ Ionian ^ Aeolian ^ Mixolydian^ Dorian    ^ Phrygian  ^ Lydian    ^ Locrian   ^
+^ Key Signature  ^ Major  ^ Minor   ^           ^           ^           ^           ^           ^
+| 7 sharps       | ''C#'' | ''A#m'' | ''G#Mix'' | ''D#Dor'' | ''E#Phr'' | ''F#Lyd'' | ''B#Loc'' |
+| 6 sharps       | ''F#'' | ''D#m'' | ''C#Mix'' | ''G#Dor'' | ''A#Phr'' | ''BLyd''  | ''E#Loc'' |
+| 5 sharps       | ''B''  | ''G#m'' | ''F#Mix'' | ''C#Dor'' | ''D#Phr'' | ''ELyd''  | ''A#Loc'' |
+| 4 sharps       | ''E''  | ''C#m'' | ''BMix''  | ''F#Dor'' | ''G#Phr'' | ''ALyd''  | ''D#Loc'' |
+| 3 sharps       | ''A''  | ''F#m'' | ''EMix''  | ''BDor''  | ''C#Phr'' | ''DLyd''  | ''G#Loc'' |
+| 2 sharps       | ''D''  | ''Bm''  | ''AMix''  | ''EDor''  | ''F#Phr'' | ''GLyd''  | ''C#Loc'' |
+| 1 sharp        | ''G''  | ''Em''  | ''DMix''  | ''ADor''  | ''BPhr''  | ''CLyd''  | ''F#Loc'' |
+| 0 sharps/flats | ''C''  | ''Am''  | ''GMix''  | ''DDor''  | ''EPhr''  | ''FLyd''  | ''BLoc''  |
+| 1 flat         | ''F''  | ''Dm''  | ''CMix''  | ''GDor''  | ''APhr''  | ''BbLyd'' | ''ELoc''  |
+| 2 flats        | ''Bb'' | ''Gm''  | ''FMix''  | ''CDor''  | ''DPhr''  | ''EbLyd'' | ''ALoc''  |
+| 3 flats        | ''Eb'' | ''Cm''  | ''BbMix'' | ''FDor''  | ''GPhr''  | ''AbLyd'' | ''DLoc''  |
+| 4 flats        | ''Ab'' | ''Fm''  | ''EbMix'' | ''BbDor'' | ''CPhr''  | ''DbLyd'' | ''GLoc''  |
+| 5 flats        | ''Db'' | ''Bbm'' | ''AbMix'' | ''EbDor'' | ''FPhr''  | ''GbLyd'' | ''CLoc''  |
+| 6 flats        | ''Gb'' | ''Ebm'' | ''DbMix'' | ''AbDor'' | ''BbPhr'' | ''CbLyd'' | ''FLoc''  |
+| 7 flats        | ''Cb'' | ''Abm'' | ''GbMix'' | ''DbDor'' | ''EbPhr'' | ''FbLyd'' | ''BbLoc'' |
+</pre>
+	<p>
+		"K:" フィールドが指定されないか、"K:none" という指定であれば、調性記号を全く使わないことができる。
+	</p>
+
+	<h4 id="rrhythm">3.1.15 R: - リズム</h4>
+
+	<p>
+		曲のタイプの指示を含む（例：ホーンパイプ、ダブルジーグ、シングルジーグ、48 小節ポルカ、など）。
+		この指示によって、演奏者は曲をどのように解釈するかヒントを得ることができる。
+		またこの指示はまたデータベースアプリケーションにとっても有用である
+		（<a href="#bdefsbackground_information">バックグラウンド情報</a>を見よ)。
+		また、このフィールドは実験的に再生ソフトで使われている。特に、
+		<a href="http://abcnotation.com/software#abcmus">abcmus</a> では、
+		小節内で特定の音符にアクセントをつけることでよりリアルな再生を目指している。
+	</p>
+
+	<p>
+		印刷されたスコアに含まれるリズムの詳細は、
+		<a href="#typesetting_information_fields">組版情報フィールド</a>を見よ。
+	</p>
+
+
+	<h4 id="bdfsbackground_information">3.1.16 B:, D:, F:, S: - バックグラウンド情報</h4>
+	<p>
+		情報フィールド ''B:book'' (印刷された曲集),
+		''D:discography'' （すなわち CD や LP など聞く対象となる曲）や、
+		''F:file url'' (すなわち<a href="#abc_tune_definition">abc 曲</a>、
+		<a href="#abc_file_definition">abc ファイル</a> (WEB などにある) 、
+		''S:source'' (すなわち集めたり学んだりした曲の環境）は、以前に述べたフィールド、
+		<a href="#history">''H:History''</a>や<a href="#nnotes">''N:notes''</a>、
+		<a href="#oorigin">''O:origin</a>、<a href="#rrhythm">''R:rhythm''</a>と同様、
+		曲についての構造的バックグラウンドを与える。
+	</p>
+	<p>
+		これらは特に大規模な曲の集合を扱うことを目的としている（ abc が生まれた発端である）。そして、
+		システマティックに扱えるということは、abc ソフトウェアは整列をはじめとして、
+		検索、フィルタが使えればよい（たとえば、特定の CD にある曲をすべてリズム順に整列させたりフィルタで抽出したりする、など）。
+
+	<p>
+		abc 標準はこれらのフィールドがどのように使われるかを処方しはしない。しかし、複数情報が一つのフィールドに含まれるのではなく、
+		一つの情報がそれぞれ複数の同じ型のフィールドに含まれるのが典型的である。
+		<a href="#englishabc">English.abc</a> に出てくる例を見よ。
+	</p>
+	<p>
+
+		バックグラウンド情報が印刷スコアに含まれる詳細については、<a href="#typesetting_information_fields">組版情報フィールド</a>を見よ。
+	</p>
+
+	<h4 id="iinstruction">3.1.17 I: - 指図</h4>
+
+	<p>
+		''I:''(指図) フィールドが使われるのは、指図ディレクティブの拡張集合としてであり、
+		abc コードの解釈に関わることである。
+	</p>
+	<p>
+		''I:'' フィールドは、
+		<a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a>と相互に置き換え可能である。
+		だから、どんな''I:directive''も''%%directive''に置き換えられるし、
+		その逆も同様である。
+		しかし、
+		<a href="#use_of_fields_within_the_tune_body">インライン</a>バージョンを使うのならば、
+		''I:'' バージョンを使わなければならない。
+	</p>
+
+	<p>
+		このような相互交換性にもかかわらず、あるディレクティブは標準の一部として採用され（この文書で<code>I:</code>によって示される）、
+		そしてこれを標準とするようなソフトウェアにより実装されなければならない。逆に、
+
+		<a href="#stylesheet_directive_definition" title="abc:standard:v2.1 ↵" class="wikilink1">スタイルシートディレクティブ</a>
+		(この文書で <code>%%</code> により示される)はオプションである。
+	</p>
+
+	<p>
+		<em> コメント </em> Since <a href="#stylesheet_directive_definition" title="abc:standard:v2.1 ↵"
+			class="wikilink1">スタイルシートディレクティブ</a>はオプションであり、
+		あるプログラムから別のプログラムに移植できることは必要ではない。だから、この意味は<code>I:</code> フィールドが含むものは、
+		<a href="#stylesheet_directive_definition" title="abc:standard:v2.1 ↵" class="wikilink1">スタイルシートディレクティブ</a>
+		は abc ソフトウェアで自由に扱うべきであり、
+		特に認識できない <code>I:</code> フィールドは無視されるべきである。
+	</p>
+
+
+
+	<p>
+		下記表が含む <code>I:</code> フィールドディレクティブのリストは abc 標準として採用されている。
+		さらなる情報はリンク先を参照。
+	</p>
+
+
+	<div class="table sectionedit18">
+		<table class="inline">
+			<thead>
+				<tr class="row0">
+					<th class="col0 leftalign"> ディレクティブ </th>
+					<th class="col1 leftalign"> セクション </th>
+				</tr>
+			</thead>
+			<tr class="row1">
+				<td class="col0 leftalign"> <code>I:abc-charset</code> </td>
+				<td class="col1 leftalign"> <a href="#charset_field" title="abc:standard:v2.1 ↵"
+						class="wikilink1">文字集合フィールド</a> </td>
+			</tr>
+			<tr class="row2">
+				<td class="col0 leftalign"> <code>I:abc-version</code> </td>
+				<td class="col1 leftalign"> <a href="#version_field" title="abc:standard:v2.1 ↵"
+						class="wikilink1">バージョンフィールド</a> </td>
+			</tr>
+			<tr class="row3">
+				<td class="col0 leftalign"> <code>I:abc-include</code> </td>
+				<td class="col1 leftalign"> <a href="#include_field" title="abc:standard:v2.1 ↵"
+						class="wikilink1">インクルードフィールド</a> </td>
+			</tr>
+			<tr class="row4">
+				<td class="col0 leftalign"> <code>I:abc-creator</code> </td>
+				<td class="col1 leftalign"> <a href="#creator_field" title="abc:standard:v2.1 ↵"
+						class="wikilink1">クリエーターフィールド</a> </td>
+			</tr>
+			<tr class="row5">
+				<td class="col0 leftalign"> <code>I:linebreak</code> </td>
+				<td class="col1"> <a href="#typesetting_line-breaks" title="abc:standard:v2.1 ↵"
+						class="wikilink1">組版改行</a> </td>
+			</tr>
+			<tr class="row6">
+				<td class="col0 leftalign"> <code>I:decoration</code> </td>
+				<td class="col1 leftalign"> <a href="#decoration_dialects" title="abc:standard:v2.1 ↵"
+						class="wikilink1">装飾方言</a> </td>
+			</tr>
+		</table>
+	</div>
+
+	<p>
+		通常、命令フィールドは、ファイルヘッダー、ファイルのデフォルトを設定するため、
+		または（ほとんどの場合）曲のヘッダーに使用されるが、曲本体には使用されない。
+		チューンヘッダ内の命令フィールドの出現は、ファイルヘッダ中の命令フィールドよりも優先される。
+	</p>
+
+	<p>
+		<em> コメント： </em> 覚えておいて欲しいのは、
+		abc ソフトウェアでファイルから曲を抽出するものは
+		オリジナルの<a href="#file_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">ファイルヘッダ</a>のフィールドを、
+		抽出した曲のヘッダに挿入しなければならない、ということだ。
+		これはまたこのセクションで定義されたフィールドに対しても正しい。
+	</p>
+
+
+
+	<h5 id="charset_field">文字集合フィールド</h5>
+	<div class="level5">
+
+		<p>
+			<code>I:abc-charset &lt;value&gt;</code> フィールドが示すのは、
+			文字の集合であり、 <a href="#text_string_definition" title="abc:standard:v2.1 ↵" class="wikilink1">テキスト文字列</a>
+			がコード化されている文字である。
+			これはファイルの読み方に影響を与えるので、
+			できるだけ早くに
+			<a href="#file_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">ファイルヘッダ</a>に与えられるべきである。
+			これはファイル全体で変わることはない。
+		</p>
+
+		<p>
+			<em> 例： </em>
+		</p>
+		<pre class="code">I:abc-charset utf-8</pre>
+
+		<p>
+			合法的な値は<code>iso-8859-1</code> から <code>iso-8859-10</code>までの iso-8859
+			のほか、 <code>us-ascii</code> と <code>utf-8</code> (デフォルト)である。
+		</p>
+
+		<p>
+			<a href="#abc_tune_definition" title="abc:standard:v2.1 ↵" class="wikilink1">abc 曲</a>をエクスポートして、
+			この標準に合わせるソフトウェアは、もし <code>utf-8</code> 以外のエンコーディングを使うのであれば、
+			この charset を含まなければならない。
+			適合する abc ソフトウェアはすべて、
+			<code>utf-8</code> と <code>us-ascii</code>でコード化されている、
+			<a href="#text_string_definition" title="abc:standard:v2.1 ↵" class="wikilink1">テキスト文字列</a>
+
+			の扱いが可能でなければならない。
+			他の文字集合の扱いはオプションである。
+		</p>
+
+		<p>
+			<a href="http://en.wikipedia.org/wiki/UTF-8" class="urlextern" title="http://en.wikipedia.org/wiki/UTF-8"
+				rel="nofollow">UTF-8</a> と
+			<a href="http://en.wikipedia.org/wiki/ISO/IEC_8859" class="urlextern"
+				title="http://en.wikipedia.org/wiki/ISO/IEC_8859" rel="nofollow">ISO-8859</a>
+			に関するさらなる情報は wikipedia 参照。
+		</p>
+
+	</div>
+
+	<h5 id="version_field">バージョンフィールド</h5>
+	<div class="level5">
+
+		<p>
+			<a href="#abc_file_definition" title="abc:standard:v2.1 ↵" class="wikilink1">abc
+				ファイル</a>すべてがこの標準に適合するには、ファイルは次の文字列で始めるべきである。
+		</p>
+		<pre class="code">%abc-2.2</pre>
+
+		<p>
+			<a href="#abc_file_identification" title="abc:standard:v2.1 ↵" class="wikilink1">abc ファイルの見分け方</a> を見よ。
+		</p>
+
+		<p>
+			しかし、曲が異なる標準に適合しているかを示すのには、<code>I:abc-version &lt;value&gt;</code> フィールドが使える。
+			これは <a href="#tune_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">曲ヘッダ</a>
+			(個別の曲に対して) または <a href="#file_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">
+				ファイルヘッダ</a>にある。
+		</p>
+
+		<p>
+			<em> 例: </em>
+		</p>
+		<pre class="code">I:abc-version 2.2</pre>
+
+	</div>
+
+	<h5 id="include_field">インクルードフィールド</h5>
+	<div class="level5">
+
+		<p>
+			<code>I:abc-include &lt;filename.abh&gt;</code> は、分離された abc ヘッダファイル(.abh)
+			で見つけられた定義をインポートする。
+			また、<a href="#file_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">ファイルヘッダ</a> や
+			<a href="#tune_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">曲ヘッダ</a>
+			にこれらの定義を挿入する。
+		</p>
+
+		<p>
+			<em> 例: </em>
+		</p>
+		<pre class="code">I:abc-include mydefs.abh</pre>
+
+		<p>
+			インクルードファイルは、
+			次のものを含めることができる：
+			<a href="#information_field_definition" title="abc:standard:v2.1 ↵" class="wikilink1">情報フィールド</a>,
+			<a href="#stylesheet_directive_definition" title="abc:standard:v2.1 ↵" class="wikilink1">スタイルシート指示</a>
+			<a href="#comments_and_remarks" title="abc:standard:v2.1 ↵" class="wikilink1">コメント</a>。
+			他の abc 構成要素は含めてはならない。
+		</p>
+
+		<p>
+			もしヘッダファイルがみつかれなければ、<code>I:abc-include</code> 命令は致命的でないエラーメッセージとともに無視されるべきである。
+		</p>
+
+		<p>
+			<em> コメント: </em>
+			もしこの構成を使って<a href="#abc_file_definition" title="abc:standard:v2.1 ↵" class="wikilink1">abc ファイル</a>
+			を配布するのであれば、必ず .abh ファイルも一緒に配布すること。
+		</p>
+
+	</div>
+
+
+	<h5 id="creator_field">クリエーターフィールド</h5>
+	<div class="level5">
+
+		<p>
+			<code>I:abc-creator &lt;value&gt;</code> フィールドが含むものは、
+			プログラムの名前とバージョン番号であり、ここでプログラムとは、
+			<a href="#abc_file_definition" title="abc:standard:v2.1 ↵" class="wikilink1">abc ファイル</a>
+			を作ったプログラムのことである。
+		</p>
+
+		<p>
+			<em> 例: </em>
+		</p>
+		<pre class="code">I:abc-creator xml2abc-2.7</pre>
+
+		<p>
+			<a href="#abc_tune_definition" title="abc:standard:v2.1 ↵" class="wikilink1">abc tunes</a>
+			をこの標準に適合させるようにエクスポートするソフトウェアは、
+			このクリエーターフィールドを含まなければならない。
+
+		</p>
+
+	</div>
+
+	<h4 id="other_fields">3.1.18 他の情報 </h4>
+	<ul>
+		<li> ''m:'' は<a href="#macros">マクロ</a>を参照せよ。</li>
+		<li> ''r:'' は<a href="#comments_and_remarks">コメントと注意</a>を参照せよ。</li>
+		<li> ''s:'' は<a href="#symbol_lines">シンボルライン</a>を参照せよ。</li>
+		<li> ''U:'' は<a href="#redefinable_symbols">再定義可能なシンボル</a>を参照せよ。</li>
+		<li> ''V:'' は<a href="#multiple_voices">多声</a>を参照せよ。</li>
+		<li> ''W:'' と ''w:'' は<a href="#lyrics">歌詞</a>を参照せよ。</li>
+	</ul>
+
+
+	<h3 id="use_of_fields_within_the_tune_body">3.2 曲本体の情報フィールドの使い方
+		(Use of fields within the tune body)</h3>
+
+	<dl>
+		<dt id="inline_field_definition">inline field</dt>
+		<dt>インラインフィールド</dt>
+		<dd>
+			<p>調性(''K'')や拍子(''M'')、単位音符長さ(''L'') を曲の途中で変えることは頻繁に生じる。
+				これらを始めとして、多くの <a href="#information_field_definition">情報フィールド</a>で、
+				<a href="#tune_body">曲本体</a>のなかで当然使われるべきものは、
+				<b>インラインフィールド</b>として定め、
+				角カッコの中に置く。
+			</p>
+		</dd>
+	</dl>
+	<pre>
+// 例: 次の２つの抜粋部分は等価である。どちらでも同等に受け入れられる。
+  E2E EFE|E2E EFG|[M:9/8] A2G F2E D2|]
+
+  E2E EFE|E2E EFG|\
+  M:9/8
+  A2G F2E D2|]
+</pre>
+
+
+	<p>
+		最初の括弧、フィールド識別子およびコロンは、間にスペースを入れずに記述する必要がある。
+		括弧内には1つのフィールドしか配置できない。
+		ただし、複数の括弧で囲まれたフィールドを隣り合わせに配置することもできる。
+		必要に応じて、インラインフィールド（特に音部記号の変更）をビームの途中で使用することができる。
+	</p>
+	<p>
+		本文に表示されるフィールドとインラインで使用される可能性のあるフィールドを示す表の情報フィールドを参照のこと。
+	</p>
+
+	<h3 id="field_continuation" name="field_continuation">3.3 フィールド継続 (Field continuation)</h3>
+	<p>
+		１つの線が長すぎるフィールドは、継続する行の先頭に記号''+:''を使って継続することができる。
+		文字列タイプ<a href="#information_field_definition">情報フィールド</a>
+		（文字列タイプの<a href="#Information-Field">情報フィールド</a>一覧参照）に対して、継続は二つの半線の間のスペースで繋げられる。
+		文字列タイプ<a href="#information_field_definition">情報フィールド</a>については
+		（<a href="#information_fields">情報フィールド</a>文字列タイプフィールド一覧表を見よ）、
+		継続は二つのハーフライン間のスペースを付加することとして考えられている。
+	</p>
+
+	<p>例：次の２つの断片は同等とみなせる</p>
+
+	<pre class="code">
+w:Sa-ys my au-l' wan to your aul' wan,
++:will~ye come to the Wa-x-ies dar-gle?
+</pre>
+	<pre class="code">
+w:Sa-ys my au-l' wan to your aul' wan, will~ye come to the Wa-x-ies dar-gle?
+</pre>
+
+	<h2 id="tune" name="tune">4. 曲</h2>
+	<h3 id="pitch" name="pitch">4.1 ピッチ</h3>
+
+	<p>
+		次の文字がト音記号を使って表される音符となる：
+	</p>
+
+
+	<div id="canvas-pitch"></div>
+
+	<p>
+		ハ音記号を用いたとき、C が中央ド、次に D, E, F, G, A, B, c … となる。c 以上のオクターブ上は、c', d' となる。
+		C よりオクターブ下は C, となる。
+	</p>
+
+
+	<p>
+		同様の拡張は低い音符でも高い音符でも可能である。
+	</p>
+
+	<p>
+		低いオクターブはコンマを、高いオクターブはアポストロフィを使えばよい。
+		一つ特別なコンマ/アポストロフィを使うたびにオクターブを下げる/上げる.
+	</p>
+
+	<p>
+		プログラムは音符の後に出てくるどんな<code>,</code> や <code>&#039;</code> 記号のコンビネーションでも、
+		解釈できなければならない。たとえば、<code>C,&#039;,</code> (C コンマ アポストロフィ コンマ) は
+		<code>C,</code> (C コンマ) に等しい。また (大文字) <code>C&#039;</code> (C アポストロフィ) は、
+		(小文字) <code>c</code> と同等である。
+	</p>
+
+	<p>
+		別の方法として、<a href="#music_code_definition" title="abc:standard:v2.1 ↵" class="wikilink1">音楽コード</a>のセクションを上げ下げするには
+		<code>K:</code> フィールドか <code>V:</code> フィールドの <code>octave</code>が使えないといけない。
+	</p>
+
+	<p>
+		<em> コメント：</em> 英語の音符の名前は <code>C</code>-<code>B</code>, これらは　abc システムで使われる。
+		他の言語で対応する音符名は <code>do</code>-<code>si</code> である。具体的には、
+		<code>do</code>=<code>C</code>, <code>re</code>=<code>D</code>, <code>mi</code>=<code>E</code>,
+		<code>fa</code>=<code>F</code>,
+		<code>sol</code>=<code>G</code>, <code>la</code>=<code>A</code>, <code>si</code>=<code>B</code>.
+	</p>
+
+
+	<h3 id="Accidentals" name="Accidentals">4.2 臨時記号(Accidentals)</h3>
+
+	<p>
+		^, =, _ はそれぞれシャープ、ナチュラル、フラットである。ダブルシャープ、ダブルフラットはそれぞれ ^^, __ となる。
+	</p>
+	<p>
+		装飾 !editorial! は、編集者により置かれる臨時記号で、通常の臨時記号は音符の左側に置かれるのに対し、
+		!editorial! は音符の上に小さな文字で置かれる。
+	</p>
+	<p>
+		装飾 !courtesy! は、本来は不要な臨時記号を親切の意味でカッコつきで示す。
+	</p>
+	<p>訳注：このいずれも abcjs 5.12.0 では実現されていない。</p>
+
+	<h3 name="Note-lengths" id="Note-lengths">4.3 音符の長さ</h3>
+
+	<p>
+		<a href="#unit_note_length">単位音符長さ</a>とは、L: フィールドで規定されているとする。
+		もし L フィールドが存在しなければ、M: フィールドから推論される。例：L: 1/8 であれば、単位音符長さは 8 分音符である。
+		L: 1/8 のとき、a とあれば ８分音符であり。a2 であれば ４分音符である。a/2 は16分音符となる。
+
+	</p>
+	<p>音符の長さを変えるには、単に音符の長さを後ろに乗じればよい。単位音符長さが 1/16 とすると、
+		A または A1 は16分音符であり、A2 は8分音符であり、A3は付点8分音符であり、A4は4分音符であり、A6は付点4分音符であり、
+		A7は複付点4分音符であり、A8は2分音符であり、A12 は付点2分音符であり、A14は複付点2分音符である。
+	</p>
+	<p>音符の長さを短くするには分数を使う。A が8分音符とすれば、A/2は16分音符であり、A3/2は付点8分音符であり、
+		A/4は32分音符である。L: フィールドによって<a href="#unit_note_length">単位音符長さ</a>を変えてもよい。
+		あるいは、3:1 リズムのとき、たとえば、付点8分音符と16音符の組み合わせのときには、
+		ブロークン・リズム(broken rhythm)を使うこともできる。
+
+	</p>
+	<p>A/ は A/2 の略記である。同様に、A// は A/4 の略記である。</p>
+	<p>開発者のために：準拠ソフトウェアは 128 分音符まで扱えるべきである。それより短い音符はオプションである。</p>
+	<h3 id="Broken-rhythm">4.4 ブロークン・リズム</h3>
+
+	<p>
+		ブロークン・リズム（3:1のリズム）は次のように記す。
+	</p>
+
+	<pre class="code">
+L:1/8
+a&gt;b c&lt;d abcd
+</pre>
+	<div id="canvas-broken-rhythm"></div>
+	<p>
+		上記記法は論理的に拡張できる。すなわち、&gt;&gt; は、前が複付点音符になる。
+	</p>
+	<h3 id="rests">4.5 休符</h3>
+	<p>
+		休符 (rests) は記号 z または x で表される。
+		長さは音符と同じ記法による。
+		z は譜面に表示されるが x は表示されない。
+	</p>
+	<p>
+		複数小節の休符は記号 Z (大文字) の次に小節数を記す。
+	</p>
+	<p>
+		例：次に示す抜粋はタイプセットの結果を示す。見た目は違うが音楽的には同じである。
+	</p>
+	<script>document.write('<pre class="code">' + rests + '</pre>')</script>
+
+	<div id="canvas-rests"></div>
+
+	<p class="frame">
+		訳注：全休符は小節全体の休みのときの表示であるが、abcjs では小節内の休符の長さにかかわらず、
+		全休符が表示されるのは、L:パラメータで表される単位長さ * 休符カウント数 = 1 のときであり、
+		かつそのときに限られる、
+		というバグがあった。以前のバージョンでは、下記表記の場合、z4 表示のままでは 2 分休符が表示されており、
+		全休符を表示するには z8 としなければならなかった。現在（abcjs5.11.0）では、このバグは修正されている。
+	</p>
+	<script>document.write('<pre class="code">' + rests_2 + '</pre>')</script>
+	<div id="canvas-rests-2"></div>
+
+
+	<h3 id="voice-modifiers_Clefs-and-transposition">4.6 声部変更子 - 音部記号と移調 (Voice Modifiers - Clefs and transposition )
+	</h3>
+
+	<p>音符記号と移調の情報は K: key フィールドと V: voice フィールドで使える。記法は次のとおりである。</p>
+
+	<pre class="code">
+          clef=&lt;音部記号名&gt; stafflines=&lt;lines&gt; octave=&lt;number&gt; 
+          score=&lt;note1&gt;[&lt;note2&gt;] sound=&lt;note1&gt;&lt;note2&gt; shift=&lt;note1&gt;&lt;note2&gt;
+          instrument=&lt;note1&gt;[/&lt;note2&gt;] clef-c=&lt;clef name&gt;
+</pre>
+
+
+
+
+	<p>ここで &lt;…&gt; は値を表し、[…] はオプションパラメータを表す. それぞれの意味は次の通り。</p>
+
+	<ul>
+
+		<li>clef=&lt;音部記号名&gt; - 音部記号を特定する(例 clef=bass) - 詳しい情報は<a href="#clefs">音部記号</a>を見よ。</li>
+		<li>[stafflines=&lt;lines>] - スタッフの線の数 (デフォルトは 5) - 詳しい情報は<a href="#stafflines">五線</a>を見よ。</li>
+		<li>[octave=&lt;number&gt;] - 現在の声部を１オクターブ以上上げたり（正の数字）下げたり（負の数字）する。
+			詳しい情報は<a href="#the_octave_modifier">オクターブ変更子</a>を見よ。</li>
+		<li>score=&lt;note1&gt;&lt;note2&gt;
+			指定した高さにしたがってタイプセットを変更する（再生音高は影響を受けない）。
+			詳しくは<a href="#transposition_operator">移調オペレータ</a>を見よ。</li>
+		<li>sound=&lt;note1&gt;&lt;note2&gt;
+			指定した高さにしたがって再生音高を変更する（タイプセットは影響を受けない）。
+
+			詳しくは<a href="#transposition_operator">移調オペレータ</a>を見よ。</li>
+
+		<li>shift=&lt;note1&gt;&lt;note2&gt;
+			指定した高さにしたがって、タイプセットスコアと再生音高を独立に変更する。
+			詳しくは<a href="#transposition_operator">移調オペレータ</a>を見よ。</li>
+		<li>instrument=&lt;note1&gt;/&lt;note2&gt; これは次と同義。 score=&lt;note1&gt;&lt;note2&gt; sound=c&lt;note2&gt; - for
+			more information see writing abc code for transposing instruments;</li>
+		<li>clef-c=&lt;clef name&gt; はコンサート/サウンドピッチスコアのために使われる音部記号を指定する。
+		</li>
+
+	</ul>
+
+
+	<h4 id="clefs">4.6.1 音部記号</h4>
+
+
+	<p>
+		標準的な音部記号名が設定で <code>clef=</code> モディファイヤによって利用可能である (下の表参照).
+		追記：
+	</p>
+	<ul>
+		<li class="level1">
+			<div class="li">
+				<code>clef=&lt;音部記号文字&gt;</code> または <code>clef=&lt;音部記号文字&gt;&lt;行番号&gt;</code>
+				を使う代わりに G (高音), F (低音) or C (ハ音) 記号を、
+				オプションで五線譜上に位置する場所の数字を添えて使うことができる
+				（例：<code>clef=F4</code> はへ音記号を指定する別の方法である）。
+
+		</li>
+		<li class="level1">
+			<div class="li">
+				オプションであるオクターブ指示子（例：<code>+8</code>) は
+				<a href="#octave_clefs" title="abc:standard:v2.2 ↵" class="wikilink1">オクターブ音部記号</a>
+				とともに指定する。
+		</li>
+	</ul>
+	<p>
+		典型的な設定名を下表に掲げる：
+	</p>
+	<div class="table sectionedit30">
+		<table class="border">
+			<thead>
+				<tr class="row0">
+					<th class="col0 leftalign"> 音部記号名 </th>
+					<th class="col1 leftalign"> Parameter setting </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row1">
+					<td class="col0 leftalign"> ト音記号 </td>
+					<td class="col1 leftalign"> <code>clef=G2</code> <em class="u">or</em> <code>clef=treble</code>
+					</td>
+				</tr>
+				<tr class="row2">
+					<td class="col0 leftalign"> French violin </td>
+					<td class="col1 leftalign"> <code>clef=G1</code> </td>
+				</tr>
+				<tr class="row3">
+					<td class="col0 leftalign"> Sub-bass </td>
+					<td class="col1 leftalign"> <code>clef=F5</code> </td>
+				</tr>
+				<tr class="row4">
+					<td class="col0 leftalign"> ヘ音記号 </td>
+					<td class="col1 leftalign"> <code>clef=F4</code> <em class="u">or</em> <code>clef=bass</code> </td>
+				</tr>
+				<tr class="row5">
+					<td class="col0 leftalign"> Baritone </td>
+					<td class="col1 leftalign"> <code>clef=F3</code> <em class="u">or</em> <code>clef=baritone</code>
+					</td>
+				</tr>
+				<tr class="row6">
+					<td class="col0 leftalign"> テナー記号 </td>
+					<td class="col1 leftalign"> <code>clef=C4</code> <em class="u">or</em> <code>clef=tenor</code> </td>
+				</tr>
+				<tr class="row7">
+					<td class="col0 leftalign"> アルト記号 </td>
+					<td class="col1 leftalign"> <code>clef=C3</code> <em class="u">or</em> <code>clef=alto</code> </td>
+				</tr>
+				<tr class="row8">
+					<td class="col0 leftalign"> Mezzosoprano </td>
+					<td class="col1"> <code>clef=C2</code> <em class="u">or</em> <code>clef=mezzosoprano</code> </td>
+				</tr>
+				<tr class="row9">
+					<td class="col0 leftalign"> Soprano </td>
+					<td class="col1 leftalign"> <code>clef=C1</code> <em class="u">or</em> <code>clef=soprano</code>
+					</td>
+				</tr>
+				<tr class="row10">
+					<td class="col0 leftalign"> Automatic* </td>
+					<td class="col1 leftalign"> <code>clef=auto</code> </td>
+				</tr>
+				<tr class="row11">
+					<td class="col0"> Drum** </td>
+					<td class="col1 leftalign"> <code>clef=perc</code> </td>
+				</tr>
+				<tr class="row12">
+					<td class="col0 leftalign"> None </td>
+					<td class="col1 leftalign"> <code>clef=none</code> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<p>
+		* <code>clef=auto</code> を使うと、譜面作成ソフトウェアは
+		ト音記号とヘ音記号のいずれかを適当と思うほうに自由に振り分けることが
+		できるようになる。そのような実装をする必要性を感じないソフトウェア開発者がとりうるオプションは、
+		必ずト音記号だけにする、ということがある。
+	</p>
+
+	<p>
+		** この標準はドラムの音部記号をサポートするにもかかわらず、
+		現在のところ特別にパーカッションの音符をサポートするソフトはない。
+	</p>
+
+	<p>
+		記法 <code>&lt;G|F|C&gt;&lt;line number&gt;</code>
+		は可能なライン番号すべてに拡張できる。
+		例：<code>clef=C5</code> は C (alto) クレフ（アルト記号）
+		、すなわち下から上に数えて５番目の五線譜の行に位置することを意味する。
+		ライン番号は省略できない。従来の abc ソフトウェアでは一貫した解釈ではなかったからである。
+	</p>
+
+	<p>
+		記法<code>&lt;treble|bass|alto&gt;&lt;line number&gt;</code> は
+		<a href="#outdated_clef_values" title="abc:standard:v2.2 ↵" class="wikilink1">
+			廃止された</a>.
+	</p>
+
+	<p>
+		旧来の記法をサポートするため,
+		<code>clef=</code> プレフィックスは名前付きの音部記号では省ける。
+		（ 例： <code>treble</code>, <code>bass</code>, <code>alto</code>）
+		しかし、明確化のためには省かないほうがよい。
+	</p>
+
+	<p>
+		他にも多くの音部記号を受け入れるようにするので、
+		その結果未知の名前は無視される。
+		もし音部記号が未知または特定できない場合は、デフォルトはト音記号である。
+	</p>
+
+	<p>
+		最後に、+8 または -8 のオクターブ記法がついている音符（下記参照）を除き、
+		音部記号はコードと音のあいだの関係に影響を与えない。
+	</p>
+
+	</div>
+
+	<h5 id="octave_clefs">オクターブ記号</h5>
+	<div class="level5">
+
+		<p>
+			オクターブ記号はト音記号やヘ音記号に 8 または 15 の数字をつけて、
+			１オクターブまたは２オクターブの上げ下げを行うものである。
+		</p>
+
+		<p>
+			abc はオクターブ記号について２種類の方法を用意している。
+		</p>
+
+		<p>
+			(1) <code>treble</code> または <code>bass</code> のつぎに、
+
+			<code>+8</code> または <code>-8</code> の接尾辞をつける。
+			この結果それぞれ音部記号の上または下に 8 の数字がつけられる。
+		</p>
+
+		<p>
+			<em> 例: </em>
+			以下の抜粋はオクターブのト音記号で、五線の下に記号が付される。
+			再生時には音符は中央 C より上の音が出る。
+		</p>
+		<pre class="code">[K: clef=treble+8] C|</pre>
+
+		<p>
+			小さな 8 の他に, 同じ効果が得られる表記を次に抜粋する：
+		</p>
+		<pre class="code">[K: clef=treble sound=Cc]      C|
+[K: clef=treble instrument=c'] C|</pre>
+
+		<p>
+			2) 音部記号の設定 <code>clef=treble</code> と <code>clef=bass</code>で、
+			続いて <code>^8</code> または <code>_8</code> 接尾辞がつくときは、
+			'8' の文字を音部記号のそれぞれ上または下に表示する。
+		</p>
+
+		<p>
+			<em> 例： </em> 下記の抜粋は、
+			オクターブをト音記号の上につけている。
+		</p>
+		<pre class="code">[K: clef=treble^8] c|</pre>
+
+		<p>
+			小さな 8 のほか、下記の記法も同じ効果がある：
+		</p>
+		<pre class="code">[K: clef=treble instrument=c'/c] c|</pre>
+
+		<p>
+			この拡張で同様の記法で 8 のかわりに 15 をつかえば２オクターブの上下ができる。
+		</p>
+
+		<p>
+			^/_ を使うかそれとも +/- を使うかは個人の好みによる。
+			^/_ はピッチに影響を与えるが、+/- は影響を与えない。
+			The decision over whether to use the ^/_ or the +/- versions is largely a matter of personal choice
+			and depends on whether you like the abc code to be at sounding pitch (^/_) or not (+/-).
+		</p>
+
+		<p>
+			<em> 例： </em> 下記の音符はすべて中央 C の音である。
+
+			最初の４つの場合、音部記号の設定は、五線譜上の音符の配置にのみ影響する。
+			最後の場合は abc の意味に依存する。
+			結果として表示される譜面は下図の通りである。
+		</p>
+		<pre class="code">[K: clef=treble]   C
+[K: clef=bass]     C
+[K: clef=alto]     C
+[K: clef=treble_8] C
+[K: clef=treble-8] c</pre>
+
+		<div id="canvas_clefs"></div>
+		<p>
+			訳注：[K: clef=treble_8] C の abcjs の譜面表示は誤りで、
+			本来なら 　[K: clef=treble-8] c (こちらは正しい) と同じになる。
+		</p>
+
+		<p>
+			<em> 注： </em>オクターブ音部記号は、他の変化記述子、たとえば、<code>octave</code>や、
+			<code>instrument</code>, <code>score</code> 、 <code>sound</code>とは独立である。
+		</p>
+
+		<p>
+			<em> 例: </em>
+			必要があれば、
+			コメントは<code>楽器</code>を表示するのにオクターブ記号のわきに使われる（下記参照）、
+			しかしコメントがなければ<code>楽器</code>のセッティングは先のオクターブによって再生音が上昇する
+		</p>
+		<pre class="code">K: clef=treble+8 % instrument=c'</pre>
+
+	</div>
+	<h4 id="stafflines">4.6.2 五線</h4>
+
+	<p>
+		<em> TODO: </em> <code>stafflines=</code> の扱いを明確にするか、それとも廃れる機能としてマークするかは、
+		さらなる議論となるまでペンディングとする。
+	</p>
+
+	</div>
+	<h4 id="the_octave_modifier">4.6.3 オクターブ変更子 (octave modifier)</h4>
+	<p>
+		<code>octave</code> 変更子は音符の上げ下げで多くのアプストロフィやコンマを書く手間を省くのに有用である。
+	</p>
+
+	<p>
+		<em> 例： </em> 下記の抜粋は等価である：
+	</p>
+	<script>document.write('<pre class="code">' + canvas_octave + '</pre>')</script>
+	<div id="canvas_octave"></div>
+	<p>
+		訳注：abcjs では、上記の表示でわかる通り、オクターブ変更子は無効である。
+	</p>
+
+	<h4>4.6.4 変更子のスコープと継承</h4>
+	<p>
+		基本的なルールとして、各声部では、後続の <code>V:</code> または <code>K:</code> コードは
+		上書きされない限り、
+		前述の<code>V:</code> または <code>K:</code> コードを継承する。
+
+	</p>
+
+	<p>
+		注： 言い換えれば、声部の中では、<code>V:</code> は <code>K:</code> フィールドを継承する。
+		これは、他の<code>V:</code> フィールドから継承するのと同じである。
+		以上は、逆も成り立つ。
+	</p>
+
+	<p>
+		<em> 推奨：</em> 単一声部の曲では、
+		これらの変更子は通常 <code>K:</code> フィールドに対して適用される。
+
+		多声部の曲では、
+		変更子は <code>V:</code> フィールドのみに適用されるべきである
+		(たとえ、その変更子のうちの一つが <code>K:</code> の変更で必要となった時でも
+		付加的 <code>V:</code> フィールド を導入すべきである）。
+		もし、単一声部の曲が<code>V:</code> フィールドを含むのならば
+		(たとえば、その単一声部が多声スコアからの抜粋部分であるなど）、
+		変更子は<code>V:</code> フィールドの適用が推奨される。
+	</p>
+
+	<p>
+		記述された連続する変更子の<code>K:</code> フィールドや <code>V:</code> フィールドは、
+		前述されたフィールドに<em>上書き</em> される。
+		それぞれの <code>K:</code> or <code>V:</code> フィールドでは、
+		変更子はどんな順序でも変更されうる。
+		しかし、<em>繰り返し</em> では変更されない
+		(もし繰り返しがあれば、２番は１番を上書きする)。
+	</p>
+
+	<p>
+		<code>instrument</code>(楽器)の略記(snm)を上書き評価するには、
+		これらの略記の<code>スコア</code>と<code>音</code>の等価物に拡張すること。
+		（たとえ直接オペレータを伴う略記を混在させることが推奨されなくとも。
+		<a href="#transposition_operators">移調オぺレータ</a>参照).
+		参照。）
+	</p>
+
+	<p>
+
+		最後に注意すべきことは、オクターブシフトを指定する方法は様々あるということだ。
+		たとえば、
+		<code>octave=1</code> は <code>shift=Cc</code> や <code>score=Cc sound=Cc</code>
+		と同等である。
+		しかし、これらのオペレータすべては独立であり、
+		それらの作用は個別に考えるべきである。
+	</p>
+
+	<h4 id="#application_specific_modifiers">4.6.5 アプリケーション依存変更子</h4>
+
+	<p>
+		アプリケーションは、そのアプリケーションの名前で始まりコロンをはさんでその変更子の名前が続くような、
+		アプリケーション固有の変更子を導入してよい。
+	</p>
+	<!-- Applications may introduce their own modifiers which should start with the name of the application, 
+followed a colon, followed by the name of the modifier.
+-->
+	<p>
+		<em>例： </em>
+	</p>
+	<pre class="code">V:p1 perc mozart:noteC=snare-drum</pre>
+
+	<p>
+		<em>
+			TODO - どんなアプリケーションが実際にアプリケーション固有の変更子を使っているのだろう？
+
+		</em>
+		たとえば、abcm2ps は<code>clef=G2</code> というコードを許しているが、
+		これに準拠すべきなのだろうか、
+		それとも<code>abcm2ps:clef=G2</code> というコードを認識さえすればいいのだろうか？
+
+	</p>
+
+	<h3 id="beams">4.7 連桁</h3>
+
+	<p>
+		連桁したい音符は、スペースを入れなければよい。
+		したがって、 2/4 拍子では、<code>A2BC</code> は1つの8分音符の次に2つの16分音符が連桁される。
+		一方、 <code>A2 B C</code> は同じ音符が分けられる。
+		連桁の傾きや符幹（stem）の上下の向きは自動的に決まる。
+	</p>
+
+	<p>
+		注意：連桁できない音符は独立して表示される。たとえば、 <code>L:1/8</code> のとき <code>ABC2DE</code> は <code>AB C2 DE</code> と同じである。
+	</p>
+
+
+	<p>
+	</p>
+	バッククォート <code>`</code> は可読性を増す目的で連桁されるべき音の間で自由に使って良い。
+	バッククォートはコンピュータプログラムによって無視される。たとえば、<code>A2``B``C</code> は <code>A2BC</code> に等しい。
+
+
+	<h3 id="Repeat-bar-symbols">4.8 繰り返し記号など</h3>
+
+	<table>
+		<th>
+			<strong>記号</strong>
+		</th>
+		<th class="col1"> <strong>意味</strong> </th>
+		</tr>
+
+		<tbody>
+			<tr class="row1">
+				<td class="col0 leftalign"> <code>|</code> </td>
+				<td class="col1 leftalign"> 小節線 </td>
+			</tr>
+			<tr class="row2">
+				<td class="col0"> <code>|]</code> </td>
+				<td class="col1 leftalign"> 細線-太線 （終止線） </td>
+			</tr>
+			<tr class="row3">
+				<td class="col0"> <code>||</code> </td>
+				<td class="col1 leftalign"> 細線-細線 （複縦線） </td>
+			</tr>
+			<tr class="row4">
+				<td class="col0"> <code>[|</code> </td>
+				<td class="col1 leftalign"> 太線-細線 </td>
+			</tr>
+			<tr class="row5">
+				<td class="col0"> <code>|:</code> </td>
+				<td class="col1 leftalign"> 繰り返し開始 </td>
+			</tr>
+			<tr class="row6">
+				<td class="col0"> <code>:|</code> </td>
+				<td class="col1 leftalign"> 繰り返し終了 </td>
+			</tr>
+			<tr class="row7">
+				<td class="col0"> <code>::</code> </td>
+				<td class="col1"> 繰り返しの開始と終了 </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h3 id="First-and-second-repeats">4.9 繰り返しの１カッコ、２カッコ</h3>
+
+	繰り返しの 1カッコと2カッコ はそれぞれ [1 と [2 で表される。例：
+
+	<script>document.write('<pre class="code">' + repeats_1 + '</pre>')</script>
+	<div id="canvas-repeats-1"></div>
+
+
+	<h3 id="Variant-endings">4.10 いろいろな終わり方</h3>
+
+	<p>
+		記法 P: part notation と組み合わせて、 2 種類以上の繰り返しを記述できる。
+	</p>
+
+	<h3 id="ties_and_slurs">4.11 タイとスラー</h3>
+	<p>
+		- の記号を使って、 <code>abc-|cba</code> や <code>c4-c4</code> のように小節線をまたぐか、または 1 つの小節にある 2 つの音符をタイでつなぐことができる。
+		タイのシンボルは必ず最初の音符とのペアになっていないといけないが、２番目の音とのペアである必要はない。
+		例：<code>c4 -c4</code> や <code>abc|-cba</code> は不適切である。
+		<a href="#order_of_abc_constructs" title="abc:standard:v2.1 ↵" class="wikilink1">abc 構成の順序</a>　を見よ。
+
+		より一般的なスラーは、 ( と ) の中に音名を記述することで実現できる。
+		従って、 <code>(DEFG)</code> という記述は 4 つの音の上にスラーを引く。 <code>( D E F G )</code> のように、スラーの中にスペースを書き入れることは可能である。
+
+	<p>
+		スラーは、入れ子にできる。
+	</p>
+
+
+	<script>document.write('<pre class="code">' + slur_1 + '</pre>')</script>
+	<div id="canvas-slur-1"></div>
+
+	<p>
+		スラーの始まりと終わりが同じ音にあってもよい。
+	</p>
+	<script>document.write('<pre class="code">' + slur_2 + '</pre>')</script>
+	<div id="canvas-slur-2"></div>
+
+
+	<p>
+		破線のスラーは <code>.(cde)</code> のように、スラーの開始を示すほうのカッコにドットを付加することによって記述する。
+		スラーを終えることを示す方のカッコにドットを付加するかどうかは任意である。
+		同様に、破線のタイはドットを付加して、 <code>C.-C</code> のように書く。
+		この方法が特に便利なのは、同じ旋律につく歌詞が複数あり、スラーを要求する歌詞も要求しない歌詞もあるときである。
+	</p>
+
+	<p>
+		注意すべきことは、<code>-</code> で示されるタイと <code>()</code> で示されるスラーとは五線譜の上では同じ記号を生成するが、
+		ABC ファイルを演奏するプログラムにとって、これらは全く異なる意味を持つこと、そしてこれらの持つ意味が交換されるべきではないことである。
+		タイは<em>同じ音高で</em>連続する 2 つの音を連結するので、その結果 1 つの音のように演奏される。
+		一方スラーは音連の最初と最後をつなげることから、フレージングやレガートに奏されるべき楽句を明示する。
+		タイもスラーも、ともに和音の中でも外でもその間でも使用されるが、この場合それらの間にある違いは特に重要である。
+
+
+	<h3 id="grace_notes">4.12 装飾音符</h3>
+	<p>
+		装飾音は波カッコ <code>{}</code> を用いる。
+		曲 &#039;Athol Brose&#039;
+		( <a href="#strspysabc" title="abc:standard:v2.1 ↵" class="wikilink1">Strspys.abc</a> にある)
+		そのあらゆる部分がハイランド地方のバクパイプ曲の複雑な装飾音符の実例である。
+	</p>
+
+
+	<p>
+		アポジャトゥーラとアッチャカトゥーラを区別するために、
+		アッチャカトゥーラは最初に波カッコのすぐあとにスラッシュを置く。
+		例：<code>{/g}C</code> or <code>{/gagab}C</code>:
+	</p>
+
+	<script>document.write('<pre class="code">' + grace_note + '</pre>')</script>
+	<div id="canvas-grace-note"></div>
+
+
+	<p>
+		装飾音があっても、不均等割の構成には影響しない。したがって、
+		<code>A&lt;{g}A</code> と <code>A{g}&lt;A</code> はともに正しい書き方で、<code>A/2{g}A3/2</code>
+		と等価である。
+	</p>
+
+
+
+	<h3 id="Duplets-triplets-quadruplets">4.13 連符(Duplets, triplets, quadruplets, etc.)</h3>
+
+	<table class="inline">
+		<thead>
+			<tr class="row0">
+				<th class="col0"> <strong>記法</strong> </th>
+				<th class="col1"> <strong>意味</strong> </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="row1">
+				<td class="col0"> <code>(2</code> </td>
+				<td class="col1 leftalign"> 3 回分に 2 音符 </td>
+			</tr>
+			<tr class="row2">
+				<td class="col0"> <code>(3</code> </td>
+				<td class="col1 leftalign"> 2 回分に 3 音符 </td>
+			</tr>
+			<tr class="row3">
+				<td class="col0"> <code>(4</code> </td>
+				<td class="col1 leftalign"> 3 回分に 4 音符 </td>
+			</tr>
+			<tr class="row4">
+				<td class="col0"> <code>(5</code> </td>
+				<td class="col1"> <em>n</em>回分に 5 音符 </td>
+			</tr>
+			<tr class="row5">
+				<td class="col0"> <code>(6</code> </td>
+				<td class="col1 leftalign"> 2 回分に 6 音符 </td>
+			</tr>
+			<tr class="row6">
+				<td class="col0"> <code>(7</code> </td>
+				<td class="col1"> <em>n</em>回分に 7 音符 </td>
+			</tr>
+			<tr class="row7">
+				<td class="col0"> <code>(8</code> </td>
+				<td class="col1 leftalign"> 3 回分に 8 音符 </td>
+			</tr>
+			<tr class="row8">
+				<td class="col0"> <code>(9</code> </td>
+				<td class="col1"> <em>n</em> 回分に 9 音符</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+
+	<p>
+		もし拍子が複合拍子 (6/8, 9/8, 12/6) であれば n は 3 であり、そうでない場合は n は 2 である。
+	</p>
+	<p>
+		さらに一般的な連符は、p:q:r という記法を用いる。この意味は、
+		p 個の音符を q 個分に割り当て、残りが r 個になる、ということを示す。
+		もし q が与えられなければ、デフォルトは上で示した通りである。
+		もし r が与えられなければ、デフォルトは p と同じである。
+	</p>
+	<p>
+		例えば、(3 は (3:: や (3:2 と等しい。
+		言い換えれば、 (3:2:3　と等しいが、 (3::2 は (3:2:2 と等しい。
+	</p>
+	<p>
+		この記法は、３連符に異なる音価の音符が含まれるとき有用である。たとえば、
+		(3:2:2 G4c2 あるいは (3:2:4 G2A2Bc という場合である。
+		また、(3 D2E2F2 あるいは (3 D3EF2 という簡略な書き方がうまくいくこともわかる。
+		連符に書かれた数字は p である。
+	</p>
+	<p>
+		連符指定子と続く音符にある空白 (spaces) は無視される。
+		Spaces that appear between the tuplet specifier and the following notes are to be ignored.
+	</p>
+
+
+	<h3 id="decorations">4.14 装飾</h3>
+	<p>多くの装飾の略記法が利用可能である：</p>
+	<pre class="code">
+.       スタッカート
+~       アイリッシュ・ロール
+H       フェルマータ
+L       アクセント
+M       下モルデント
+O       コーダ
+P       上モルデント
+S       セーニョ
+T       トリル
+u       アップボー
+v       ダウンボー
+</pre>
+
+
+	<p>
+		装飾は、装飾音の前に置く。
+		<a href="#order_of_abc_constructs" title="abc:standard:v2.1 ↵" class="wikilink1">abc 構成の順序</a>
+		参照。
+
+	</p>
+
+	<p>
+		<em> 例： </em>
+	</p>
+
+	<script>document.write('<pre class="code">' + decoration0 + '</pre>')</script>
+	<div id="decoration0"></div>
+
+	<p>
+		上記で掲げた記号のたいてい(<code>~HLMOPSTuv</code>)は一般的に使われる装飾の略記であり、
+		再定義可能である。
+		(<a href="#redefinable_symbols" title="abc:standard:v2.1 ↵" class="wikilink1">再定義可能なシンボル</a>参照).
+
+	</p>
+
+	<p>
+		More generally, symbols can be entered using the syntax <code>!symbol!</code>,
+		e.g. <code>!trill!A4</code> for a trill symbol. (Note that the abc standard version 2.0 used instead the syntax
+		<code>+symbol+</code>
+		- this dialect of abc is still available, but is now <a href="#outdated_syntax" title="abc:standard:v2.1 ↵"
+			class="wikilink1">deprecated</a> -
+		see <a href="#decoration_dialects" title="abc:standard:v2.1 ↵" class="wikilink1">decoration dialects</a>.)
+	</p>
+
+	<p>
+		現在定義されている装飾記号は次のとおり：
+	</p>
+	<pre class="code">!trill!                &quot;tr&quot; (トリルマーク)
+!trill(!               長いトリルの開始
+!trill)!               長いトリルの終了
+!lowermordent!         縦線が入った短いギザギザ
+!uppermordent!         短いギザギザ
+!mordent!              !lowermordent! と同じ
+!pralltriller!         !uppermordent! と同じ
+!roll!                 アイリッシュの音楽で使われるロールマーク（アーク）
+!turn!                 ターンのマーク(グルッペットともいう）
+!turnx!                貫かれた線を伴うターンのマーク
+!invertedturn!         逆ターンマーク
+!invertedturnx!        貫かれた線を伴う逆ターンのマーク
+!arpeggio!             垂直のギザギザ
+!&gt;!                    &gt; マーク
+!accent!               !&gt;! と同じ
+!emphasis!             !&gt;! と同じ
+!fermata!              フェルマータまたは伸ばし (点の上に弧)
+!invertedfermata!      逆さまフェルマータ
+!tenuto!               音を十分伸ばす記号。水平線。
+!0! - !5!              指使い
+!+!                    左手ピチカート、またはフレンチホルンでのゲシュトプフト
+!plus!                 !+! と同じ
+!snap!                 スナップピチカート（バルトークピチカート）記号。見た目は !thumb! と似ている。
+!slide!                スライドした音、見た目はハーフスラーと ハーフスラーと似ている。
+!wedge!                小さな楔形記号
+!upbow!                V 記号（アップボー）
+!downbow!              角型 n 様記号（ダウンボー）
+!open!                 小さな円。開放弦またはハーモニクス
+!thumb!                チェロの親指記号
+!breath!               音のあとのブレス記号 (アプストロフィ―に似ている) 
+!pppp! !ppp! !pp! !p!  ダイナミクス 1
+!mp! !mf! !f! !ff!     ダイナミクス 2
+!fff! !ffff! !sfz!     ダイナミクス 3
+!crescendo(!           &lt; の始まり。クレッシェンド記号
+!&lt;(!                !crescendo(!と同じ
+!crescendo)!           &lt; の終わり。クレッシェンド記号。最後の音符につける
+!&lt;)!                !crescendo)! と同じ。
+!diminuendo(!          &gt; の始まり。デクレッシェンド記号
+!&gt;(!                !diminuendo(! と同じ。
+!diminuendo)!          &gt; ディミニュエンドの終わりの記号, 最後の終わりの音につける。
+!&gt;)!                !diminuendo)! と同じ
+!segno!                S 状のシンボルを対角線で分かち2つの装飾を加えた。セーニョ記号。
+!coda!                 輪と十字の組み合わせ：コーダ
+!D.S.!                 D.S. 文字 (=Da Segno)
+!D.C.!                 D.C. 文字(= Da Coda または Da Capo)
+!dacoda!               単語 &quot;Da&quot; Coda サインに続く
+!dacapo!               単語 &quot;Da Capo&quot;
+!fine!                 単語 &quot;fine&quot;
+!shortphrase!          五線の上部の垂直線
+!mediumphrase!         上に同じ。ただし中央部まで延長される。
+!longphrase!           上に同じ。ただし下3/4まで延長される。
+!editorial!            続く臨時記号を音符の上に置く。4.2節 臨時記号Accidentalsを見よ。
+!courtesy!             親切な臨時記号を (シャープまたはフラット、ナチュラル)を続く音符にカッコつきで付加する。4.2節 臨時記号Accidentalsを見よ。</pre>
+
+	<p>
+		下の図は装飾記号の実例である。
+	</p>
+	<script>document.write('<pre class="code">' + decoration1 + '</pre>')</script>
+	<div id="canvas-decoration1"></div>
+
+
+	<p>
+		<em> 推奨： </em>
+		一般的な楽譜の装飾に関するよい情報源は下記にある。
+		<a href="http://www.dolmetsch.com/musicalsymbols.htm" class="urlextern"
+			title="http://www.dolmetsch.com/musicalsymbols.htm" rel="nofollow">
+			http://www.dolmetsch.com/musicalsymbols.htm</a>.
+	</p>
+
+
+
+	<h3 id="symbol_lines">4.15 シンボル</h3>
+
+	<p>
+		多くのシンボルを音楽のラインに加えると曲は見づらくなる。
+		こういった場合は、シンボル行を使う。
+		(シンボル行とは、<code>!…!</code>のみを含む行をいう。
+		<a href="#decorations" title="abc:standard:v2.1 ↵" class="wikilink1">decorations</a>,
+		<code>&quot;…&quot;</code> <a href="#chord_symbols" title="abc:standard:v2.1 ↵" class="wikilink1">chord
+			symbols</a>
+		or <a href="#annotations" title="abc:standard:v2.1 ↵" class="wikilink1">annotations</a>)
+	</p>
+
+	<p>
+		Adding many symbols to a line of music can make a tune difficult to read.
+		In such cases, a symbol line (a line that contains only <code>!…!</code>
+		<a href="#decorations" title="abc:standard:v2.1 ↵" class="wikilink1">decorations</a>, <code>&quot;…&quot;</code>
+		<a href="#chord_symbols" title="abc:standard:v2.1 ↵" class="wikilink1">chord symbols</a>
+		or <a href="#annotations" title="abc:standard:v2.1 ↵" class="wikilink1">annotations</a>) can be used, analogous
+		to a line of <a href="#lyrics" title="abc:standard:v2.1 ↵" class="wikilink1">lyrics</a>.
+	</p>
+
+	<p>
+		A symbol line starts with <code>s:</code>, followed by a line of symbols. Matching of notes and symbols follow
+		the <a href="#alignment" title="abc:standard:v2.1 ↵" class="wikilink1">alignment rules</a>
+		defined for lyrics (meaning that symbols in an <code>s:</code> line cannot be aligned on <a href="#grace_notes"
+			title="abc:standard:v2.1 ↵" class="wikilink1">grace notes</a>,
+		<a href="#rests" title="abc:standard:v2.1 ↵" class="wikilink1">rests</a> or <a href="#typesetting_extra_space"
+			title="abc:standard:v2.1 ↵" class="wikilink1">spacers</a>).
+	</p>
+
+	<p>
+		<em> Example: </em>
+	</p>
+	<pre class="code">   CDEF    | G```AB`c
+s: &quot;^slow&quot; | !f! ** !fff!</pre>
+	<div id="symbol1"></div>
+	<p>
+		It is also possible to stack <code>s:</code> lines to produced multiple symbols on a note.
+	</p>
+
+	<p>
+		<em> Example: </em> The following two excerpts are equivalent and would place a decorations plus a chord on the
+		<code>E</code>.
+	</p>
+	<pre class="code">   C2  C2 Ez   A2|
+s: &quot;C&quot; *  &quot;Am&quot; * |
+s: *   *  !&gt;!  * |</pre>
+	<pre class="code">&quot;C&quot; C2 C2 &quot;Am&quot; !&gt;! Ez A2|</pre>
+
+
+	<h3 id="redefinable_symbols">4.16 再定義可能な記号</h3>
+	<p>
+		!symbol! シンタックス（<a href="#decorations">装飾</a>を見よ）を避けるショートカットがある。
+		文字<code>H-W</code>と<code>h-w</code>、
+		そしてシンボル<code>~</code>を<code>U:</code>フィールドとともに割り当てることができる。
+		たとえば、文字 <code>T</code>をトリルに割り当てるには、こう書けばよい。
+	</p>
+	<p>
+		U: T = !trill!
+	</p>
+	<p>
+		また、''"^text"'', など ( <a href="#annotations">注釈</a> 下参照) も定義できる。
+	</p>
+	<p>
+		例：音符の上にプラスの記号を表示したいときば、次のように''p'' を定義する。
+		U: p = "^+"
+	</p>
+	<p>Symbol definitions can be written in the file header,
+		in which case they apply to all the tunes in that file,
+		or in a tune header, when they apply only to that tune,
+		and override any previous definitions.
+		Programs may also make use of a set of global default definitions,
+		which apply everywhere unless overridden by local definitions.
+		You can assign the same symbol to two or more letters e.g. </p>
+	<pre class="code">
+U: T = !trill!
+U: U = !trill!
+</pre>
+	<p>in which case the same visible symbol will be produced by both letters
+		(but they may be played differently),
+		and you can de-assign a symbol by writing: </p>
+	<pre class="code">
+U: T = !nil!
+</pre>or
+	<pre class="code">
+U: T = !none!
+</pre>
+
+	<p>標準定義の集合（再定義前の集合）は次のとおりである。</p>
+	<pre>
+  U: ~ = !roll!
+  U: H = !fermata!
+  U: L = !accent!
+  U: M = !lowermordent!
+  U: O = !coda!
+  U: P = !uppermordent!
+  U: S = !segno!
+  U: T = !trill!
+  U: u = !upbow!
+  U: v = !downbow!
+</pre>
+	<p>進んだマクロの機構については、
+		<a href="#macros">マクロ</a>を見よ。
+
+	<h3 id="Chords-and-unisons">4.17 和音とユニゾン</h3>
+
+	<p>
+		和音 (すなわち、１つの符幹に２つ以上の音符があるもの)は [] 記号の中に音を記す。例：
+	</p>
+	<p>[CEGc]</p>
+	<p>
+		はハ長調の和音を示す。これらは連桁することもできる。
+	</p>
+	<p>
+		[d2f2][ce][df]
+	</p>
+	<p>
+		和音内にはスペースがないことに注意。
+	</p>
+
+	<script>document.write('<pre class="code">' + chords_unisons_1 + '</pre>')</script>
+	<div id="canvas-chords-unisons-1"></div>
+
+	<h3 id="chord_symbols">4.18 和音記号</h3>
+
+	<p>
+		<em>変動要因</em>：
+		ここでの和音のリストとその扱われ方は今後何らかの点で拡張されるだろう。
+		それまでは、プログラムのコード記号の扱いは特に柔軟であるべきだ。
+	</p>
+	<p>
+		和音記号（たとえば、和音/ベース 音符）
+		はメロディーラインの下に（パッケージによっては上に）あり、該当する音符の左に二重引用符でくくって表記する。
+		例：
+	</p>
+	<script>document.write('<pre class="code">' + chord + '</pre>')</script>
+	<div id="canvas-chord"></div>
+
+	<p>
+		和音記号のフォーマットは &lt;note&gt;&lt;accidental&gt;&lt;type&gt;&lt;/bass&gt; というかたちとなる。
+		ここで音符 &lt;note&gt; は A-G, オプションの臨時記号 &lt;accidental&gt; は b または #, オプションの &lt;type&gt;
+		は次のどれかまたは複数である。
+	</p>
+
+	<pre class="code">m or min        短調 (minor)
+maj             長調 (major)
+dim             減和音 (diminished)
+aug or +        増和音 (augmented)
+sus             係留 (suspended)
+7, 9 ...        7th, 9th, など.
+</pre>
+
+	<p>
+		そして &lt;/bass&gt; はオプションのベース音である。
+	</p>
+
+	<p>
+		和音名の後のスラッシュは、 &quot;C/E&quot; のように任意のベース音がある時にしか使われない。
+		ベース音が該当和音にあれば転回和音であること、つまりその音が和音の最も低い音にであることを示している。
+		ベース音が該当和音になければその音が該当和音より低い音で鳴る付加的な音であることを示している。
+		ベース音は（<code>A-G</code> か <code>a-g</code>の）任意の文字であり、
+		（<code>b</code> か <code>#</code> の）臨時記号を伴っても伴わなくともよい。
+		ベース音は大文字でも小文字でもピッチには関係ない。
+	</p>
+
+	<p>
+		代理和音は（再生用ではなく）印刷用に指定される。
+		それには "G(Em)" のように、二重引用符の中で通常の和音名の後に丸カッコで囲む。
+	</p>
+	<p>
+		<em>開発者への注：</em>ソフトウェアは Unicode の変記号、
+		本位記号、嬰記号 (♭, ♮, ♯) を適切に扱うようにすべきである。
+		<a href="#special_symbols" title="abc:standard:v2.1 ↵" class="wikilink1">特殊シンボル</a> を見よ。
+	</p>
+
+
+
+	<h3 id="annotations">4.19 注釈</h3>
+
+	<p>
+		一般的に注釈は、五線譜の上や下、中央に書かれる。
+		この場合、二重引用符の中の文字列を次のいずれか、^, _, &lt;, &gt;, @ ではじめる。
+		これらはそれぞれ音符や休符、小節線の上、下、左、右に位置する。@ はプログラムの解釈による。
+	</p>
+
+	<script>document.write('<pre class="code">' + annotations + '</pre>')</script>
+	<div id="canvas-annotations"></div>
+
+	<h3 id="order_of_abc_constructs">4.20 abc 構成の順序</h3>
+
+
+	<p>
+		音符に関する abc 構成の順序は次のとおりである。<br />
+		//&lt;grace notes&gt;//, //&lt;chord symbols&gt;//, //&lt;annotations&gt;/&lt;decorations&gt;// <br />
+		(例： Irish roll, staccato marker or up/downbow), //&lt;accidentals&gt;//, //&lt;note&gt;//, //&lt;octave&gt;//,
+		//&lt;note length&gt;//, 例： ''~^c'3'' または ''"Gm7"v.=G,2''.
+	</p>
+	<p>
+		各 <a href="#ties_and_slurs">タイ記号、スラー記号</a> ''-'' は音符グループのすぐ後でなければならない。しかし、スペースが続いてもよい。
+		<br />例： ''=G,2- ''。 <br />
+		開きデリミタと閉じデリミタ、 ''['' and '']'' は音符列を完全に囲まないといけない(和音を除く)。<br />
+		例：
+		"C"[CEGc]|<br />
+		|"Gm7"[.=G,^c']<br />
+
+		また、スラー記号 ''()'' も同様である <br />
+
+		"Gm7"(v.=G,2~^c'2) <br />
+
+
+	</p>
+
+
+	<h2 id="lyrics">5. 歌詞</h2>
+	<h3 id="alignment">5.1 行揃え</h3>
+
+	<p>w: 属性を使う</p>
+
+	<p>次の二つは同じである。</p>
+	<script>document.write('<pre class="code">' + alignment1 + '</pre>')</script>
+	<div id="canvas-alignment1"></div>
+	<script>document.write('<pre class="code">' + alignment2 + '</pre>')</script>
+	<div id="canvas-alignment2"></div>
+
+
+	<p>訳注：abcjs で第２の書き方をすると、G A B c に doh re mi fa があたってしまい、誤った表示となる。</p>
+
+	<p>
+		<em>コメント： </em> 第２の例は、
+		abc 2.1 で導入された拡張により可能となる。
+		この意味は、歌詞はもはや音符の列のすぐあとに続くものではないということだ。
+		もちろん、歌詞のありかは<a href="#tune_body_definition">曲本体</a>の後に置いてもよい。
+		しかし、行揃えの拡張ルールは abc 2.0 と完全に後方互換をとれているというわけではない。
+		<a href="#outdated_lyrics_alignment">時代遅れの歌詞揃え</a>の説明を見よ。
+	</p>
+
+
+
+	<p>
+		もしシラブルが利用できる音符より少なければ、残った音符には歌詞がなくなる（空白のシラブルが割り当てられる）。
+		その結果、<code>w:</code> フィールドの見た目は以前に（リアルでもブランクでもよいが）シラブル付きで表示されたすべての音符と結び付けられる。
+	</p>
+
+
+	<p>
+		<em> 例： </em> 次の例では、空白の <code>w:</code> フィールドは 4 つの<code>G</code>
+		音符に何も歌詞が割り当てられていないことを表している。
+	</p>
+
+	<script>document.write('<pre class="code">' + alignment3 + '</pre>')</script>
+	<div id="canvas-alignment3"></div>
+
+
+	このようにして結合される線の数に制限はない。 ただし、空白行の前にバックスラッシュを使用してはならない。
+
+	例：以下は合法である。
+	<p>
+		もし利用できる音符よりシラブルが多ければ、余ったシラブルは無視される。
+	</p>
+
+	<p>
+		<em> 開発者への推奨：</em> もし <code>w:</code> 行が、対応する音符に対するシラブルの正しい数を含まない場合、
+		プログラムはユーザーに対してウォーニングを出すべきだ。
+		しかし、不十分なシラブルは（上に述べた通り）合法的な使い方であるので、
+		プログラムはウォーニングを切り替えるようにしておくのがよいかもしれない。
+	</p>
+
+	<p>
+		注意：シラブルは<a href="#grace_notes" title="abc:standard:v2.1 ↵" class="wikilink1">装飾音符</a>や、
+		<a href="#rests" title="abc:standard:v2.1 ↵" class="wikilink1">休符</a>、<a href="#typesetting_extra_space"
+			title="abc:standard:v2.1 ↵" class="wikilink1">スペーサー</a>には割り当てられない。
+		そして、タイや、スラー、連繋した音符は個別の音符として解釈される。
+	</p>
+
+	<p>
+		歌詞行は<a href="#text_string_definition" title="abc:standard:v2.1 ↵" class="wikilink1">テキスト文字列</a>として扱われる。
+		歌詞のなかでは、単語はひとつ以上のスペースで区切られていて、あとのシンボルと正しく整合するようになっていなければならない。
+
+	<div class="table sectionedit47">
+		<table class="inline">
+			<thead>
+				<tr class="row0">
+					<th class="col0"> <strong>シンボル</strong> </th>
+					<th class="col1"> <strong>意味</strong> </th>
+				</tr>
+			</thead>
+			<tr class="row1">
+				<td class="col0 leftalign"> <code>-</code> </td>
+				<td class="col1 leftalign"> (ハイフン)
+					１つの単語で複数のシラブルを分ける</td>
+			</tr>
+			<tr class="row2">
+				<td class="col0 leftalign"> <code>_</code> </td>
+				<td class="col1"> (アンダースコア)
+					前のシラブルを特別な音のために伸ばす</td>
+			</tr>
+			<tr class="row3">
+				<td class="col0 leftalign"> <code>*</code> </td>
+				<td class="col1"> １つの音符をスキップする
+					(すなわち * はブランクのシラブルに等しい) </td>
+			</tr>
+			<tr class="row4">
+				<td class="col0 leftalign"> <code>~</code> </td>
+				<td class="col1 leftalign"> スペースとして表示される；
+					１つの音に複数の単語を合わせる。 </td>
+			</tr>
+			<tr class="row5">
+				<td class="col0"> <code>\-</code> </td>
+				<td class="col1 leftalign"> ハイフンとして表示される。
+					；複数のシラブルが１つの音に割り当てられる </td>
+			</tr>
+			<tr class="row6">
+				<td class="col0 leftalign"> <code>|</code> </td>
+				<td class="col1 leftalign"> 次の小節線に進む</td>
+			</tr>
+		</table>
+	</div>
+
+
+	<p>
+		- の前にスペースやハイフンがある場合、 - は別の音節とみなされる。
+	</p>
+
+	<p>
+		ハイフンの隣にアンダースコアが使われている場合、常にハイフンが最初に来る必要がある。
+	</p>
+
+	<p>
+		小節内に音符と同数の音節がない場合、<code> | </code>をタイプすると自動的に次の小節に進む。
+		十分な音節がある場合、<code> | </code> は無視される。
+	</p>
+
+	<p>
+		<em> 例: </em>
+	</p>
+	<pre class="code">w: syll-a-ble    は３つの音符に分けられる
+w: syll-a--ble   は４つの音符に分けられる
+w: syll-a -ble   （上記に同じ）
+w: time__        は３つの音符に分けられる
+w: of~the~day    １つのシラブルとして扱われる (すなわち、一つの音にまとめられる）
+                 しかし３つに分かれた言葉ののように見える</pre>
+	<pre class="code"> gf|e2dc B2A2|B2G2 E2D2|.G2.G2 GABc|d4 B2
+w: Sa-ys my au-l&#039; wan to your aul&#039; wan,
++: Will~ye come to the Wa-x-ies dar-gle?</pre>
+
+	<p>
+		<code>+:</code> フィールド継続の意味を理解するためには、
+		<a href="#field_continuation" title="abc:standard:v2.1 ↵" class="wikilink1">フィールド継続</a>を見よ。
+	</p>
+
+	<h3 id="verses">5.2 連</h3>
+
+	<p>w: 属性を使う</p>
+
+	<p>w: を二つ重ねる。</p>
+
+	<p>訳注：オリジナルでは行頭に + を使う方法も出ているが、abcjs では使えないため割愛した。</p>
+
+
+	<script>document.write('<pre class="code">' + verse1 + '</pre>')</script>
+	<div id="verse1"></div>
+
+
+
+
+	<h3 name="Numbering" id="Numbering">5.3 番号づけ</h3>
+
+	<p>
+		歌詞の1番、2番…は、番号、ピリオド、~、歌詞をスペースをはさまずに書く。
+		そうすれば、歌詞は最初の音符からはじめることができる。
+	</p>
+	<script>document.write('<pre class="code">' + numbering1 + '</pre>')</script>
+	<div id="canvas-numbering1"></div>
+
+
+	<h2 id="typesetting_and_playback">6. 組版、再生</h2>
+	<h3 name="typesetting" id="typesetting">6.1 組版</h3>
+
+	<h3 id="typesetting_line-breaks">6.1.1 組版改行</h3>
+
+	<p>
+		// 用語 // 改行とは文書で使われることばで（行改め, 行送り, キャリッジリターン、行末とも言われる）、
+		文書をページに収めるために決める。
+		この節を通して、また、この標準のどこでも、次のように用語を区別する。
+	<dl>
+		<dt id="code_line-break_definition">code line-break</dt>
+		<dt> コード改行</dt>
+		<dd>
+			<p>コード改行とは、 abc の<a href="#tune_body_definition">曲本体</a> の改行であり、
+				特に、<a href="#music_code_definition">音楽コード</a>の行末尾での改行を意味する。</p>
+
+
+		<dt id="score_line-break_definition">score line-break</dt>
+		<dt>スコア改行</dt>
+		<dd>
+			<p>スコア改行とは、プリントされたスコアの行改行を意味する。</p>
+		</dd>
+	</dl>
+
+	<p>
+		スコア改行の組版の基本的な仕組みは、コード改行を使用することである。
+		チューン本体の1行の音楽コードは、通常、印刷された音楽の1行に相当する。
+		もちろん、音楽コードの行の印刷された表現は、スタッフにとっては長すぎるかもしれないので、
+		必要ならば、組版プログラムは追加のスコア改行を導入すべきである。
+		結果として、スコアライン改行が完全に自動的に処理されるようにしたい場合（非abcスコアリングソフトウェアでは一般的である）、　
+		曲の一行に曲の本体を入力するだけである。
+	</p>
+	<p>
+		ほとんどのabc GUIソフトウェアは長すぎる行を囲む必要があるが、
+		1行に調整本体を入力するのは不便だ。特に、改行を助けるコード改行やabcコードを電子メールで送信する場合（入力行の続きを参照）はそうである。
+	</p>
+	<p>
+		さらに、過去にいくつかの組版プログラムが使用されてい！文字をabcコードに挿入して、スコア改行を強制するものだ。
+		その結果、abc 2.1では改行命令が導入された。
+	</p>
+	<pre>
+     I : 改行
+
+すべての改行設定を許可するために、I：linebreak命令を4つの可能な値と共に使用して、スコア改行を制御することができる。
+
+	"I：linebreak $"は、$記号が楽譜の改行をタイプセットするために曲本体で使用されることを示す。
+	コード行区切りはすべて、組版の目的においては無視される。
+
+例：次のabcコードは2行に組版する必要がある。
+</pre>
+	<pre class="code">
+I:linebreak $
+K:G
+|:abc def|$fed cba:|
+</pre>
+	<p>
+		"I:linbrea" ！ シンボルは、ラインの改行を組版するために使用される。 すべてのコード行区切りは、組版の目的では無視される。
+	</p>
+	<p>
+		コメント： "I:LineBreak !" 命令は "I linebreak $" と同じ方法で動作する、
+		下位互換性のために主に提供されている - 改行の方言を参照のこと。 "I：linebreak $"が好ましい使用法である。
+		"I:LineBreak!", "I：decoration +"命令も自動的に起動する -
+		装飾方言を参照のこと。最後に、 "I:LineBreak! " はdeprecatedディレクティブと同等である。
+		古いディレクティブを参照のこと。
+	</p>
+	<ul>
+		<li>"I：linebreak &lt;EOL&gt;"は、ラインの終わりの文字（CR、LFまたはCRLF）がスコアの改行をタイプセットするために使用されることを示す。
+			言い換えれば、コードライン改行は、タイプセッティングの改行に使用される。</li>
+
+		<li>"I：linebreak &lt;none&gt;"は、改行がすべて自動的に実行されることを示し、コード改行は無視される。</li>
+	</ul>
+	<p>
+		値&lt;EOL&gt;、$および！より多くの1つのシンボルがスコアラインブレイクを示すことができるように組み合わせることもできる。
+	<p>
+	<p>
+		デフォルトの改行設定は次のとおり。
+	</p>
+	<pre class="code">
+I：linebreak &lt;OL&gt; $
+</pre>
+	<p>
+		つまり、コードの改行と$記号の両方がスコアの改行を生成する。
+	</p>
+	<p>
+		<i>コメント</i>： "I:linebreak $！" は合法だが、
+		同じことを意味するために2つの異なる記号を使用するので、お勧めできない。
+	</p>
+	<p>
+		I：linebreak命令は、ファイルヘッダ（abcファイル内のすべての曲に適用される）、または曲ヘッダ内で使用できる
+		（この場合、その曲にのみ適用され、ファイルヘッダの中断指示）。
+		同様に、2つのI：改行命令がファイルヘッダーまたはチューンヘッダーに表示された場合、
+		2番目のI：改行命令は最初のものを取り消す。
+	</p>
+	<p>
+		コメント：「I：linebreak <EOL> $」と「I：linebreak <none>」のような2つの命令を一緒に使用すると、
+				デフォルトと自動改行の切り替えをスワップするだけで簡単に行うことができる。
+	</p>
+	<p>
+		I：改行の指示は、曲の本体では許可されていない（主に、音楽コードの読みやすさと両立しえないため）。
+	</p>
+	<h4>スコアの改行の抑止</h4>
+
+	<p>
+		スコアの改行を示すために曲本体で&lt;EOL&gt;文字が使用されているときに
+		、組版ソフトウェアに特定のコード改行を無視するよう指示することが有用なことがある。
+		これは、音楽コードの行末にバックスラッシュ（\）を使用して実現される。
+		行が処理される前にバックスラッシュが削除されるので、バックスラッシュの後ろに空白および/またはコメントが続くことがある。
+	</p>
+
+	<pre>
+例：以下の2つの抜粋は、同等のものとみなされ、
+印刷されたスコアには１スタッフ（１行）として組版される必要がある。
+</pre>
+
+
+	<pre class="code">
+abc cba|\ % end of line comment
+abc cba|
+
+abc cba|abc cba|
+</pre>
+
+	<p>
+		バックスラッシュは２行にわたるスタッフを処理して１行にすることができる。
+		したがって、2つのハーフラインの間にスペースが必要な場合は
+		（たとえば、音符が一緒に鳴らないようにするために）、
+		スペースを前半のバックスラッシュの前に配置するか、 後半の最初に配置する必要がある。
+	</p>
+
+	<p>
+		次の３つの断片は同じものと考えられる。
+	</p>
+
+	<pre class="code">
+abc \
+cba|
+
+abc\
+ cba|
+
+abc cba|  
+</pre>
+
+	<p>
+		このようにして結合される線の数に制限はない。 ただし、空白行の前にバックスラッシュを使用してはならない。
+		例：以下は合法である。
+	</p>
+
+	<pre class="code">
+cdef|\
+\
+cedf:|
+</pre>
+
+	<p>例：以下は非合法である。</p>
+
+	<pre class="code">
+cdef|\
+
+cdef:|
+</pre>
+
+	<p>
+		上の例では、バックスラッシュで終わる行の直後に音楽コードの行が続き、
+		バックスラッシュは2行の音楽コードの続きとして機能し、
+		長い音楽コード行を分割するために使用できる。
+	</p>
+	<p>
+		しかし、もっと重要なのは、物理的な改行が発生した時点で、
+		情報フィールドとスタイルシート指示文が処理される（コメントが削除される）ことである。
+		したがってバックスラッシュは一般に、音楽のラインの途中で拍子や調性の変更を含めるために使用される。
+	</p>
+	<p>例：以下は、プリントされたスコアに1行として組版されるべきである。</p>
+	<pre class="code">
+abc cab|\
+%%setbarnb 10
+M:9/8
+%comment
+abc cba abc|
+</pre>
+
+	<p>
+		代わりの使用例：上記のことは、インラインフィールド、
+		%% <directive>の代わりにI：<directive>形式、コメントの代わりにr：remarkを使用しても実現できる。
+	</p>
+
+	<pre class="code">
+abc cab|[I:setbarnb 10][M:9/8][r:comment]abc cba abc|
+</pre>
+
+	<p>
+		最後に、&lt;EOL&gt;文字がスコア改行を示すために使用されていない場合、
+		バックスラッシュは実質的に冗長であることに注意すること。
+	</p>
+	<p>
+		ユーザーへの推奨：ほとんどの行の音楽コードでバックスラッシュ記号を使用していることがわかったら、
+		代わりに "I：linebreak <none>"または "I：linebreak $" の使用を検討するとよい。
+			スコアライン改行を生成するために無視することができる（後者の場合は、$文字でスコアラインを改行することができる）。
+	</p>
+
+	<h3 id="typesetting_extra_space">6.1.2 組版特別空白</h3>
+
+	<p>
+		<code>y</code> シンボルは音符の回りに特別なスペースを作るために使われる。
+		さらに、このシンボルに
+		<a href="#chord_symbols" title="abc:standard:v2.1 ↵" class="wikilink1">コードシンボル</a> や、
+		<a href="#decorations" title="abc:standard:v2.1 ↵" class="wikilink1">装飾</a> を結び付けることによって、
+		音符と、シンボルや装飾との間をあけるために使う。
+	</p>
+
+	<p>
+		<em> 例：</em>
+	</p>
+	<pre class="code">&quot;Am&quot; !pp! y</pre>
+
+	<p>
+		注意：<code>y</code> シンボルは
+		<a href="#rests" title="abc:standard:v2.1 ↵" class="wikilink1">休符</a>を音楽内で作ることは決して
+		<em>しない</em>
+	</p>
+
+
+	<h3 id="typesetting_information_fields">6.1.3 組版情報フィールド</h3>
+
+
+	<p>既定の組版プログラムでは、表題 (T) のほか、 作曲者 (C), 原作 (O), パート (P), テンポ (Q),
+		行揃え語 (w) その他語 (W) がプリントスコアに存在する。そのスキーマは下記の通り：
+	</p>
+
+	<ul>
+		<li> T:表題は曲の上部中央にプリントされる。副題は表題の下、表題より小さな字でプリントされる。</li>
+		<li> C:作曲者は右側に揃えられる。表題のちょうど右側で、それぞれの作曲者は行で区切られる。</li>
+		<li> O:原作 の内容フィールドは C:作曲者 フィールドにカッコつきで付け加えられる。</li>
+		<li> それぞれの P:パート は<a href="#tune_body_definition">曲本体</a>に現れるが、
+			パートの初めから個別認識が可能でなければならない。
+			もし P:パーツ が <a href="#tune_header_definition">曲ヘッダ</a>にあれば、
+			曲の初めに左揃えでプリントされる。</li>
+		<li> Q:テンポは適用される曲の最初のセクションにプリントされなければならない。</li>
+		<li> 行揃え対象の w:語 (詞) は各音楽ラインの下にプリントされ、他の W:語 がその下にプリントされる -
+			<a href="#lyrics">歌詞</a>を見よ。
+		</li>
+	</ul>
+	<p>
+		これらのフィールドを抑止したい場合、あるいは、次に挙げる付加的情報フィールド：
+		ノート（N）、履歴（H）、リズム（R）、ブック（B）、ディスコグラフィー（D）、ファイル（F）、ソース（S）、
+		編曲（Z）を組版したい場合は、%% writefields ディレクティブを使用すること。 -
+		<a href="#information_directives">情報ディレクティブ</a>を参照。
+	</p>
+	<p>
+		組版をカスタマイズする（たとえば、フォントを変更する）には、
+		<a href="#formatting_directives">フォーマットディレクティブ</a>を参照のこと。
+	</p>
+
+	<h3 id="playback">6.2 再生</h3>
+
+	<p>
+		<a href="#information_field_definition">情報フィールド</a>の多くは再生プログラムでは無視される。
+		例外は <code>I:</code> のほか <code>K:</code>, <code>L:</code>, <code>M:</code>, <code>m:</code>,
+		<code>P:</code>, <code>Q:</code>, <code>s:</code>, <code>U:</code> , <code>V:</code> である。
+	</p>
+	<p>
+		付け加えていえば、メタデータとして再生用ファイル (例：MIDI, ogg, mp3)としてアウトプットとする再生プログラムは、
+		コンテンツに <code>T:</code> のほか <code>C:</code>, <code>w:</code>, <code>W:</code> フィールドをメタデータに含めてよい。
+	</p>
+
+	<p>
+		さらに、再生プログラムは <code>R:</code> フィールドを使って曲のなかで強調するパターンを含ませて良い。しかし、
+		このような使い方は標準化されていない。
+	</p>
+
+	<p>
+		再生のカスタマイズのほとんどは、<a href="#instrumentation_directives">楽器ディレクティブ</a>で指定される。
+	</p>
+
+	<h2 id="multiple_voices">7. 多声</h2>
+
+	<p>
+		変動要因 : 多声音楽は活発な見直しがされている。内容は声部のコントロールと
+		P:, V: , T: 各フィールドの相互作用についてである。
+		シンタックスは abc 2.2 で確定予定である。
+	</p>
+	<div class="frame">
+		<p>訳注：abc 記法のページでは、transpose 属性が下記のように用いられている</p>
+		<pre>
+V:B1  middle=d clef=bass      name="Basso I"    snm="B.I"  transpose=-24
+V:B2  middle=d clef=bass      name="Basso II"   snm="B.II" transpose=-24
+</pre>
+
+		<p>abc 記法の tranpose 属性を使えば下記で記述したピッチのちょうど2オクターブ下が表示される。</p>
+		<pre>
+[V:B1]       z8      | z2f2 g2a2 | b2z2 z2 e2  | f4 f2z2 |
+</pre>
+		<p>しかし、abcjs はこのtranspose 属性に対応していないようだ。やむなく下記のように書き換えた。</p>
+		<pre>
+[V:B1]       z8      | z2F,2 G,2A,2 | B,2z2 z2 E,2  | F,4 F,2z2 |
+</pre>
+		<p>
+			B1声部、B2声部すべて、この処置を施さねばならない。
+		</p>
+	</div>
+
+	<script>document.write('<pre class="code">' + multiple_voices1 + '</pre>')</script>
+	<div id="canvas-multiple-voices1"></div>
+
+	<p>
+		V: は本体にもヘッダーにも現れる。
+		ヘッダーに現れる場合、V: は声部のプロパティとは独立に設定される。
+		たとえば、上記の例で名前のプロパティは、ラベルがプリントされるべき最初の声部でプリントされる。
+		注意：これらのプロパティは<a href="#tune_body_definition">曲本体</a>で設定されたり変わったりする。
+		V: プロパティは以下説明する。
+	</p>
+	<p>
+		スタッフまたは譜表上の声の正確なグループ分けは、V：自身によっては指定されていないことに注意すること。
+		これは、%% score stylesheetディレクティブで指定することができる。 詳細については、音声グループを参照のこと。
+	</p>
+	<p>
+		プレイバックについては、%% MIDIスタイルシート指示文を使用する。
+		General MIDI楽器をどのようにボイスに割り当てるかの詳細については、インストルメンテーションディレクティブを参照のこと。
+	</p>
+	<p>
+		推奨ではないが、フラグメントX：1のチューン本体は、このように表記することもできる：
+	</p>
+	<pre class="code">
+X:2
+T:Zocharti Loch
+%...skipping rest of the header...
+K:Gm
+%               Start of tune body:
+V:T1
+ (B2c2 d2g2) | f6e2 | (d2c2 d2)e2 | d4 c2z2 |
+ (B2c2 d2g2) | f8 | d3c (d2fe) | H d6 ||
+V:T2
+ (G2A2 B2e2) | d6c2 | (B2A2 B2)c2 | B4 A2z2 |
+ z8 | z8 | B3A (B2c2) | H A6 ||
+V:B1
+ z8 | z2f2 g2a2 | b2z2 z2 e2 | f4 f2z2 |
+ (d2f2 b2e'2) | d'8 | g3g  g4 | H^f6 ||
+V:B2
+ x8 | x8 | x8 | x8 |
+ x8 | z2B2 c2d2 | e3e (d2c2) | H d6 ||
+</pre>
+
+	<p>
+		上の例では、各V：ラベルは1回だけ出現し、その声の完全な部分が続く。 チューンX：2の出力は、
+		チューンX：1の出力とまったく同じになる。 しかし、X：1のソースコードは読みやすくなる。
+	</p>
+
+	<h3 id="voice_properties">7.1 声部のプロパティ</h3>
+	<p>変動要因: <a href="#multiple_voices">上</a>を見よ。</p>
+
+	<p>
+		V: フィールドは名前、音部記号などのような声部を特定する内容を含むことができる、例：
+	</p>
+
+	<pre class="code">
+V:T name="Tenor" clef=treble-8
+</pre>
+	<p>
+		これは声部 T が五線譜に Tenor として描かれること、
+		ト音記号が８度下で書かれることを表している。
+		歌唱者は一オクターブ下げて歌わねばならない。ありうる声部の定義は次の通り。
+	</p>
+	<ul>
+		<li>name="voice name" - 声部の名前は最初の五線の左にのみプリントされる。 文字 \n は改行となる</li>
+		<li>subname="voice subname" - 声部の別名が二段目以降の左にプリントされる。</li>
+		<li>stem=up/down - 符幹の向きを指定する。</li>
+		<li>clef= - 音部記号を指定する。詳しくは<a href="#Clefs-and-transposition">音部記号と移調</a>を見よ。</li>
+	</ul>
+	<p>
+		名前の指定は nm= と省略できる。別名は snm= と省略できる。
+	</p>
+
+	<p>
+		アプリケーションでは独自の指定をしてよいが、
+		その指定が理解できなかったり実装できなかったりするときは無視すべきである。
+		これは abc ファイルととアプリケーションの互換性を保つために必要である。
+	</p>
+
+	<h3 id="breaking_lines">7.2 改行</h3>
+	<p>変動要因: <a href="#multiple_voices">上</a>を見よ。
+		特に下記の要因から control voice の導入は緩和してよい。
+	</p>
+
+	<p>
+		多声 <a href="#abc_tune_definition">abc 曲</a>の
+		<a href="#typesetting_line-breaks">組版改行</a>は、
+		一声の音楽の改行と同じである。
+		ただし、１つの声部に付けられた改行が他の改行にも付加される。
+		<a href="#Canzonetta">Canzonetta.abc</a> の例を参照。
+	</p>
+
+
+
+
+
+	<h3 id="lnline_fields">7.3 インラインフィールド</h3>
+	<p>変動要因: <a href="#multiple_voices">上</a>を見よ。</p>
+
+	<p>
+		あいまいさを避けるため、インラインフィールドでの音楽属性は、
+		適用される各声部に関して繰り返すこと。<br />
+
+		例：
+	</p>
+
+
+	<script>document.write('<pre class="code">' + inline_fields2 + '</pre>')</script>
+	<div id="canvas-inline-fields2"></div>
+
+
+
+	<h3 id="voice_overlay">7.4 声部の重ねあわせ</h3>
+	<p>変動要因: <a href="#multiple_voices">上</a>を見よ。</p>
+
+	<p>
+		&amp; オペレータは、複数の声部を１つの小節に一時的にオーバーレイするために使ってよい。
+		それぞれの & オペレータは１つの小節のタイムポイントを決め、
+		その前にある一時的な声部と平行に続く音符も決める。
+		この方法はそれぞれの &amp; に対して１つの完全小節を付け加えるときのみ使える。
+		<br />
+		例：
+	</p>
+
+	<pre class="code">A2 | c d e f g  a  &amp;\
+     A A A A A  A  &amp;\
+     F E D C B, A, |]
+</pre>
+
+	<p>w: ラインの語(と s: ラインのシンボル) は歌詞の行合わせの対応する音符にマッチする。
+		(<a href="#Lyrics">歌詞</a>を見よ)。伴奏でのオーバーレイとは無関係である。
+		<br />
+		例
+	</p>
+	<pre class="code">g4 f4 | e6 e2 |
+&& (d8    | c6) c2|
+w: ha-la-| lu-yoh
++: lu-   |   -yoh
+</pre>
+
+	<p>
+		訳注：これも abcjs では対応していない。上記を解釈できる処理系であれば、
+		ha-la-lu-yoh は五線譜の上に表示されるが、abcjs では上記の方法でも、他の方法でも、
+		歌詞を上に載せることはできない。
+	</p>
+
+	<p>
+		この書き方によって、abc 2.0 の w: lines と s: lines の書き方は古くなり、
+		<a href="#outdated_syntax">廃れている</a>（<a href="#disallowed_voice_overlay">禁止されている</a>を見よ）。
+
+	</p>
+
+	<h2 id="Format" name="Format">8 abc データフォーマット</h2>
+
+	<p>
+		ファイルの各行はホワイトスペースで終わるが、このホワイトスペースは無視される。
+		この標準の目的のためには、
+
+		<abbr title="American Standard Code for Information Interchange">ASCII</abbr>
+		タブとスペース文字は同等であり、どちらも
+		&#039;ホワイトスペース&#039;に含まれる。
+		アプリケーションは行末のマーカーとして Unix の(<code>&lt;LF&gt;</code>)のほか、
+		Windows/DOS の(<code>&lt;CR&gt;&lt;LF&gt;</code>)、
+		Macintosh style (<code>&lt;CR&gt;</code>)のどれも正しく解釈しなければならない。
+
+	</p>
+
+	<h3 id="tune_body">8.1 曲本体</h3>
+
+	<p>
+		<a href="#tune_body_definition">曲本体</a>のなかで、
+		プリント可能な
+		<abbr title="American Standard Code for Information Interchange">ASCII</abbr> 文字すべてが
+		<a href="#music_code_definition">音楽コード</a>で使える。これらは次の通り：
+	</p>
+	<pre class="code"> !&quot;#$%&amp;&#039;()*+,-./0123456789:;&lt;=&gt;?@
+ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`
+abcdefghijklmnopqrstuvwxyz{|}~</pre>
+
+	<p>
+		これらの中で、下記の文字は現在予約されている。
+	</p>
+	<pre class="code"># * ; ? @</pre>
+
+	<p>
+		将来の標準で abc シンタックスを拡張するときに使うかもしれない。
+	</p>
+
+	<p></p>
+
+	<p>
+		前方互換性を保証するために、これらの文字が音符グループの中や間に出現した場合は、
+		現在のソフトウェアはこれらの文字を無視すべきであり、できれば警告を出してほしい。
+		しかし、これらの文字は<a href="#text_string_definition">テキスト文字列<a />や
+			<a href="#information_field_definition">情報フィールドの中</a>に出現した場合は無視してはならない。
+	</p>
+
+	<p>
+		<em> 例： </em>
+	</p>
+	<pre class="code">@a !pp! #bc2/3* [K:C#] de?f &quot;@this $2was difficult to parse?&quot; y |**</pre>
+
+	<p>
+		は次のように扱われるべきである：
+	</p>
+	<pre class="code">a !pp! bc2/3 [K:C#] def &quot;@this $2was difficult to parse?&quot; y |</pre>
+
+	<h3 id="text_strings">8.2 テキスト文字列</h3>
+
+	<dl>
+		<dt id="text_string_definition" name="text_string_definition">text string</dt>
+		<dt>テキスト文字列</dt>
+		<dd>
+			<p>
+				<a href="#abc_file_definition">abc ファイル</a>に書かれているテキストは、
+				<a href="#information_field_definition">情報フィールド</a>の一部か、
+				<a href="#annotations">アノテーション</a>の一部か、
+				<a href="#free_text_definition">自由テキスト</a> /
+				<a href="#typeset_text_definition">組版テキスト</a>の一部かであり、
+				これらはまとめて<b>テキスト文字列</b>と呼ばれたり、あるいはより正式に
+				<b>abc テキスト文字列</b>と呼ばれたりする。<br />
+				注意：abc 記譜法 ver 2.0 では<a href="#text_string_definition">テキスト文字列</a>を<b>abc 文字列</b>と読んでいた。)
+			</p>
+		</dd>
+	</dl>
+
+	<p>
+		通常、複数行のテキストがある場合、各行は別々のテキスト文字列を形成するが、区別は必須ではない。
+	</p>
+	<p>
+		テキスト文字列の内容は、任意の有効な文字セットを使用して記述することができる。 デフォルトの文字セットはutf-8で、すべてのUnicode文字にアクセスできる。
+	</p>
+	<p>
+		しかし、すべてのテキストエディタがutf-8をサポートするわけではなく、テキスト文字列にアクセント記号付きの文字を書くときの移植性の問題を避けるために、3つの他のエンコーディングオプションを使用することもできる。</p>
+	</p>
+
+	<ul>
+		<li>
+			ニーモニック - たとえば、éは\ 'eで表すことができる。これらのニーモニックはTeXエンコーディングに基づいており、
+			常にバックスラッシュ - ニーモニック文字の形式である。
+			彼らはabcの初めの日から利用可能であり、従来のabcファイルで広く使用されている。
+			彼らは一般に覚えやすく、読みやすいですが、表現できるアクセントの点で包括的ではない。
+		</li>
+		<li>
+			名前付き html エンティティ - たとえば、éは＆eacute;で表すことができる。これらのエンコーディングは、従来のabcファイルでは一般的ではないが、
+			abcを使用し、一般的には覚えやすいWebサイトに便利である。
+			しかし、彼らは特に読むことが容易ではなく、表現できるアクセントの点で完全に包括的でもない。
+		</li>
+		<li>
+			固定幅のユニコード - たとえば、éは16ビットのユニコード表現00e9（または32ビットを使用する\ U000000e9）を使用して\ u00e9で表すことができる。
+			これらのエンコーディングは、従来のabcファイルでは一般的ではなく、読むのは簡単ではないが、すべてのUnicode文字に包括的にアクセスできる。
+		</li>
+	</ul>
+
+	<p>
+		準拠しているすべてのabc植字ソフトウェアは、付録に示されているアクセントと合字のサブセット、サポートされているアクセントと合字を、以下に示す特殊文字と記号とともにサポートする必要がある
+		（理解でき、変換可能）。
+	</p>
+	<p>
+		例は、次のとおり：
+	</p>
+
+	<div class="table sectionedit61">
+		<table class="inline">
+			<thead>
+				<tr class="row0">
+					<th class="col0 leftalign"> Accent </th>
+					<th class="col1 leftalign"> Examples </th>
+					<th class="col2 leftalign"> Encodings </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row1">
+					<td class="col0 leftalign"> grave </td>
+					<td class="col1"> <code>À à è ò</code> </td>
+					<td class="col2"> <code>\`A \`a \`e \`o</code> </td>
+				</tr>
+				<tr class="row2">
+					<td class="col0 leftalign"> acute </td>
+					<td class="col1"> <code>Á á é ó</code> </td>
+					<td class="col2"> <code>\'A \'a \'e \'o</code> </td>
+				</tr>
+				<tr class="row3">
+					<td class="col0 leftalign"> circumflex </td>
+					<td class="col1"> <code>Â â ê ô</code> </td>
+					<td class="col2"> <code>\^A \^a \^e \^o</code> </td>
+				</tr>
+				<tr class="row4">
+					<td class="col0 leftalign"> tilde </td>
+					<td class="col1"> <code>Ã ã ñ õ</code> </td>
+					<td class="col2"> <code>\~A \~a \~n \~o</code> </td>
+				</tr>
+				<tr class="row5">
+					<td class="col0 leftalign"> umlaut </td>
+					<td class="col1"> <code>Ä ä ë ö</code> </td>
+					<td class="col2"> <code>\"A \"a \"e \"o</code> </td>
+				</tr>
+				<tr class="row6">
+					<td class="col0 leftalign"> cedilla </td>
+					<td class="col1 leftalign"> <code>Ç ç</code> </td>
+					<td class="col2 leftalign"> <code>\cC \cc</code> </td>
+				</tr>
+				<tr class="row7">
+					<td class="col0 leftalign"> ring </td>
+					<td class="col1 leftalign"> <code>Å å</code> </td>
+					<td class="col2 leftalign"> <code>\AA \aa</code> </td>
+				</tr>
+				<tr class="row8">
+					<td class="col0 leftalign"> slash </td>
+					<td class="col1 leftalign"> <code>Ø ø</code> </td>
+					<td class="col2 leftalign"> <code>\/O \/o</code> </td>
+				</tr>
+				<tr class="row9">
+					<td class="col0 leftalign"> breve </td>
+					<td class="col1"> <code>Ă ă Ĕ ĕ</code> </td>
+					<td class="col2"> <code>\uA \ua \uE \ue</code> </td>
+				</tr>
+				<tr class="row10">
+					<td class="col0 leftalign"> caron </td>
+					<td class="col1"> <code>Š š Ž ž</code> </td>
+					<td class="col2"> <code>\vS \vs \vZ \vz</code> </td>
+				</tr>
+				<tr class="row11">
+					<td class="col0"> double acute </td>
+					<td class="col1"> <code>Ő ő Ű ű</code> </td>
+					<td class="col2"> <code>\HO \Ho \HU \Hu</code> </td>
+				</tr>
+				<tr class="row12">
+					<td class="col0 leftalign"> ligatures </td>
+					<td class="col1"> <code>ß Æ æ œ</code> </td>
+					<td class="col2"> <code>\ss \AE \ae \oe</code> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<p>
+		アクセント付き文字を植字するのが困難なプログラムは、それらを基本文字に、または合字の場合には、バックスラッシュを無視して2つの基本文字に減らすことができる。
+	</p>
+	<p>
+		例：基本文字に縮小すると、\ oAはA、\ "は\"、\ sはss、\ AEはAEになる。
+	</p>
+	<p>
+		固定幅のユニコードの場合、\ uまたは\ Uの後ろに、それぞれ4または8桁の16進文字を続ける必要がある。 したがって、\ uの後の4文字のいずれかが16進数でない場合、それはbreveとして解釈される。
+	</p>
+
+	<p>特殊文字</p>
+
+	<p>テキスト文字列のコンテキストで意味のある文字は、次のようにバックスラッシュを使用してエスケープできる。</p>
+	<ul>
+		<li>\\と入力するとバックスラッシュが表示される。</li>
+		<li>コメントの開始と解釈されないパーセント記号を取得するには\％を入力する。</li>
+		<li>\＆と入力すると、指定されたhtmlエンティティの先頭に解釈されないアンパサンドが得られる
+			（ただし、アンパサンドの後に空白が続くと解釈される。たとえば、gin＆tonicはOKだが、G \＆Tはバックスラッシュを必要とする） ;</li>
+		<li>タイプ " または\ u0022アノテーションの二重引用符を取得する</li>
+	</ul>
+	<p>特殊記号</p>
+
+	<p>次のシンボルも便利である。</p>
+	<ul>
+		<li>タイプ＆コピー; または著作権シンボル©の\ u00a9</li>
+		<li>フラット記号♭の場合は\ u266dと入力する。♭</li>
+		<li>ナチュラル記号♮の場合は\ u266eと入力する。♮</li>
+		<li>シャープ記号＃は\ u266fと入力する。♯</li>
+	</ul>
+
+	<p>
+		流動的：最後に、指定子$ 1、$ 2、$ 3、および$ 4を使用して、テキスト文字列内のフォントを変更できることに注意してください。 しかし、この機能は将来のバージョンの標準では変更される可能性がある。
+		詳細については、font directivesを参照のこと。
+	</p>
+
+	<h2 id="macros" name="macros">9. マクロ</h2>
+
+	<p>
+		この標準ではマクロの<strong>オプション</strong>システムを定義する。
+		マクロは統括して、装飾記号を定義する方法であり、たとえば、ティルデ <code>~</code> のような装飾記号を
+		演奏できるようにするためのものだ（たとえそれが別の多くの目的に使われるかもしれないとしても）。
+	</p>
+
+	<p>
+		これらのマクロのソフトウェアの実装は、
+		最初にこのセクションで定義されたマクロを最初に展開すべきであり、
+		そのあとで関連する U: 置換のみを行うべきである
+		（ <a href="#redefinable_symbols">再定義可能なシンボル</a>を参照)。
+	</p>
+
+	<p>
+		これらのマクロが abc ヘッダファイルで格納されているとき、
+		これらは強力なライブラリとなりうる。
+	</p>
+
+	<p>
+		マクロには２種類ある。静的マクロと移調マクロである。
+	</p>
+
+	<h3 id="static_macros">9.1 静的マクロ</h3>
+	<p>
+
+		静的マクロは<a href="#tune_header_definition">曲ヘッダ</a>を次のように書くことで定義できる。
+	</p>
+
+	<pre class="code"> m: ~G3 = G{A}G{F}G</pre>
+	<p>
+		もしこの曲を演奏したいときは、プログラムはマクロ定義のための<a href="#tune_header_definition">曲ヘッダ</a>を検索する。
+		そして、検索と置換をそのテキスト内部コピーに対して行ったあとで曲をパーサーが解釈して演奏する。
+		<code>~G3</code> が出てくるたびに、 <code>G{A}G{F}G</code> に置き換えられ、それが演奏される。
+		影響を受けるのは <code>~G3</code> の音のみで、<code>~G2</code> や <code>~g3</code>, <code>~F3</code> などは無視される。
+	</p>
+
+	<p>
+		マクロは好きなだけ加えることができる。もちろん、静的マクロだけを使うなら、
+		ピッチと音符の長さの組みあわせをそれぞれマクロで使い分けることができる。以下はその例である。
+	</p>
+
+	<script>document.write('<pre class="code">' + static_macro1 + '</pre>')</script>
+	<div id="canvas-static-macro1"></div>
+
+	<p>
+		ここでは二つの静的マクロを使っている。というのは、この曲にはティルデがついた２つの異なる音符があるからだ。
+	</p>
+
+	<p>
+		静的マクロの定義は４部分からなる。
+
+	</p>
+	<ul>
+		<li>フィールド識別子 <code>m:</code></li>
+		<li>ターゲット文字列 - 例. <code>~G3</code></li>
+		<li>等号</li>
+		<li> 置換後の文字列 - 例. <code>G{A}G{F}G</code></li>
+	</ul>
+
+	<p>
+		ターゲット文字列は31文字までの文字列であればよい。ただし、文字に n を含んではならない。理由は後述する。
+		ティルデを使う必要はないが、
+		abc の正当な組み合わせを使わないのならば、他のプログラムでは曲を演奏できないだろう。
+	</p>
+
+	<p>
+		置換後の文字列は abc 文字列として正当な 200 文字までの長さの文字列である。
+		責任をもってもらいたいのだが、ターゲット文字列と置換後の文字列は同時にインターバルを専有する（プログラムはチェックしない）。
+		必要があれば、ターゲット文字列と置換後の文字列がどちらもスペースを含んでよい。
+		読みやすさのためのスペースとトレイリングスペースは取り除かれ、
+		次のようになる。
+
+	</p>
+	<pre class="code">m:~g2={a}g{f}g</pre>
+
+	<p>
+		これももちろん OK である。読みにくいが。
+	</p>
+
+	<h3 id="transposing_macros">9.2 置換マクロ</h3>
+
+	<p>
+		もし曲が多くのたくさんの音に装飾されていたとしたら、そして装飾パターンを同じように多くの音に適用したければ、
+		これを達成するために置換マクロが使える。
+		置換マクロは静的マクロとちょうど同じ方法で書ける。一点、
+		違いはターゲット文字列にある音符のシンボルが、 'n' （すべての音符の意味）であることと、
+		n とのアルファベット上の関係における位置に従って解釈されるその他の文字
+		（h から z）が置換文字列で音名を示す記号に使われることにある。
+
+	</p>
+
+	<p>
+		だから、
+		例えば m: ~G3 = G{A}G{F}G という静的マクロは、 m: ~n3 = n{o}n{m}n
+		という置換マクロに書き換えることができる。
+		置換マクロが曲の内部で使われた場合、
+		~n3 と書かれたものだけが適切な音符のパターンに置換される。
+		~n2 と書かれたもの（または、その他の音価のもの）は無視されるので、
+		それぞれの音価に合った別々の置換マクロを書かなければならない。
+	</p>
+
+	<p>
+		そして、たとえば再度静的マクロ <code>m: ~G3 = G{A}G{F}G</code>
+		を移調マクロ <code>m: ~n3 = n{o}n{m}n</code> として書き換えることができる。
+		置換マクロが拡張されると、形式 <code>~n3</code> のどんな音符でも適切な音符パターンに置き換えられる。
+		形式 <code>~n2</code> （や他の長さ）は無視されるので、
+		それぞれの音の長さで置換マクロを分けることができる。
+
+	<p>
+		例を見てみよう。
+	</p>
+
+	<script>document.write('<pre class="code">' + static_macro2 + '</pre>')</script>
+
+	<div id="canvas-static-macro2"></div>
+
+	<p>
+		置換マクロの定義は４部分からなる：
+	</p>
+	<ul>
+		<li class="level1"> フィールド識別子 <code>m:</code>
+		</li>
+		<li class="level1"> ターゲット文字列 - 例. <code>~n3</code>
+		</li>
+		<li class="level1"> 等号
+		</li>
+		<li class="level1"> 置換後の文字列 - 例. <code>n{o}n{m}n</code>
+		</li>
+	</ul>
+
+
+	<p>
+		ターゲット文字列は31文字までの文字列であればよい。ただし、nのあとに音符の長さを特定する数字がある文字列を含んではならない。
+	</p>
+
+
+	<p>
+		置換後の文字列は abc テキストで正当な 200 文字の長さまでならどれでもよい。
+		ここで、音符のピッチは文字 h - z で定義され、ピッチは文字 n に対する相対的なものと解釈される。
+		一度タイムインターバルマッチを確認すること。
+		置換マクロでは変位記号は使えない。
+	</p>
+
+	<p>
+		<em> コメント: </em>
+		どんな場面でも動作する <code>~=a3</code> や <code>~^G2</code> のようなものを、
+		置換する方法を考えつくことはまずできない。そのようなことをするぐらいなら、静的マクロを使うべきだ。
+	</p>
+	<hr />
+
+	<h2 id="outdated_syntax">10. 時代遅れのシンタックス</h2>
+
+	<p>
+		abc 標準には時代遅れのシンタックスが多くある。それらは、
+		もはや推奨されなかったり、サポートさえされなかったりする。
+		これらの定義は次のとおりである。
+	</p>
+	<ul>
+		<li>非推奨の(deprecated)シンタックスとは、
+			新しいシンタックスができたために時代遅れとなったルールや構成である。
+			非推奨のシンタックスであっても、
+			厳密な解釈ではサポートされなければならない。
+			しかし新しい表記では推奨されない。
+			非推奨のシンタックスは将来の abc のバージョンでは廃止される（obsolete）。
+			非推奨のシンタックスを見つけた abc ソフトウェアを適合させるためには、
+			（仮にユーザーが警告表示のオプションをオフにすることができるとしても）
+			厳密な解釈では警告しなければならない。
+		</li>
+		<li>
+			廃止された(Obsolete)シンタックスとは、
+			abc ソフトウェアに適合させるためのサポート保証がない規則や構成である。
+			廃止されたシンタックスはゆるやかな解釈のもとではサポートされるかもしれないが、
+			新しい表記では用いてはいけない。
+			廃止されたシンタックスを見つけた abc に適合したソフトウェアは、
+			厳密な解釈のもとでは（できれば致命的ではない）
+			エラーを表示させる。ゆるやかな解釈のもとでは
+			（仮にユーザーが警告表示のオプションをオフにすることができるとしても）
+			警告しなければならない。
+		</li>
+		<li>禁止された(Disallowed)シンタックスとは、廃止されたシンタックスと同じ定義だが、
+			公式の「廃止」プロセスを経ていない。
+		</li>
+		<li>時代遅れの(Outdated)シンタックスとは、
+			非推奨の(Deprecated)、廃止された(Obsolete)、禁止された(Disallowed)シンタックスの総称である。
+		</li>
+	</ul>
+
+	<p>
+		<a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a>を見よ。
+		ここには下記キーワードの公式定義が述べられている。
+		MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, MAY, OPTIONAL。
+	</p>
+
+
+
+
+	<h3 id="outdated_information_field_syntax">10.1 時代遅れの情報表現シンタックス</h3>
+	<p>省略</p>
+	<h3 id="outdated_dialects">10.2 時代遅れの表現</h3>
+
+
+	<p>省略</p>
+	<h3 id="outdated_continuations">10.3 時代遅れの継続</h3>
+
+	<p>
+		初期の abc は、バックスラッシュ (<code>\</code>) がスコアの改行を抑制する文字として、
+		<a href="#music_code_definition">音楽コード</a>の行末にこれを置くことで使われていた。
+		（中略）
+	</p>
+
+	<p>
+		abc 2.0 ではこの用法を拡張して、 <code>\</code> が一般的な継続文字となるようにした。
+		つまり、 <a href="#information_field_definition">情報フィールド</a> 、
+		特に<code>w:</code> 歌詞のフィールドに適用できるようにした。残念なことに、このルールの徹底ははかどらず、
+		( <code>\</code> はプリプロセッサによって継続行となるように取り扱われ、
+		もしそうならコメントはどうなるか？)使用法は広く採用されることはなかった。まして理解されることもなかった。
+
+	</p>
+
+	<p>
+		<em>コメント</em>： 160,000 曲ある現在利用できる<a href="http://abcnotation.com/search" class="urlextern"
+			title="http://abcnotation.com/search" rel="nofollow">abcnotation.com 曲検索</a>では、
+		<code>w:</code>フィールドの継続を使っているのはわずか 22 曲 (0.01%) であり、
+		他のフィールドを使っているのは約 50 曲(0.03%) しかなかった。後者の利用ではほとんどがエラーとなっている。
+	</p>
+
+	<p>省略</p>
+	<h3 id="outdated_directives">10.4 時代遅れのディレクティブ</h3>
+
+	<p>省略</p>
+	<h3 id="outdated_file_structure">10.5 時代遅れのファイル構造</h3>
+	<p>省略</p>
+	<h3 id="outdated_lyrics_alignment">10.6 時代遅れの歌詞揃え</h3>
+
+	<p>省略</p>
+	<h3 id="other_outdated_syntax">10.7 他の時代遅れのシンタックス</h3>
+	<h4 id="disallowed_voice_overlay">10.7.1 禁止されている声部オーバーレイ</h4>
+	<p>省略</p>
+
+	<h2 id="Stylesheet" name="Stylesheet">11. スタイルシートディレクティブと擬似コメント</h2>
+
+	<h3 id="Directive">11.0 ディレクティブとは</h3>
+
+	<h4 id="disclaimer">11.0.1 免責事項</h4>
+
+	<p>
+		初期の abc は、擬似コメント (''%%'' で始まる行）が、
+		ソフトウェア固有の情報とフォーマット指示を
+		<a href="#abc_file_definition"> abc ファイル</a>に付加する手段として紹介されていた。
+		この理由は、これら擬似コメントが % 記号で始まることで、
+		<a href="#comment_definition">コメント</a>として扱われ無視されるようにできたからだ。
+	</p>
+	<p>
+		多大な努力のもと、abc 2.0 ではこれらの擬似コメントを標準化しようと試み、
+		<a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a>に記載した。
+		この試みは、"ABC の仕様そのものの一部ではない" し、むしろ"付加的な標準"であった。
+		これらのディレクティブが制御するものは、コンテンツと構造の情報であり、abc のコードによって「
+		実際にレンダリングされるもの、たとえば組版やプレーヤープログラムによってレンダリングされるものとして、
+		記述されていた。
+	</p>
+	<p>
+		しかし残念なことに、これら擬似コメントは数が多すぎて、すべてが正しく定義されているというわけではなかった。
+		さらに、ディレクティブの中には、
+		特に<a href="#text_directives">テキストディレクティブ</a>や
+		<a href="#accidental_directives">臨時記号ディレクティブ</a>で、（レンダリングの命令ではなしに）
+		コンテンツや構造情報を含んでいるものがあった。
+	</p>
+	<p>
+		abc 2.1 ではこのアプローチから少し先に進んでいる。
+	</p>
+
+	<p>
+		擬似コメントは今でも多く受け入れられている方法であり、
+		開発者が実験的な特徴やソフトウェア固有なフォーマット命令を導入できる。
+		しかし、あるディレクティブが多く受け入れられるようになれば、
+		すなわち１つ以上のソフトウェアで実装されるようになったり曲の実質的な本体で使われるようになったりすれば、
+		目標はその使い方を標準化して、標準として採用することである。
+		だから、''%%''擬似コメント形式の代わりに
+		''I:''<a href="#iinstruction">命令</a>を推奨することになるだろう。
+	</p>
+
+	<p>
+		特に、abc 2.3 ではマークアップと埋め込みについて述べるとともに、
+		この点からテキストベースのディレクティブの多くが、他の広く受け入れられる形式とともに、
+		公式に組み入れられるだろう。
+	</p>
+
+	<p>
+		当面は、第 11 章は abc 2.0 とはほとんど同じのままにしておく（誤植を直した程度）が、
+		今後の結果によっては第 11 章の全部とスタイルシートのディレクティブの全部が // 変動要因 // とみなされるだろう。
+	</p>
+	<h4>11.0.2 スタイルシートディレクティブ</h4>
+
+	<dl>
+		<dt id="stylesheet_directive_definition">stylesheet directive</dt>
+		<dt>スタイルシートディレクティブ</dt>
+		<dd>
+			<p>
+				<b>スタイルシートディレクティブ</b>とは''%%''で始まる行であり、組版やプレーヤーのプログラムに対する命令を与えるディレクティブが続くものである
+			</p>
+		</dd>
+	</dl>
+	<pre>
+// 例: //
+  %%papersize A4
+  %%newpage
+  %%setbarnb 10
+</pre>
+	<p>
+		別法として、
+		どんな<a href="#stylesheet_directive_definition">スタイルシートディレクティブ</a>でも
+		<a href="#iinstruction">''I:命令</a>フィールドで書けるのならば、
+		まだ標準化されていない使用法ゆえに非推奨だがこう書けるだろう
+		(すなわち第１１章に述べたどんなディレクティブも非推奨なので）。
+	</p>
+	<pre class="code">
+// 例： // 非推奨
+  I:papersize A4
+  I:newpage
+  I:setbarnb 10
+</pre>
+	<p>
+		インラインフィールド記法を使用して、スタイルシートディレクティブを音楽の途中に配置することができる。
+	</p>
+	<p>例</p>
+	<pre class="code">
+CDEFG|[I:setbarnb 10]ABc
+</pre>
+	<p>
+		プログラムがスタイルシート指示文を認識しない場合は、それを無視するだけである。
+	</p>
+	<p>
+		スタイルシート指令は正式にabc標準自体の一部ではないことを強調しておく。 さらに、可能なディレクティブのリストは長く、標準化されていない。
+		レイアウト、テキストの注釈、フォント、間隔、声調、移調などの詳細を指定するためのさまざまなプログラムによって提供される。
+	</p>
+	<p>
+		厳密に言えば、abcアプリケーションはスタイルシート指示文の同じセットに従う必要はない。
+		しかし、異なるコンピュータシステム間でabcファイルを移植できるようにすることが望ましい。
+
+	</p>
+
+	<h3>11.1 声部のグルーピング</h3>
+
+	<p>
+		変動事項：この節は、
+		abc 2.2 の<a href="#multiple_voices">多声</a>に関する全体討論の一部としてレビュー中である。
+		<a href="#disclaimer">第 11 章の免責事項</a>も見よ。
+	</p>
+
+
+	<p>基本シンタックス：</p>
+
+	<pre class="code">%%score &lt;voice-id1&gt; &lt;voice-id2&gt; ... &lt;voice-idn&gt; </pre>
+
+	<p>スコアディレクティブは、どの声部がスコアで表示されるか、表示された声部が五線譜上でどのようにグルーピングされるかを特定する。</p>
+
+	<p>
+		カッコ () で囲まれた声部は、１つの五線譜で続いている。
+		一緒にするとこれらは声部のグループを形成する。
+		カッコで囲まれない１つの声部は、それ単体で１つのグループを形成し、単独の五線譜としてプリントされる。
+	</p>
+
+	<p>
+		声部のグループが波カッコ {} で囲まれていれば、対応する五線譜は先頭が大きな波カッコによって繋げられる。
+		これらはまとめて声部ブロックを形成する。このフォーマットは特に鍵盤楽器の音楽の組版で使われる。
+	</p>
+
+	<p>
+		もし声部グループや波カッコによる声部ブロックが角カッコ[] で囲まれていれば、
+		対応する五線譜は先頭が大カッコでつながれる。これらはまとめて声部ブロックを作る。
+	</p>
+
+	<p>
+		もし声部ブロックや声部グループがそれぞれ文字 | で区切られていれば、
+		関連する五線譜の間で小節線は繋げられる。
+	</p>
+
+	<p>例：</p>
+	<pre class="code">%%score Solo  [(S A) (T B)]  {RH | (LH1 LH2)}</pre>
+	<div id="grouping1"></div>
+	<p>
+
+		2つの音声グループで囲まれた単一の音声の前に星印（*）が付いている場合、その音声は浮動とマークされる。
+		これは、声部の段自らの段に表示されるとは限らず、ソフトウェアによって、自らの段か、次の段かに表示される。
+		むしろ、ソフトウェアは、音声の各音符について、
+		自らの段または次の段に印刷すべきかどうかを自動的に決定しなければならない。
+	</p>
+	<p>
+		浮動音声をサポートしていないソフトウェアは、前の音声グループの一部であるかのように、
+		前の段に声部を単に印刷することができる。
+	</p>
+
+	<p>例</p>
+	<pre class="code">
+%%score {RH *M| LH}
+%%score {(RH1 RH2) *M| (LH1 LH2)}
+</pre>
+	<div id="canvas-floating1"></div>
+	<p>
+		オーケストラ作品の弦部分は通常括弧で括られ、上の2つ（第1 /第2のバイオリン）が括弧の外側にブレースされている。
+	</p>
+
+
+	<pre class="code">
+%%score [{Vln1 | Vln2} | Vla | Vc | DB]
+</pre>
+	<p>
+		曲の本体に表示されるすべての声部は、スコア指示文に記載されている場合にのみ印刷される。
+	</p>
+	<p>
+		楽譜本体内でスコア・ディレクティブが発生すると、楽器ジェネレータがリセットされ、
+		一定期間ボイスが表示され消える。
+	</p>
+	<p>
+		スコア指示句が使用されていない場合、調律本体に表示されるすべての声部は別々の譜表に印刷される。
+	</p>
+	<p>
+		包括的な例については、Canzonetta.abcを参照のこと。
+	</p>
+	<p>
+		%% scoreの代替ディレクティブは%% staves である。
+	</p>
+	<p>
+		%% scoreと%% stavesディレクティブの両方で同じパラメータを受け入れることができるが、
+		メジャーバーの指示は逆の方法で動作する。
+		したがって、%% staves [S | A | T | B]は%% score [SATB]と等価であり、関連する譜表間で連続した棒線が引かれないことを意味し、
+		%% staves [SATB]は%% score [S | A | T | B]は、それらが描かれたことを意味する。
+	</p>
+
+
+	<h3 id="instrumentation_directives">11.2 楽器ディレクティブ</h3>
+
+	<p>
+		// 変動要因: // <a href="#disclaimer">11章 免責</a>を見よ。
+	</p>
+
+	<pre class="code">%%MIDI voice [&lt;ID&gt;] [instrument=&lt;integer&gt; [bank=&lt;integer&gt;]] [mute]</pre>
+
+
+	<p>
+		楽器ディレクティブでは、MIDI 楽器を示された abc 声部に割り当てる。
+		MIDI 楽器は 128 種類のそれぞれに分けられている。
+		どの楽器やバンクも 1 から始まっている。
+	</p>
+
+
+	<p>
+		一般 MIDI (GM) は可搬性があり、128 種類の楽器が数字で割り当てられている。
+		<a href="http://www.midi.org/techspecs/gm1sound.php" class="urlextern"
+			title="http://www.midi.org/techspecs/gm1sound.php" rel="nofollow">
+			http://www.midi.org/techspecs/gm1sound.php</a> を見よ。
+		GM 楽器は１つのバンクを選ぶと使える。
+		他の MIDI のバンクの内容はプラットフォームに依存するので、
+		割り当てられた曲のなかで最初の MIDI バンクのみを使うことを強くすすめる。
+	</p>
+
+	<p>
+		デフォルトのバンク番号は 1 である。
+	</p>
+
+
+	<p>
+		<em>例：</em> 次は 'Tb' 声部を GM 59 (チューバ）に割り当てるコードである。
+	</p>
+
+	<pre class="code">%%MIDI voice Tb instrument=59</pre>
+
+	<p>
+		もし声部 ID が省かれていれば、楽器は現在の声部に割り当てられる。
+	</p>
+
+	<p>
+		<em>例：</em>
+	</p>
+	<pre class="code">M:C
+L:1/8
+Q:1/4=66
+K:C
+V:Rueckpos
+%%MIDI voice instrument=53 bank=2
+A3B    c2c2    |d2e2    de/f/P^c3/d/|d8    |z8           |
+V:Organo
+%%MIDI voice instrument=73 bank=2
+z2E2-  E2AG    |F2E2    F2E2        |F6  F2|E2CD   E3F/G/|</pre>
+
+
+
+	<p>
+		キーワード <code>mute</code> を使って特定の声部をミュートすることができる。
+	</p>
+
+	<p>
+		いくつかのabcプレーヤーは、
+		メロディーラインで指定されたコードシンボルに基づいて自動的に伴奏を生成することができる。
+		この伴奏を演奏するためのGM楽器を提案するには、次の指示文を使用する。
+	</p>
+	<pre class="code">%%MIDI chordprog 20 % Church organ</pre>
+
+	<h3 id="accidental_directives">11.3 臨時記号ディレクティブ</h3>
+	<p><em>変動要因</em> この節は議論中である。第11章の<a href="#disclaimer">免責事項</a>参照</p>
+
+	<pre class="code">%%propagate-accidentals not | octave | pitch</pre>
+
+	<p>
+		<code>not</code> を指定すると、臨時記号はそれが指示する音符にのみ適用される。
+		<code>ocatve</code> を指定すると、臨時記号はそれが指示する音符だけでなく、
+		オクターブが同じ音まで小節線の末尾まで適用される。
+		<code>pitch</code> を指定すると、臨時記号は同じピッチ音すべてに小節線の末尾まで適用される。
+	</p>
+	<p>デフォルトは <code>pitch</code> である。</p>
+
+	<pre class="code">%%writeout-accidentals none | added | all</pre>
+
+	<p>
+		none に設定すると、キーシグネチャフィールド（K :)に表示される修正または明示的な不慮の事故がキーシグネチャに印刷される。
+		added に設定されている場合、K：フィールドに示されているモードに属する偶発事象のみが鍵署名に印刷される。
+		変更または明示的な偶発事象は、それらが適用されるノートの前に印刷される。
+		all に設定すると、モードに属する偶発事故と考えられる変更または明示的な偶発事象の両方が、それらが適用されるノートの前に印刷される。
+		キーの署名は印刷されない。
+	</p>
+
+	<p>
+		デフォルトは <code>none</code> である。
+	</p>
+
+	<h3 id="formatting_directives">11.4 フォーマットディレクティブ</h3>
+
+	<p><em>変動要因</em> この節は議論中である。第11章の<a href="#disclaimer">免責事項</a>参照</p>
+
+
+	<p>
+		植字プログラムは、次のセクションで一連の指示文を受け入れるべきである。
+		ディレクティブのパラメータは、テキスト文字列、真または偽の論理値、整数、小数点以下の数字（次の数字のみ）、または長さの単位である。
+		単位は、cm、in、およびpt（ポイント、1/72インチ）で表すことができる。
+	</p>
+
+	<p>
+		以下のディレクティブは、読めばわかるだろう。
+	</p>
+
+
+
+	<h4 id="page_format_directives">11.4.1 ページフォーマットディレクティブ</h4>
+
+	<p>// 変動事項: // <a href="#disclaimer">第11章 免責事項</a>を見よ。</p>
+	<pre class="code">
+  %%pageheight       &lt;length&gt;
+  %%pagewidth        &lt;length&gt;
+  %%topmargin        &lt;length&gt;
+  %%botmargin        &lt;length&gt;
+  %%leftmargin       &lt;length&gt;
+  %%rightmargin      &lt;length&gt;
+  %%indent           &lt;length&gt;
+  %%landscape        &lt;logical&gt;
+</pre>
+	<h4 id="fond_directives">11.4.2 フォントディレクティブ</h4>
+
+
+	<p>
+		<em> 変動要因 </em>
+		フォントディレクティブは abc 2.3 で議論される。
+		<a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 disclaimer</a> を見よ。
+	</p>
+
+	<p>
+		217/5000
+		PostScriptとPDFは、印刷可能な素材を配布するための標準的なファイル形式である。
+		移植性の理由から、植字者はPostScriptフォント名を使用する。 sizeパラメータは整数である必要があるが、オプションである。
+
+	</p>
+	<pre class="code">%%titlefont        &lt;font name&gt;  &lt;size&gt;
+%%subtitlefont     &lt;font name&gt;  &lt;size&gt;
+%%composerfont     &lt;font name&gt;  &lt;size&gt;
+%%partsfont        &lt;font name&gt;  &lt;size&gt;
+%%tempofont        &lt;font name&gt;  &lt;size&gt;
+%%gchordfont       &lt;font name&gt;  &lt;size&gt; % for chords symbols
+%%annotationfont   &lt;font name&gt;  &lt;size&gt; % for "^..." annotations
+%%infofont         &lt;font name&gt;  &lt;size&gt;
+%%textfont         &lt;font name&gt;  &lt;size&gt;
+%%vocalfont        &lt;font name&gt;  &lt;size&gt; % for w:
+%%wordsfont        &lt;font name&gt;  &lt;size&gt; % for W:</pre>
+
+	<p>
+		記述子 <code>$1</code> や <code>$2</code>, <code>$3</code> , <code>$4</code> は
+		<a href="#text_string_definition" title="abc:standard:v2.1 ↵" class="wikilink1">text string</a>で
+		フォントを変えるときに使う。
+		フォントは <code>%%setfont-n</code> ディレクティブで指定する。
+		使われているフォントは<code>$0</code>でデフォルトの値にリセットできる。
+		<code>$$</code> は実際のドル記号である。
+	</p>
+
+	<pre class="code">%%setfont-1        &lt;font name&gt;  &lt;size&gt;
+%%setfont-2        &lt;font name&gt;  &lt;size&gt;
+%%setfont-3        &lt;font name&gt;  &lt;size&gt;
+%%setfont-4        &lt;font name&gt;  &lt;size&gt;</pre>
+
+	</div>
+
+	<h4 id="space_directives">11.4.3 空白ディレクティブ</h4>
+
+	<p>
+		<em> 変動要因 </em> <a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 disclaimer</a>
+		を参照。
+	</p>
+	<pre class="code">%%topspace         &lt;length&gt;
+%%titlespace       &lt;length&gt;
+%%subtitlespace    &lt;length&gt;
+%%composerspace    &lt;length&gt;
+%%musicspace       &lt;length&gt; % between composer and 1st staff
+%%partsspace       &lt;length&gt;
+%%vocalspace       &lt;length&gt;
+%%wordsspace       &lt;length&gt;
+%%textspace        &lt;length&gt;
+%%infospace        &lt;length&gt;
+%%staffsep         &lt;length&gt; % between systems
+%%sysstaffsep      &lt;length&gt; % between staves in the same system
+%%barsperstaff     &lt;integer&gt;
+%%parskipfac       &lt;number&gt; % space between parts
+%%lineskipfac      &lt;number&gt; % space between lines of text
+%%stretchstaff     &lt;logical&gt;
+%%stretchlast      &lt;logical&gt;
+%%maxshrink        &lt;number&gt; % shrinking notes
+%%scale            &lt;number&gt;</pre>
+
+	</div>
+
+	<h4 id="measure_directives">11.4.4 拍子ディレクティブ</h4>
+
+
+	<p>
+		<em> 変動要因 </em> <a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 disclaimer</a>
+		を参照。
+	</p>
+	<pre class="code">%%measurefirst     &lt;integer&gt; % number of first measure
+%%barnumbers       &lt;integer&gt; % bar numbers every 'n' measures
+%%measurenb        &lt;integer&gt; % same as %%barnumbers
+%%measurebox       &lt;logical&gt;
+%%setbarnb         &lt;integer&gt; % set measure number</pre>
+
+	</div>
+
+
+	<h4 name="text_directives" id="text_directives">11.4.5 テキストディレクティブ</h4>
+
+	<p>
+		<em> 変動要因 </em>
+		テキストディレクティブは abc 2.3 で議論される。
+		<a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 disclaimer</a> を見よ。
+	</p>
+
+	<p>
+		以下ディレクティブは<a href="#abc_file_definition" title="abc:standard:v2.1 ↵" class="wikilink1">abc ファイル</a>にある、
+		<a href="#typeset_text_definition" title="abc:standard:v2.1 ↵" class="wikilink1">タイプセットテキスト</a>を挿入することで使える。
+	</p>
+
+	<pre class="code">%%text             &lt;text string&gt;
+%%center           &lt;text string&gt;
+%%begintext
+%%...              &lt;text string&gt;
+%%endtext</pre>
+
+	<p>
+		注釈：
+	</p>
+	<ul>
+		<li class="level1">
+			<div class="li"> <code>%%text</code>
+				は次のテキストをプリントする。<a href="#text_string_definition" title="abc:standard:v2.1 ↵"
+					class="wikilink1">テキスト文字列</a>として扱う。</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <code>%%center</code>
+				は次のテキストをプリントする。<a href="#text_string_definition" title="abc:standard:v2.1 ↵"
+					class="wikilink1">テキスト文字列</a>、中央揃えとして扱う。</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <code>%%begintext</code> と <code>%%endtext</code>
+				<code>%%</code> で始まり続くテキストのラインのセクションに印をつける。
+				複数 <code>%%text</code> ラインの代わりである。
+				[<em>重要な注意:</em> <a href="#abc_extensions" title="abc:standard:v2.1 ↵" class="wikilink1">拡張</a>機能が
+				abc ソフトウェアプログラムで提供されていれば <code>%%begintext</code> と <code>%%endtext</code> は
+				曲と曲の間で<a href="#typeset_text_definition" title="abc:standard:v2.1 ↵" class="wikilink1">タイプセットテキスト</a>
+				は各行の間になければならない、
+				という条件は緩和されるかもしれない。
+				一方では
+				<a href="#tune_header_definition" title="abc:standard:v2.1 ↵" class="wikilink1">曲のヘッダー</a> の間や
+				<a href="#tune_body_definition" title="abc:standard:v2.1 ↵" class="wikilink1">曲の本体である</a>ではルールを尊重してほしい。
+				特に空白行は挿入してはならない。]
+			</div>
+		</li>
+	</ul>
+
+	<p>
+		ディレクティブに関するより詳しい情報は
+		<a href="#further_information_about_directives" title="abc:standard:v2.1 ↵" class="wikilink1">リンク先</a>を参照のこと。
+	</p>
+
+	<p>
+		<em> 利用者への推奨事項: </em>
+		もし曲固有の情報に
+		テキスト・ディレクティブを使用している場合は、
+		<a href="#bdfsbackground_information" title="abc:standard:v2.1 ↵"
+			class="wikilink1">バックグラウンド情報フィールド</a>の1つと<code>%% writefields</code>
+		ディレクティブ（<a href="#information_directives" title="abc:standard:v2.1 ↵" class="wikilink1">情報ディレクティブ</a>を参照）を使用して、
+		ソフトウェアをデータベース化することによって情報を正しく識別できるようにしてください。
+	</p>
+
+	<h4 id="information_directives">11.4.6 情報ディレクティブ</h4>
+
+	<p>
+		<em> 変動要因 </em> マークアップが abc 2.3 で強化されるならば、
+		<code>%%writefields</code>ディレクティブとそのフォーマットオプションが強化される可能性がある。
+		<a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 表明</a>も参照。
+	</p>
+	<pre class="code">%%writefields &lt;フィールドアイデンティファイヤのリスト&gt; [&lt;logical&gt;]</pre>
+
+	<p>
+		<code>%%writefields</code>
+		%% writefieldsディレクティブを使用すると、
+		印刷されたスコアにどの文字列型<a href="#information_field_definition" title="abc:standard:v2.1 ↵"
+			class="wikilink1">情報フィールド</a>が表示されるかを選択できる
+		（文字列型フィールドのリストについては、<a href="#information_fields" title="abc:standard:v2.1 ↵"
+			class="wikilink1">情報フィールド</a>の表を参照）。
+		フィールド識別子のリストと、オプションで論理値<code>true</code>または<code>false</code>が続く。 論理値が欠けている場合、それは<code>true</code>とみなされる。
+	</p>
+
+	<p>
+		<code>%%writefields</code> ディレクティブは
+		特定の指示フィールド - すなわち <code>X:参照番号</code>, <code>P:パート</code> and <code>Q:テンポ</code>にも適用される。
+	</p>
+
+	<p>
+		デフォルト "<code>%%writefields TCOPQwW</code>" の意味は、タイトル (T), 作曲家 (C), オリジン (O), パート (P), テンポ (Q),
+		aligned words (w) 他のワード (W) である。これらはデフォルトでプリントされる。
+		%% writefields指示文は、特定の指示フィールド、つまりX：参照番号、P：部分、Q：テンポにも適用される。
+
+		（どのようにタイプセットされるかは
+		<a href="#typesetting_information_fields" title="abc:standard:v2.1 ↵" class="wikilink1">タイプセット情報フィールド</a>を見よ）。
+
+		%% writefields指示文は、特定の指示フィールド、つまりX：参照番号、P：部分、Q：テンポにも適用される。
+
+		各後続の%% writefieldsディレクティブは、このリストをオーバーライドするのではなく、このリストと結合する。
+	</p>
+
+	<p>
+		<em> 例： </em>
+	</p>
+	<pre class="code">%%writefields O false         % the O field is not printed out - other defaults remain
+%%writefields X               % the X: field is printed out
+%%writefields BCDFGHNORSTWwXZ % all string-type fields are printed out</pre>
+
+	<p>
+		abc 2.1に準拠したタイプセットソフトウェアは、選択した方法で情報文字列をフォーマットすることができる。
+	</p>
+
+	<p>
+		<em> 注釈: </em> <code>%%writefields</code> ディレクティブは、
+		abc 2.0で導入された多くのディレクティブの代わりに使用できる。
+	</p>
+
+	<ul>
+		<li class="level1">
+			<div class="li"> "<code>%%writefields X</code>" は "<code>%%withxrefs</code>" の代わりに使用できる。</div>
+		</li>
+		<li class="level1">
+			<div class="li"> "<code>%%writefields Ww false</code>" は "<code>%%musiconly</code>" の代わりに使用できる。</div>
+		</li>
+		<li class="level1">
+			<div class="li"> "<code>%%writefields</code>" は部分的な "<code>%%writehistory</code>" と
+				"<code>%%infoname</code>" の代替である</div>
+		</li>
+	</ul>
+
+	<p>
+		2.0の代替案の詳細については、
+		<a href="#further_information_about_directives" title="abc:standard:v2.1 ↵" class="wikilink1">ディレクティブの詳細</a>
+		を参照のこと。
+	</p>
+
+	</div>
+
+	<h4 id="separation_directives">11.4.7 分割ディレクティブ</h4>
+
+	<p>
+		<em> 変動要因 </em> <a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 disclaimer</a>
+		を参照。
+	</p>
+
+	<pre class="code">%%sep     % draw a horizontal separator, i.e. a line
+%%vskip   % insert some vertical space
+%%newpage % start a new page</pre>
+
+	<p>
+		これらディレクティブの詳細やパラメータについては
+		<a href="#further_information_about_directives" title="abc:standard:v2.1 ↵"
+			class="wikilink1">ディレクティブの詳細を参照のこと。</a>
+	</p>
+
+	<h4 id="miscellaneous_directives">11.4.8 その他ディレクティブ</h4>
+
+	<p>
+		<em> 変動要因 </em> <a href="#disclaimer" title="abc:standard:v2.1 ↵" class="wikilink1">section 11 disclaimer</a>
+		を参照。
+	</p>
+
+
+	<pre class="code">%%exprabove        &lt;logical&gt;
+%%exprbelow        &lt;logical&gt;
+%%graceslurs       &lt;logical&gt; % grace notes slur to main note
+%%infoline         &lt;logical&gt; % rhythm and origin on the same line
+%%oneperpage       &lt;logical&gt;
+%%vocalabove       &lt;logical&gt;
+%%freegchord       &lt;logical&gt; % print '#', 'b' and '=' as they are
+%%printtempo       &lt;logical&gt;</pre>
+
+	<p>
+		これらディレクティブの既定値は false である。
+	</p>
+
+
+
+
+	<h3>11.5 アプリケーション固有ディレクティブ</h3>
+
+	<p>
+		アプリケーションは固有のディレクティブを導入してよい。
+		これらのディレクティブはアプリケーションの名前で始まり、続けてコロンを、続けるディレクティブの名称を記す。
+	</p>
+
+	<p>
+		<em>例：</em>
+	</p>
+	<pre class="code">%%noteedit:fontcolor blue</pre>
+
+
+	<h3>11.6 ディレクティブについてのより詳しい情報</h3>
+
+
+	<p>
+		<a href="#stylesheet_directive_definition" title="abc:standard:v2.1 ↵" class="wikilink1">スタイルシートディレクティブ</a>
+		は公式的には abc 標準の一部ではないので, 単なる部分集合としてのみここに含める。
+		付加的なディレクティブとさらなる情報については、それらを実装したプログラムのユーザーマニュアルを見よ。
+	</p>
+
+	<ul>
+		<li class="level1">
+			<div class="li"> <code>format.txt</code> ファイルは、
+				<a href="http://moinejf.free.fr/" class="urlextern" title="http://moinejf.free.fr/"
+					rel="nofollow">abcm2ps</a> に含まれる。
+			</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <code>abcguide.txt</code> ファイルは
+				<a href="http://abc.sourceforge.net/abcMIDI/" class="urlextern"
+					title="http://abc.sourceforge.net/abcMIDI/" rel="nofollow">abcMIDI</a>
+				に含まれる。
+			</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <code>abctab2ps</code>ファイルは
+				<a href="http://www.lautengesellschaft.de/cdmm/userguide/userguide.html" class="urlextern"
+					title="http://www.lautengesellschaft.de/cdmm/userguide/userguide.html" rel="nofollow">ユーザーガイド</a>
+				に含まれる。
+			</div>
+		</li>
+	</ul>
+
+	<hr />
+
+
+	<h2 id="dialects_strict_loose_interpretation_and_backwards_compatibility">12. 方言、厳密な解釈、緩やかな解釈、後方互換</h2>
+
+	<p>
+		残念なことに、abc の方言が多く発生していて、
+		実装における差異が生じている。
+		このため、abc の標準がドラフトのまま完成せず、曖昧性があるままになっている。
+	</p>
+	<p>
+		2.1 版 では abc 記譜法が頑強になるような目標をおいているが、
+		皆が満足するアプローチは難しく、後方互換性をできるだけ確保するようにするしかない。
+
+	</p>
+	３種類の方法がある。
+	</p>
+	<ul>
+		<li>方言における書き方のゆれを認めるために新しい I: コードを導入する
+		</li>
+		<li>the concepts of strict and loose interpretation of the standard (together with recommendations to software
+			developers for dealing with loose interpretations)
+		</li>
+		<li>デフォルトセッティングを統計をもとに決定する
+		</li>
+	</ul>
+
+	<p>
+		この目的は、どんなに厳密な解釈をとったとしても、
+		現在の方言のほとんどは新しい <code>I:</code>ディレクティブによってもなお利用可能であるようにすることである。
+	</p>
+	<p>
+		<em>コメント</em>
+		厳密な解釈では有効ではない方言は、
+		１つのシンボルが二つ以上の目的に使われるような方言である。
+		例えば、<code>!</code> シンボルは五線の改行にもデコレーションにも使われる。
+		幸運にも、abc 記法による 160,000 曲のうち、
+		<a href="http://abcnotation.com/search" class="urlextern" title="http://abcnotation.com/search"
+			rel="nofollow">abcnotation.com tune search</a>
+
+		この適用ができないのはおよそ 60 曲
+		(0.04%) にすぎない。
+	</p>
+
+	<h3 id="dialects_differences">12.1 方言の違い</h3>
+	<p>生じる違いで主なものには、五線譜の改行のほかデコレーションのデリミタや
+		和音のデミリタがある</p>
+
+
+	<h4>12.1.1 五線譜の改行の方言</h4>
+
+	<p>デフォルトでは、
+		(強制)<a href="#score_line-break_definition">スコア改行</a>の組版に
+		<a href="#code_line-break_definition">コード改行</a>を用いる。
+		<a href="#typesetting_line-breaks">組版改行</a>を見よ。
+	</p>
+
+	<h4 id="#decoration_dialects">12.1.2 Decoration dialects</h4>
+
+	<p>
+		装飾は ! シンボルで区切る。
+		<a href="#decorations" title="abc:standard:v2.1 ↵" class="wikilink1">decorations</a> を参照。
+	</p>
+	<p>
+		以前は装飾を示すために+シンボルが使用されていたが、このシンボルは現在装飾のために推奨されていない。
+	</p>
+	<p>
+		Comment：デコレーションは、最初に標準1.7.6（これは公式に採用されなかった）で導入された！シンボル。
+		abc 2.0（abc 2.1についての議論が行われている間に簡単に採択されました）では、
+		これは+記号に変更された。どちらも普及していないが、
+		！現在はabcnotation.comの曲検索で利用可能な160,000曲のうち、約100（0.07％）だけが+記号を使用して装飾を区切るが、
+		約1,350（0.85％）は！シンボル。
+	</p>
+	<p>
+		装飾のために+記号を使い続けることを望むユーザは、ファイルヘッダーに "I：decoration +"指示文を含めるか、
+		または装飾を参照して個々に調整するだけでよい。
+		すべての+ ... +装飾は、対応するものとして扱われる！...！デコレーションと何か！...！デコレーションはエラーメッセージを生成する。
+	</p>
+	<p>
+		"I：decoration +"ディレクティブは、 "I：linebreak！"ディレクティブによって自動的に呼び出される。
+		指令。また、！+！デコレーションには+ +がない。+ + plus +を代わりに使用すること。
+	</p>
+	<p>
+		ユーザーへのおすすめ：装飾のための+記号の使用量がごくわずかであることを考えると、 "I：decoration +"指示は推奨されない。
+		ただし、！を使用したいユーザーには保持される。レガシーabcファイルの改行のシンボルである。
+	</p>
+	<p>
+		完全性のために、デフォルト設定の「I：decoration！」を使用して、個々の曲を使用することもできる。
+		ファイルヘッダーに "I：decoration +"が設定されているファイルで、!...! 装飾を個別の曲に使うことができる。
+	</p>
+	<h4 id="chord_dialects">12.1.3 コードの方言</h4>
+
+	<p>コードは[]記号で区切られている。コードとユニゾンを参照のこと。</p>
+	</p>
+	<p>
+		以前は + 記号が代わりにコードの区切りに使われていたが、この記号はもはやコードのために使用されていない。
+	</p>
+	<p>
+		コメント：abc標準（1.2から1.5）の初期のバージョンでは、コードは+記号で区切られていた。
+		しかし、これによって、あるコードがどこで終わったのかを知ることが難しくなり、
+		コードの区切り文字が1.6（1996年11月）に[]に変更された。
+		abcnotation.comの曲検索で現在利用可能な160,000曲のうち、+記号を使用してコードを区切る曲はわずか約420（0.25％）にすぎない。
+		小さなシンボルと[]シンボルの導入が成功したので、+ 記号を使用できるI：ディレクティブは存在しない、この使用法は廃止された。
+	</p>
+	<h3 id="loose_interpretaion">12.2 緩やかな解釈</h3>
+
+
+	<p>
+		コメント：abcnotation.comの曲検索で現在利用可能な曲は約160,000曲ある。
+		abc標準の緩い解釈は、この巨大で貴重なリソースに必要な変更を加えずに下位互換性を維持する。
+	</p>
+	<p>
+		バージョン番号のないabcファイル、
+		またはバージョン番号が2.0以下のabcファイル（abcファイルの識別とバージョンフィールドを参照）は、ゆるやかに解釈する必要がある。
+		開発者は従来のabcファイルを理解するプログラムを提供するために最善を尽くすべきだが、
+		ユーザーは緩やかな解釈があるabcプログラムとは異なるかもしれないことに気づくべきである。
+	</p>
+	<p>
+		ユーザーのための推奨事項：できるだけ緩やかな解釈を避けるようにすること。
+		緩やかな解釈では、abc で表記された曲を友人に渡したり、ウェブ上に投稿したりしたときに、期待通りに表示されないことがある。
+	</p>
+	<p>
+		開発者向けの推奨事項1：あなたのベストを尽くすこと！
+		対処するのが最も難しいのは、2つの異なる目的のために同じシンボルを使用するものである - 特に！装飾と改行の両方のシンボル。
+		ここに装飾を扱うためのアルゴリズムがある。！構文と！同じ曲で改行する：
+	</p>
+	<p>
+		a！に遭遇したら、前方にスキャンする。
+		あなたが別のものを見つけたら！ | [：]、スペース、または行の終わりのいずれかに出会う前に、あなたはデコレーションを持っている。
+		そうでなければ、改行する。
+	</p>
+	<p>
+		開発者向けの推奨事項2：厳密な解釈に移行することは、開発者とユーザーの両方にとって、より簡単になるはずだが、
+		コマンドラインスイッチやGUIチェックボックスを使用して、ユーザーが厳密で緩やかな解釈を簡単に切り替えるようにする必要がある。
+		たとえば、古いabcファイルをインポートしたユーザーは、厳密にどのように解釈されるかを見たいかもしれない。
+	</p>
+
+	<h3 id="strict_interpretaion">12.3 厳密な解釈</h3>
+
+
+	<p>
+		abcバージョン番号が2.1以上のabcファイル
+		（abcファイルの識別およびバージョンフィールドを参照）は、厳密に解釈され、ユーザにエラーが表示される。
+	</p>
+
+
+	<h2 id="transposition">13. 移調</h2>
+	<h3 id="transposition_operator">13.1 移調オペレータ</h3>
+
+
+	<p>
+		直接移調を扱うオペレータには三種類ある：スコアと、サウンド、シフトである。
+		これらは K:key と V:voice に対する変更子のフィ―ルドに表れ、各声部フィールドのそれぞれに適用される。
+	</p>
+	<ul>
+		<li>score=&lt;note1&gt;&lt;note2&gt; 特定のインターバルに従って適用されるタイプセットされたスコアを転調させる。 (再生には影響を与えない);
+			もし第2の音が省略されれば音の高さは c とみなす (see writing abc code for transposing instruments)</li>
+		<li>sound=&lt;note1&gt;&lt;note2&gt; 特定のインターバルに従って適用される再生を転調させる。(タイプセットには影響を与えない)</li>
+		<li>shift=&lt;note1&gt;&lt;note2&gt; 特定のインターバルに従って適用されるタイプセットと再生を転調させる</li>
+	</ul>
+	<p>
+		移調の間隔は二つの音 &lt;note1&gt;&lt;note2&gt;.によって規定される。
+		Here <note1> refers to the transcribed abc code and <note2> refers to the rendered output
+				(i.e. the typeset score in the case of score, the playback in the case of sound, or both in the case of
+				shift).
+	</p>
+	<p>
+		例: In the following the typeset score is raised by a fifth and is rendered the same as if the abc code was
+		transcribed as [K:D] efga.
+		The playback is lowered by a tone and is rendered the same as if the abc code were [K:F] GABc.
+	</p>
+
+	<p>
+		お詫び：この項は訳出できていない。
+	</p>
+	<h3 id="transposing_a_file_tune">13.2 ファイル/曲の移調</h3>
+	<p>
+		お詫び：この項は訳出できていない。
+	</p>
+
+	<h3 id="writing_abc_code_for_transposing_instruments">13.3 移調楽器のための ABC コード</h3>
+	<h4>13.3.1 Generating a concert/souding pitch score</h4>
+	<p>未訳出</p>
+	<h4>13.3.2 移調楽器　―　拡張記法</h4>
+	<p>
+		仮に、B♭クラリネットの奏者とヴァイオリニストが、ハ長調の CDEF からなる同じ曲を演奏しようとしたとする。
+
+	</p>
+	<p>
+		ヴァイオリンは移調楽器ではないから、
+		ヴァイオリニストのパートは次のように書かれ（また、聞こえ)る：
+	</p>
+	<pre>
+V:1 name=violin
+K:C
+CDEF|
+</pre>
+	<p>クラリネットのパートは、この曲の作曲者がコンサートピッチを望めば、クラリネットの曲は聞こえるとおり、
+		次のように記述される：</p>
+	<pre>
+V:2 name=clarinet instrument=_B/c
+K:C
+CDEF|
+</pre>
+	<p>同じことだが、こうも書ける：</p>
+	<pre>
+V:2 name=clarinet score=_B
+K:C
+CDEF|
+</pre>
+	<p>
+		どちらも abc タイプセッティングソフトウェアによって、B フラットの移調楽器として
+		（すなわち、[K:D] DEFG として)レンダリングされる。しかし、音は記述した通り（すなわち CDEF )
+		となる。
+
+	</p>
+	<p>
+		作曲者が記譜ピッチで abc コードを記述したい場合は、
+		クラリネット譜はこのように記述される：
+	</p>
+	<pre>
+V:2 name=clarinet instrument=_B/_B
+K:D
+DEFG|
+</pre>
+	<p>
+		さらに、楽器の &lt;note1&gt; 部と &lt;note2&gt; 部は同じ (すなわち _B)だから、
+		次のように短縮できる：
+	</p>
+	<pre>
+V:2 name=clarinet instrument=_B
+K:D
+DEFG|
+</pre>
+	<p>
+		これらは、タイプセッティングソフトウェアにより (DEFG) と記載されるが、
+		音は移調されて（すなわち CDEF と）聞こえる。
+	</p>
+	<p>二つの楽器をまとめると、コンサートピッチでは次のようになる：</p>
+	<pre>
+K:C
+V:1 name=violin
+CDEF|
+V:2 name=clarinet instrument=_B/c
+CDEF|
+</pre>
+	<p>
+		あるいは score を用いて次のようになる：
+	</p>
+	<pre>
+K:C
+V:1 name=violin
+CDEF|
+V:2 name=clarinet score=_B
+CDEF|
+</pre>
+	<p>記譜ピッチを使えば次のようにも書き直せる：</p>
+	<pre>
+K:C
+V:1 name=violin
+CDEF|
+V:2 name=clarinet instrument=_B
+K:D
+DEFG|
+</pre>
+	<p>いずれの場合でもタイプセットスコアでは記譜ピッチとなる（再生時にはコンサートピッチとなる）。</p>
+	<p>訳者注 : abcjs の記譜レンダリングでは、上記でまとめた 3 種類のうち、score を用いた場合と instrument=_B の書き方が移調楽器の正しい書き方となる。
+		最初の instrument=_B/c の書き方では記譜ピッチがバイオリンと同じになってしまう。
+		また、abcjs の音源再生では、第 2 と第 3 の書き方いずれもが音源再生で記譜ピッチで再生されてしまう。すなわち、
+		クラリネットの音が全音上にずれるあやまった結果となる。
+
+	</p>
+	<h4>13.3.3 移調楽器の例</h4>
+
+	<div class="table sectionedit91">
+		<table class="inline">
+			<thead>
+				<tr class="row0">
+					<th class="col0 leftalign"> </th>
+					<th class="col1 centeralign" colspan="2"> abc at concert pitch </th>
+					<th class="col3 centeralign" colspan="2"> abc at written pitch </th>
+				</tr>
+				<tr class="row1">
+					<th class="col0 leftalign">楽器（Instrument）</th>
+					<th class="col1"> <code>instrument=&lt;n&gt;/c</code> </th>
+					<th class="col2 leftalign"> <code>score=&lt;n&gt;</code> </th>
+					<th class="col3"> <code>instrument=&lt;n&gt;/&lt;n&gt;</code> </th>
+					<th class="col4"> <code>instrument=&lt;n&gt;</code> </th>
+				</tr>
+			</thead>
+			<tr class="row2">
+				<td class="col0 leftalign">ピッコロ（piccolo）</td>
+				<td class="col1 leftalign"> <code>instrument=c&#039;/c</code> </td>
+				<td class="col2 leftalign"> <code>score=c&#039; </code> </td>
+				<td class="col3 leftalign"> <code>instrument=c&#039;/c&#039; </code> </td>
+				<td class="col4"> <code>instrument=c&#039; </code> </td>
+			</tr>
+			<tr class="row3">
+				<td class="col0 leftalign">Bb クラリネット（clarinet）</td>
+				<td class="col1 leftalign"> <code>instrument=_B/c</code> </td>
+				<td class="col2 leftalign"> <code>score=_B</code> </td>
+				<td class="col3 leftalign"> <code>instrument=_B/_B</code> </td>
+				<td class="col4 leftalign"> <code>instrument=_B</code> </td>
+			</tr>
+			<tr class="row4">
+				<td class="col0 leftalign">ソプラノサックス（soprano sax）</td>
+				<td class="col1 leftalign"> <code>instrument=_B/c</code> </td>
+				<td class="col2 leftalign"> <code>score=_B</code> </td>
+				<td class="col3 leftalign"> <code>instrument=_B/_B</code> </td>
+				<td class="col4 leftalign"> <code>instrument=_B</code> </td>
+			</tr>
+			<tr class="row5">
+				<td class="col0 leftalign"> A クラリネット（clarinet）</td>
+				<td class="col1 leftalign"> <code>instrument=A/c</code> </td>
+				<td class="col2 leftalign"> <code>score=A</code> </td>
+				<td class="col3 leftalign"> <code>instrument=A/A</code> </td>
+				<td class="col4 leftalign"> <code>instrument=A</code> </td>
+			</tr>
+			<tr class="row6">
+				<td class="col0 leftalign">アルトフルート（ alto flute ）</td>
+				<td class="col1 leftalign"> <code>instrument=G/c</code> </td>
+				<td class="col2 leftalign"> <code>score=G</code> </td>
+				<td class="col3 leftalign"> <code>instrument=G/G</code> </td>
+				<td class="col4 leftalign"> <code>instrument=G</code> </td>
+			</tr>
+			<tr class="row7">
+				<td class="col0 leftalign">コールアングレ（cor anglais）</td>
+				<td class="col1 leftalign"> <code>instrument=F/c</code> </td>
+				<td class="col2 leftalign"> <code>score=F</code> </td>
+				<td class="col3 leftalign"> <code>instrument=F/F</code> </td>
+				<td class="col4 leftalign"> <code>instrument=F</code> </td>
+			</tr>
+			<tr class="row8">
+				<td class="col0 leftalign">アルトサックス（alto sax）</td>
+				<td class="col1 leftalign"> <code>instrument=_E/c</code> </td>
+				<td class="col2 leftalign"> <code>score=_E</code> </td>
+				<td class="col3 leftalign"> <code>instrument=_E/_E</code> </td>
+				<td class="col4 leftalign"> <code>instrument=_E</code> </td>
+			</tr>
+			<tr class="row9">
+				<td class="col0 leftalign">コントラバス（ double bass ）</td>
+				<td class="col1 leftalign"> <code>instrument=C/c</code> </td>
+				<td class="col2 leftalign"> <code>score=C</code> </td>
+				<td class="col3 leftalign"> <code>instrument=C/C</code> </td>
+				<td class="col4 leftalign"> <code>instrument=C</code> </td>
+			</tr>
+			<tr class="row10">
+				<td class="col0 leftalign">テナーサックス（ tenor sax ）</td>
+				<td class="col1"> <code>instrument=_B,/c</code> </td>
+				<td class="col2 leftalign"> <code>score=_B,</code> </td>
+				<td class="col3"> <code>instrument=_B,/_B,</code> </td>
+				<td class="col4"> <code>instrument=_B,</code> </td>
+			</tr>
+		</table>
+	</div>
+
+	</div>
+	<h3 id="custom_transposition_for_diatonic_instruments">13.4 移調のカスタマイズ</h3>
+	<p>未訳出</p>
+	<h2 id="sample">14. サンプル</h2>
+
+
+	<h3 name="englishabc" id="englishabc">14.1 English.abc</h3>
+
+	<p>
+		訳注：William and Nancy では、D: と M: の間に P:指示があり、
+		パートを次のように繰り返すよう指示がある。<br />
+		D:Morris On % can be heard on this record<br />
+		P:(AB)2(AC)2A % play the parts in this order<br />
+		M:6/8
+	</p>
+	<p>
+		しかし、abcjs ではP:指示がエラーとなるため、P:指示に関する箇所はコメントアウトした。
+	</p>
+
+
+	<script>document.write('<pre class="code">' + english + '</pre>')</script>
+	<div id="canvas-english"></div>
+
+	<h3 name="Strspys" id="Strspys">14.2 Strspys.abc</h3>
+
+	<textarea name="strspys" id="strspys" cols="80" rows="22">
+%abc-2.1
+M:4/4
+O:Scottish
+R:Strathspey
+
+X:1
+T:A. A. Cameron's
+K:D
+e<A A2 B>G d>B|e<A A2 d>g (3fed|e<A A2 B>G d>B|B<G G>B d>g (3fed:|
+B<e e>f g>e a>f|B<e e>f g>e (3fed|B<e e>f g>e a>f|d<B G>B d>g (3fed:|
+
+X:2
+T:Atholl Brose
+% in this example, which reproduces Highland Bagpipe gracing,
+%  the large number of grace notes mean that it is more convenient to be specific about
+%  score line-breaks (using the $ symbol), rather than using code line breaks to indicate them
+I:linebreak $
+K:D
+{gcd}c<{e}A {gAGAG}A2 {gef}e>A {gAGAG}Ad|
+{gcd}c<{e}A {gAGAG}A>e {ag}a>f {gef}e>d|
+{gcd}c<{e}A {gAGAG}A2 {gef}e>A {gAGAG}Ad|
+{g}c/d/e {g}G>{d}B {gf}gG {dc}d>B:|$
+{g}c<e {gf}g>e {ag}a>e {gf}g>e|
+{g}c<e {gf}g>e {ag}a2 {GdG}a>d|
+{g}c<e {gf}g>e {ag}a>e {gf}g>f|
+{gef}e>d {gf}g>d {gBd}B<{e}G {dc}d>B|
+{g}c<e {gf}g>e {ag}a>e {gf}g>e|
+{g}c<e {gf}g>e {ag}a2 {GdG}ad|
+{g}c<{GdG}e {gf}ga {f}g>e {g}f>d|
+{g}e/f/g {Gdc}d>c {gBd}B<{e}G {dc}d2|]
+</textarea>
+
+	<div id="canvas-strspys"></div>
+
+
+	<h3 name="Reels" id="Reels">14.3 Reels.abc</h3>
+
+	<textarea name="reels" id="reels" cols="80" rows="22">
+%abc-2.1
+M:4/4
+O:Irish
+R:Reel
+
+X:1
+T:Untitled Reel
+C:Trad.
+K:D
+eg|a2ab ageg|agbg agef|g2g2 fgag|f2d2 d2:|\
+ed|cecA B2ed|cAcA E2ed|cecA B2ed|c2A2 A2:|
+K:G
+AB|cdec BcdB|ABAF GFE2|cdec BcdB|c2A2 A2:|
+  
+X:2
+T:Kitchen Girl
+C:Trad.
+K:D
+[c4a4] [B4g4]|efed c2cd|e2f2 gaba|g2e2 e2fg|
+a4 g4|efed cdef|g2d2 efed|c2A2 A4:|
+K:G
+ABcA BAGB|ABAG EDEG|A2AB c2d2|e3f edcB|ABcA BAGB|
+ABAG EGAB|cBAc BAG2|A4 A4:|
+</textarea>
+
+	<div id="canvas-reels"></div>
+
+	<h3 name="Canzonetta" id="Canzonetta">14.4 Canzonetta</h3>
+
+
+	<script>document.write('<pre class="code">' + canzonetta + '</pre>')</script>
+	<div id="canzonetta"></div>
+	<div id="canzonetta_midi"></div>
+	<h2 id="Appendix" name="Appendix">15. 付録</h2>
+
+	<h3>15.1 サポートしているアクセント</h3>
+	<p>
+		適合するabcソフトウェアは、アクセントと合字について次のエンコーディングをサポートしなければならない。
+		それは、他の名前付きエンティティと16進ユニコード表現（後で標準によって採用されるかもしれない）
+		のサポートを提供するかもしれない。
+	</p>
+	<p>
+		詳細については、テキスト文字列を参照のこと。詳細は、次の例を参照のこと。
+	</p>
+	<p>
+		http://www.w3.org/TR/html4/sgml/entities.html<br>
+		http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references<br>
+		http://en.wikipedia.org/wiki/List_of_Unicode_characters<br>
+		http://www.fileformat.info/info/unicode/char/search.htm - ユニコード文字の検索<br>
+	</p>
+
+	<p><strong>アクセント：</strong></p>
+	<div class="table sectionedit92">
+		<table class="inline">
+			<thead>
+				<tr class="row0">
+					<th class="col0 centeralign"> Character </th>
+					<th class="col1 centeralign"> Mnemonic </th>
+					<th class="col2 centeralign"> Named html entity </th>
+					<th class="col3 centeralign"> 16-bit hex unicode </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row1">
+					<td class="col0 centeralign"> À </td>
+					<td class="col1 centeralign"> <code>\`A</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Agrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c0</code> </td>
+				</tr>
+				<tr class="row2">
+					<td class="col0 centeralign"> à </td>
+					<td class="col1 centeralign"> <code>\`a</code> </td>
+					<td class="col2 centeralign"> <code>&amp;agrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e0</code> </td>
+				</tr>
+				<tr class="row3">
+					<td class="col0 centeralign"> È </td>
+					<td class="col1 centeralign"> <code>\`E</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Egrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c8</code> </td>
+				</tr>
+				<tr class="row4">
+					<td class="col0 centeralign"> è </td>
+					<td class="col1 centeralign"> <code>\`e</code> </td>
+					<td class="col2 centeralign"> <code>&amp;egrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e8</code> </td>
+				</tr>
+				<tr class="row5">
+					<td class="col0 centeralign"> Ì </td>
+					<td class="col1 centeralign"> <code>\`I</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Igrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00cc</code> </td>
+				</tr>
+				<tr class="row6">
+					<td class="col0 centeralign"> ì </td>
+					<td class="col1 centeralign"> <code>\`i</code> </td>
+					<td class="col2 centeralign"> <code>&amp;igrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ec</code> </td>
+				</tr>
+				<tr class="row7">
+					<td class="col0 centeralign"> Ò </td>
+					<td class="col1 centeralign"> <code>\`O</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ograve;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d2</code> </td>
+				</tr>
+				<tr class="row8">
+					<td class="col0 centeralign"> ò </td>
+					<td class="col1 centeralign"> <code>\`o</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ograve;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f2</code> </td>
+				</tr>
+				<tr class="row9">
+					<td class="col0 centeralign"> Ù </td>
+					<td class="col1 centeralign"> <code>\`U</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ugrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d9</code> </td>
+				</tr>
+				<tr class="row10">
+					<td class="col0 centeralign"> ù </td>
+					<td class="col1 centeralign"> <code>\`u</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ugrave;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f9</code> </td>
+				</tr>
+				<tr class="row11">
+					<td class="col0 centeralign"> Á </td>
+					<td class="col1 centeralign"> <code>\'A</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Aacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c1</code> </td>
+				</tr>
+				<tr class="row12">
+					<td class="col0 centeralign"> á </td>
+					<td class="col1 centeralign"> <code>\'a</code> </td>
+					<td class="col2 centeralign"> <code>&amp;aacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e1</code> </td>
+				</tr>
+				<tr class="row13">
+					<td class="col0 centeralign"> É </td>
+					<td class="col1 centeralign"> <code>\'E</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Eacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c9</code> </td>
+				</tr>
+				<tr class="row14">
+					<td class="col0 centeralign"> é </td>
+					<td class="col1 centeralign"> <code>\'e</code> </td>
+					<td class="col2 centeralign"> <code>&amp;eacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e9</code> </td>
+				</tr>
+				<tr class="row15">
+					<td class="col0 centeralign"> Í </td>
+					<td class="col1 centeralign"> <code>\'I</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Iacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00cd</code> </td>
+				</tr>
+				<tr class="row16">
+					<td class="col0 centeralign"> í </td>
+					<td class="col1 centeralign"> <code>\'i</code> </td>
+					<td class="col2 centeralign"> <code>&amp;iacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ed</code> </td>
+				</tr>
+				<tr class="row17">
+					<td class="col0 centeralign"> Ó </td>
+					<td class="col1 centeralign"> <code>\'O</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Oacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d3</code> </td>
+				</tr>
+				<tr class="row18">
+					<td class="col0 centeralign"> ó </td>
+					<td class="col1 centeralign"> <code>\'o</code> </td>
+					<td class="col2 centeralign"> <code>&amp;oacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f3</code> </td>
+				</tr>
+				<tr class="row19">
+					<td class="col0 centeralign"> Ú </td>
+					<td class="col1 centeralign"> <code>\'U</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Uacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00da</code> </td>
+				</tr>
+				<tr class="row20">
+					<td class="col0 centeralign"> ú </td>
+					<td class="col1 centeralign"> <code>\'u</code> </td>
+					<td class="col2 centeralign"> <code>&amp;uacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00fa</code> </td>
+				</tr>
+				<tr class="row21">
+					<td class="col0 centeralign"> Ý </td>
+					<td class="col1 centeralign"> <code>\'Y</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Yacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00dd</code> </td>
+				</tr>
+				<tr class="row22">
+					<td class="col0 centeralign"> ý </td>
+					<td class="col1 centeralign"> <code>\'y</code> </td>
+					<td class="col2 centeralign"> <code>&amp;yacute;</code> </td>
+					<td class="col3 centeralign"> <code>\u00fd</code> </td>
+				</tr>
+				<tr class="row23">
+					<td class="col0 centeralign"> Â </td>
+					<td class="col1 centeralign"> <code>\^A</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Acirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c2</code> </td>
+				</tr>
+				<tr class="row24">
+					<td class="col0 centeralign"> â </td>
+					<td class="col1 centeralign"> <code>\^a</code> </td>
+					<td class="col2 centeralign"> <code>&amp;acirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e2</code> </td>
+				</tr>
+				<tr class="row25">
+					<td class="col0 centeralign"> Ê </td>
+					<td class="col1 centeralign"> <code>\^E</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ecirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ca</code> </td>
+				</tr>
+				<tr class="row26">
+					<td class="col0 centeralign"> ê </td>
+					<td class="col1 centeralign"> <code>\^e</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ecirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ea</code> </td>
+				</tr>
+				<tr class="row27">
+					<td class="col0 centeralign"> Î </td>
+					<td class="col1 centeralign"> <code>\^I</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Icirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ce</code> </td>
+				</tr>
+				<tr class="row28">
+					<td class="col0 centeralign"> î </td>
+					<td class="col1 centeralign"> <code>\^i</code> </td>
+					<td class="col2 centeralign"> <code>&amp;icirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ee</code> </td>
+				</tr>
+				<tr class="row29">
+					<td class="col0 centeralign"> Ô </td>
+					<td class="col1 centeralign"> <code>\^O</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ocirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d4</code> </td>
+				</tr>
+				<tr class="row30">
+					<td class="col0 centeralign"> ô </td>
+					<td class="col1 centeralign"> <code>\^o</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ocirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f4</code> </td>
+				</tr>
+				<tr class="row31">
+					<td class="col0 centeralign"> Û </td>
+					<td class="col1 centeralign"> <code>\^U</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ucirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00db</code> </td>
+				</tr>
+				<tr class="row32">
+					<td class="col0 centeralign"> û </td>
+					<td class="col1 centeralign"> <code>\^u</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ucirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u00fb</code> </td>
+				</tr>
+				<tr class="row33">
+					<td class="col0 centeralign"> Ŷ </td>
+					<td class="col1 centeralign"> <code>\^Y</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ycirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u0176</code> </td>
+				</tr>
+				<tr class="row34">
+					<td class="col0 centeralign"> ŷ </td>
+					<td class="col1 centeralign"> <code>\^y</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ycirc;</code> </td>
+					<td class="col3 centeralign"> <code>\u0177</code> </td>
+				</tr>
+				<tr class="row35">
+					<td class="col0 centeralign"> Ã </td>
+					<td class="col1 centeralign"> <code>\~A</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Atilde;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c3</code> </td>
+				</tr>
+				<tr class="row36">
+					<td class="col0 centeralign"> ã </td>
+					<td class="col1 centeralign"> <code>\~a</code> </td>
+					<td class="col2 centeralign"> <code>&amp;atilde;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e3</code> </td>
+				</tr>
+				<tr class="row37">
+					<td class="col0 centeralign"> Ñ </td>
+					<td class="col1 centeralign"> <code>\~N</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ntilde;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d1</code> </td>
+				</tr>
+				<tr class="row38">
+					<td class="col0 centeralign"> ñ </td>
+					<td class="col1 centeralign"> <code>\~n</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ntilde;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f1</code> </td>
+				</tr>
+				<tr class="row39">
+					<td class="col0 centeralign"> Õ </td>
+					<td class="col1 centeralign"> <code>\~O</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Otilde;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d5</code> </td>
+				</tr>
+				<tr class="row40">
+					<td class="col0 centeralign"> õ </td>
+					<td class="col1 centeralign"> <code>\~o</code> </td>
+					<td class="col2 centeralign"> <code>&amp;otilde;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f5</code> </td>
+				</tr>
+				<tr class="row41">
+					<td class="col0 centeralign"> Ä </td>
+					<td class="col1 centeralign"> <code>\"A</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Auml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c4</code> </td>
+				</tr>
+				<tr class="row42">
+					<td class="col0 centeralign"> ä </td>
+					<td class="col1 centeralign"> <code>\"a</code> </td>
+					<td class="col2 centeralign"> <code>&amp;auml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e4</code> </td>
+				</tr>
+				<tr class="row43">
+					<td class="col0 centeralign"> Ë </td>
+					<td class="col1 centeralign"> <code>\"E</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Euml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00cb</code> </td>
+				</tr>
+				<tr class="row44">
+					<td class="col0 centeralign"> ë </td>
+					<td class="col1 centeralign"> <code>\"e</code> </td>
+					<td class="col2 centeralign"> <code>&amp;euml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00eb</code> </td>
+				</tr>
+				<tr class="row45">
+					<td class="col0 centeralign"> Ï </td>
+					<td class="col1 centeralign"> <code>\"I</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Iuml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00cf</code> </td>
+				</tr>
+				<tr class="row46">
+					<td class="col0 centeralign"> ï </td>
+					<td class="col1 centeralign"> <code>\"i</code> </td>
+					<td class="col2 centeralign"> <code>&amp;iuml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ef</code> </td>
+				</tr>
+				<tr class="row47">
+					<td class="col0 centeralign"> Ö </td>
+					<td class="col1 centeralign"> <code>\"O</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ouml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d6</code> </td>
+				</tr>
+				<tr class="row48">
+					<td class="col0 centeralign"> ö </td>
+					<td class="col1 centeralign"> <code>\"o</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ouml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f6</code> </td>
+				</tr>
+				<tr class="row49">
+					<td class="col0 centeralign"> Ü </td>
+					<td class="col1 centeralign"> <code>\"U</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Uuml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00dc</code> </td>
+				</tr>
+				<tr class="row50">
+					<td class="col0 centeralign"> ü </td>
+					<td class="col1 centeralign"> <code>\"u</code> </td>
+					<td class="col2 centeralign"> <code>&amp;uuml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00fc</code> </td>
+				</tr>
+				<tr class="row51">
+					<td class="col0 centeralign"> Ÿ </td>
+					<td class="col1 centeralign"> <code>\"Y</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Yuml;</code> </td>
+					<td class="col3 centeralign"> <code>\u0178</code> </td>
+				</tr>
+				<tr class="row52">
+					<td class="col0 centeralign"> ÿ </td>
+					<td class="col1 centeralign"> <code>\"y</code> </td>
+					<td class="col2 centeralign"> <code>&amp;yuml;</code> </td>
+					<td class="col3 centeralign"> <code>\u00ff</code> </td>
+				</tr>
+				<tr class="row53">
+					<td class="col0 centeralign"> Ç </td>
+					<td class="col1 centeralign"> <code>\cC</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Ccedil;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c7</code> </td>
+				</tr>
+				<tr class="row54">
+					<td class="col0 centeralign"> ç </td>
+					<td class="col1 centeralign"> <code>\cc</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ccedil;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e7</code> </td>
+				</tr>
+				<tr class="row55">
+					<td class="col0 centeralign"> Å </td>
+					<td class="col1 centeralign"> <code>\AA</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Aring;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c5</code> </td>
+				</tr>
+				<tr class="row56">
+					<td class="col0 centeralign"> å </td>
+					<td class="col1 centeralign"> <code>\aa</code> </td>
+					<td class="col2 centeralign"> <code>&amp;aring;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e5</code> </td>
+				</tr>
+				<tr class="row57">
+					<td class="col0 centeralign"> Ø </td>
+					<td class="col1 centeralign"> <code>\/O</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Oslash;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d8</code> </td>
+				</tr>
+				<tr class="row58">
+					<td class="col0 centeralign"> ø </td>
+					<td class="col1 centeralign"> <code>\/o</code> </td>
+					<td class="col2 centeralign"> <code>&amp;oslash;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f8</code> </td>
+				</tr>
+				<tr class="row59">
+					<td class="col0 centeralign"> Ă </td>
+					<td class="col1 centeralign"> <code>\uA</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Abreve;</code> </td>
+					<td class="col3 centeralign"> <code>\u0102</code> </td>
+				</tr>
+				<tr class="row60">
+					<td class="col0 centeralign"> ă </td>
+					<td class="col1 centeralign"> <code>\ua</code> </td>
+					<td class="col2 centeralign"> <code>&amp;abreve;</code> </td>
+					<td class="col3 centeralign"> <code>\u0103</code> </td>
+				</tr>
+				<tr class="row61">
+					<td class="col0 centeralign"> Ĕ </td>
+					<td class="col1 centeralign"> <code>\uE</code> </td>
+					<td class="col2 centeralign"> not available </td>
+					<td class="col3 centeralign"> <code>\u0114</code> </td>
+				</tr>
+				<tr class="row62">
+					<td class="col0 centeralign"> ĕ </td>
+					<td class="col1 centeralign"> <code>\ue</code> </td>
+					<td class="col2 centeralign"> not available </td>
+					<td class="col3 centeralign"> <code>\u0115</code> </td>
+				</tr>
+				<tr class="row63">
+					<td class="col0 centeralign"> Š </td>
+					<td class="col1 centeralign"> <code>\vS</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Scaron;</code> </td>
+					<td class="col3 centeralign"> <code>\u0160</code> </td>
+				</tr>
+				<tr class="row64">
+					<td class="col0 centeralign"> š </td>
+					<td class="col1 centeralign"> <code>\vs</code> </td>
+					<td class="col2 centeralign"> <code>&amp;scaron;</code> </td>
+					<td class="col3 centeralign"> <code>\u0161</code> </td>
+				</tr>
+				<tr class="row65">
+					<td class="col0 centeralign"> Ž </td>
+					<td class="col1 centeralign"> <code>\vZ</code> </td>
+					<td class="col2 centeralign"> <code>&amp;Zcaron;</code> </td>
+					<td class="col3 centeralign"> <code>\u017d</code> </td>
+				</tr>
+				<tr class="row66">
+					<td class="col0 centeralign"> ž </td>
+					<td class="col1 centeralign"> <code>\vz</code> </td>
+					<td class="col2 centeralign"> <code>&amp;zcaron;</code> </td>
+					<td class="col3 centeralign"> <code>\u017e</code> </td>
+				</tr>
+				<tr class="row67">
+					<td class="col0 centeralign"> Ő </td>
+					<td class="col1 centeralign"> <code>\HO</code> </td>
+					<td class="col2 centeralign"> not available </td>
+					<td class="col3 centeralign"> <code>\u0150</code> </td>
+				</tr>
+				<tr class="row68">
+					<td class="col0 centeralign"> ő </td>
+					<td class="col1 centeralign"> <code>\Ho</code> </td>
+					<td class="col2 centeralign"> not available </td>
+					<td class="col3 centeralign"> <code>\u0151</code> </td>
+				</tr>
+				<tr class="row69">
+					<td class="col0 centeralign"> Ű </td>
+					<td class="col1 centeralign"> <code>\HU</code> </td>
+					<td class="col2 centeralign"> not available </td>
+					<td class="col3 centeralign"> <code>\u0170</code> </td>
+				</tr>
+				<tr class="row70">
+					<td class="col0 centeralign"> ű </td>
+					<td class="col1 centeralign"> <code>\Hu</code> </td>
+					<td class="col2 centeralign"> not available </td>
+					<td class="col3 centeralign"> <code>\u0171</code> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<p>
+		<strong>合字ほか：</strong>
+	</p>
+	<div class="table sectionedit93">
+		<table class="inline">
+			<thead>
+				<tr class="row0">
+					<th class="col0 centeralign"> Character </th>
+					<th class="col1 centeralign"> Mnemonic </th>
+					<th class="col2 centeralign"> Named html entity </th>
+					<th class="col3 centeralign"> 16-bit hex unicode </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row1">
+					<td class="col0 centeralign"> Æ </td>
+					<td class="col1 centeralign"> <code>\AE</code> </td>
+					<td class="col2 centeralign"> <code>&amp;AElig;</code> </td>
+					<td class="col3 centeralign"> <code>\u00c6</code> </td>
+				</tr>
+				<tr class="row2">
+					<td class="col0 centeralign"> æ </td>
+					<td class="col1 centeralign"> <code>\ae</code> </td>
+					<td class="col2 centeralign"> <code>&amp;aelig;</code> </td>
+					<td class="col3 centeralign"> <code>\u00e6</code> </td>
+				</tr>
+				<tr class="row3">
+					<td class="col0 centeralign"> Œ </td>
+					<td class="col1 centeralign"> <code>\OE</code> </td>
+					<td class="col2 centeralign"> <code>&amp;OElig;</code> </td>
+					<td class="col3 centeralign"> <code>\u0152</code> </td>
+				</tr>
+				<tr class="row4">
+					<td class="col0 centeralign"> œ </td>
+					<td class="col1 centeralign"> <code>\oe</code> </td>
+					<td class="col2 centeralign"> <code>&amp;oelig;</code> </td>
+					<td class="col3 centeralign"> <code>\u0153</code> </td>
+				</tr>
+				<tr class="row5">
+					<td class="col0 centeralign"> ß </td>
+					<td class="col1 centeralign"> <code>\ss</code> </td>
+					<td class="col2 centeralign"> <code>&amp;szlig;</code> </td>
+					<td class="col3 centeralign"> <code>\u00df</code> </td>
+				</tr>
+				<tr class="row6">
+					<td class="col0 centeralign"> Ð </td>
+					<td class="col1 centeralign"> <code>\DH</code> </td>
+					<td class="col2 centeralign"> <code>&amp;ETH;</code> </td>
+					<td class="col3 centeralign"> <code>\u00d0</code> </td>
+				</tr>
+				<tr class="row7">
+					<td class="col0 centeralign"> ð </td>
+					<td class="col1 centeralign"> <code>\dh</code> </td>
+					<td class="col2 centeralign"> <code>&amp;eth;</code> </td>
+					<td class="col3 centeralign"> <code>\u00f0</code> </td>
+				</tr>
+				<tr class="row8">
+					<td class="col0 centeralign"> Þ </td>
+					<td class="col1 centeralign"> <code>\TH</code> </td>
+					<td class="col2 centeralign"> <code>&amp;THORN;</code> </td>
+					<td class="col3 centeralign"> <code>\u00de</code> </td>
+				</tr>
+				<tr class="row9">
+					<td class="col0 centeralign"> þ </td>
+					<td class="col1 centeralign"> <code>\th</code> </td>
+					<td class="col2 centeralign"> <code>&amp;thorn;</code> </td>
+					<td class="col3 centeralign"> <code>\u00fe</code> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>15.2 訂正</h3>
+	<p>
+		標準が公開されて以来、次の修正が行われている。
+	</p>
+
+	<ul>
+		<li class="level1">
+			<div class="li"> <a href="#terminology_definitions" title="abc:standard:v2.1 ↵" class="wikilink1">
+					セクション 1.1.1 用語 / 定義</a>:
+				<em>VOLATILE</em> の定義を明確にした；
+				これは、「将来的に活発な議論が行われている、あるいは将来変更される可能性のあるセクション」ではなく、
+				「将来のバージョンで活発な議論が行われている可能性が高いセクション」を示すために使用されている (2012-01-08）。
+			</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <a href="#typesetting_line-breaks" title="abc:standard:v2.1 ↵" class="wikilink1">
+					セクション 6.1.1 改行のタイプセット</a>: 誤植: <code>setbarno</code> を <code>setbarnb</code> に修正（２か所） (2012-01-08).
+			</div>
+		</li>
+		<li class="level1">
+			<div class="li">
+				<a href="#text_strings" title="abc:standard:v2.1 ↵" class="wikilink1">セクション 8.2 テキスト文字列</a>:
+				アクセントニーモニックの誤植 (セディユおよびリング):
+				"<code>\,C \,c</code>" および "<code>\oA \oa</code>" をそれぞれ "<code>\cC \cc</code>" および
+				"<code>\AA \aa</code>" に修正。
+		</li>
+
+		<li class="level1><div class=" li">
+			<a href="#supported_accents_ligatures" title="abc:standard:v2.1 ↵" class="wikilink1">
+				セクション 14.1 サポートされているアクセントと合字</a> (2012-01-08).<br>
+			<em> TODO: </em> <code>\,</code> and <code>\o</code> は abc 2.0 で導入された非標準アクセントニーモニックである。
+			<code>\ c</code>と<code>\ a</code>を標準でサポートすることはおそらく賢明だろうが記憶に残りにくいだろう。</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <a href="#information_directives" title="abc:standard:v2.1 ↵" class="wikilink1">
+					セクション 11.4.6 情報ディレクティブ</a>:
+				"<code>%% writefieldsディレクティブ</code>は、パーツ（P）やテンポ（Q）のような命令型フィールドには適用されない"という記述は削除された。
+				これは同じセクションとの矛盾を生じないようにしたためだ（2012-01-08）。
+		</li>
+		<li class="level1">
+			<div class="li"> <a href="#chord_symbols" title="abc:standard:v2.1 ↵" class="wikilink1">セクション 4.18
+					和音記号</a>: 誤植: <code>sustained</code> を <code>suspended</code> に修正(2012-05-26).</div>
+		</li>
+		<li class="level1">
+			<div class="li"> <a href="#clefs_and_transposition" title="abc:standard:v2.1 ↵" class="wikilink1">せくジョン 4.6
+					音域と移調</a>:
+				このセクションは説明の後で、<code>middle</code>セッティングが再生に影響を与えないことを明確にするために修正された（一貫性のある方法がないため）。
+				Zocharti Lochの例が修正され、付属のmidiファイル（abcドラフト2.0から変更されず、途中で途切れているように見える）が削除された（2013年2月20日）。
+		</li>
+	</ul>
+	<hr>
+
+
+	<p class="noindent">
+		<a href="../index.html.ja">まりんきょ学問所</a> ＞
+		<a href="../komputilo/index.html.ja">コンピュータの部屋</a> ＞
+		<a href="./index.html.ja">マーク付け言語手習い</a> ＞
+		abc 記譜法
+	</p>
+	<hr />
+	<address>MARUYAMA Satosi</address>
+	<span id="access"></span>
+	<script src="../access.js"></script>
+	<noscript>
+		<p>
+			<img src="http://www.ne.jp/asahi/music/marinkyo/bildoj/trans.gif" width="1" height="1" alt=""
+				title="observejo" />
+		</p>
+	</noscript>
+</body>
+
+</html>
