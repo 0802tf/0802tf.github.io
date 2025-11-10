@@ -14,9 +14,7 @@
   "gradle.html",
   "index.html",
   "kikenbutsu.html",
-  "latex.html",
   "markdown_editor.html",
-  "mermaid_editor.html",
   "ocr.html",
   "puyopuyo.html",
   "python.html",
@@ -28,5 +26,6 @@
   "spreadsheet.html",
   "statsubu.html",
   "strcount.html",
-  "tetris.html"
+  "tetris.html",
+  "texteditor.html"
 ]

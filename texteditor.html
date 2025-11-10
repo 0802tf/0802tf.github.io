@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Text Editor</title>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+  <div>
+    <select>
+      <option>Markdown</option>
+      <option>Mermaid</option>
+      <option>LaTeX</option>
+      <option>ABC</option>
+    </select>
+  </div>
+  <textarea></textarea>
+  <div class="markdown-body mermaid"></div>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+    const select = document.querySelector('select');
+    const textarea = document.querySelector('textarea');
+    const result = document.querySelector('.markdown-body.mermaid');
+    textarea.style.width = `${innerWidth * 0.9}px`;
+    textarea.style.height = `${innerHeight / 2}px`;
+    textarea.addEventListener('input', async () => {
+      try {
+        const value = textarea.value;
+        switch (select.value) {
+          case 'Markdown':
+            result.innerHTML = marked.parse(value);
+            hljs.highlightAll();
+            break;
+          case 'Mermaid':
+            delete result.dataset.processed;
+            result.textContent = value;
+            await mermaid.run();
+            break;
+          case 'LaTeX':
+            result.textContent = value;
+            MathJax.Hub.Typeset(result);
+            break;
+        }
+      } catch (error) {
+        result.textContent = JSON.stringify(error);
+      }
+    });
+    select.addEventListener('change', () => textarea.dispatchEvent(new Event('input')));
+  </script>
+</body>
+
+</html>
