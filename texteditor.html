@@ -8,10 +8,13 @@
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.5.2/abcjs-audio.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script src="https://cdn.jsdelivr.net/npm/abcjs@6.5.2/dist/abcjs-basic-min.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     textarea {
       font-size: 16px;
@@ -22,14 +25,17 @@
 <body>
   <div>
     <select>
+      <option>HTML</option>
+      <option>JavaScript</option>
       <option>Markdown</option>
       <option>Mermaid</option>
       <option>LaTeX</option>
       <option>ABC</option>
+      <option>QRCode</option>
     </select>
   </div>
-  <textarea></textarea>
-  <div class="markdown-body mermaid"></div>
+  <textarea id="textarea"></textarea>
+  <div id="result" class="markdown-body mermaid"></div>
   <script>
     mermaid.initialize({ startOnLoad: false });
     const select = document.querySelector('select');
@@ -40,7 +46,17 @@
     textarea.addEventListener('input', async () => {
       try {
         const value = textarea.value;
+        result.innerHTML = null;
+        result.style = null;
         switch (select.value) {
+          case 'HTML':
+            result.innerHTML = value;
+            break;
+          case 'JavaScript':
+            const script = document.createElement('script');
+            script.textContent = `result.innerHTML = ${value};`;
+            result.append(script);
+            break;
           case 'Markdown':
             result.innerHTML = marked.parse(value);
             hljs.highlightAll();
@@ -51,8 +67,21 @@
             await mermaid.run();
             break;
           case 'LaTeX':
-            result.textContent = value;
+            result.innerHTML = value.replaceAll('\n', '<br>');
             MathJax.Hub.Typeset(result);
+            break;
+          case 'ABC':
+            new ABCJS.Editor('textarea', { canvas_id: 'result' });
+            break;
+          case 'QRCode':
+            new QRCode(result, {
+              text: value,
+              width: 128,
+              height: 128,
+              colorDark: '#000000',
+              colorLight: '#ffffff',
+              correctLevel: QRCode.CorrectLevel.H
+            });
             break;
         }
       } catch (error) {
