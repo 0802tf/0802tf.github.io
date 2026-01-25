@@ -1,5 +1,6 @@
 [
   "abc.html",
+  "abcjs-editor.html",
   "angularjs.html",
   "breakout.html",
   "camera.html",
@@ -14,6 +15,7 @@
   "gradle.html",
   "index.html",
   "kikenbutsu.html",
+  "latex.html",
   "markdown_editor.html",
   "ocr.html",
   "puyopuyo.html",
