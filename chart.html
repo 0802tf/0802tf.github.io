@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+    <title>グラフ</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+</head>
+
+<body>
+    <h1>折れ線グラフ</h1>
+    <canvas id="myLineChart"></canvas>
+    <h1>棒グラフ</h1>
+    <canvas id="myBarChart"></canvas>
+    <h1>円グラフ</h1>
+    <canvas id="myPieChart"></canvas>
+    <h1>レーダーチャート</h1>
+    <canvas id="myRaderChart"></canvas>
+    <h1>散布図</h1>
+    <canvas id="myScatterChart"></canvas>
+    <script>
+        new Chart(document.querySelector('#myLineChart'), {
+            type: 'line',
+            data: {
+                labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
+                datasets: [
+                    {
+                        label: '最高気温(度）',
+                        data: [35, 34, 37, 35, 34, 35, 34, 25],
+                        borderColor: 'rgba(255,0,0,1)',
+                        backgroundColor: 'rgba(0,0,0,0)'
+                    },
+                    {
+                        label: '最低気温(度）',
+                        data: [25, 27, 27, 25, 26, 27, 25, 21],
+                        borderColor: 'rgba(0,0,255,1)',
+                        backgroundColor: 'rgba(0,0,0,0)'
+                    }
+                ],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '気温（8月1日~8月7日）'
+                },
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                suggestedMax: 40,
+                                suggestedMin: 0,
+                                stepSize: 10,
+                                callback: function (value, index, values) {
+                                    return value + '度';
+                                }
+                            }
+                        }
+                    ]
+                },
+            }
+        });
+        new Chart(document.querySelector('#myBarChart'), {
+            type: 'bar',
+            data: {
+                labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
+                datasets: [
+                    {
+                        label: 'A店 来客数',
+                        data: [62, 65, 93, 85, 51, 66, 47],
+                        backgroundColor: 'rgba(219,39,91,0.5)'
+                    },
+                    {
+                        label: 'B店 来客数',
+                        data: [55, 45, 73, 75, 41, 45, 58],
+                        backgroundColor: 'rgba(130,201,169,0.5)'
+                    },
+                    {
+                        label: 'C店 来客数',
+                        data: [33, 45, 62, 55, 31, 45, 38],
+                        backgroundColor: 'rgba(255,183,76,0.5)'
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '支店別 来客数'
+                },
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                suggestedMax: 100,
+                                suggestedMin: 0,
+                                stepSize: 10,
+                                callback: function (value, index, values) {
+                                    return value + '人';
+                                }
+                            }
+                        }
+                    ]
+                },
+            }
+        });
+        new Chart(document.querySelector('#myPieChart'), {
+            type: 'pie',
+            data: {
+                labels: ['A型', 'O型', 'B型', 'AB型'],
+                datasets: [
+                    {
+                        backgroundColor: [
+                            '#BB5179',
+                            '#FAFF67',
+                            '#58A27C',
+                            '#3C00FF'
+                        ],
+                        data: [38, 31, 21, 10]
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '血液型 割合'
+                }
+            }
+        });
+        new Chart(document.querySelector('#myRaderChart'), {
+            type: 'radar',
+            data: {
+                labels: ['英語', '数学', '国語', '理科', '社会'],
+                datasets: [
+                    {
+                        label: 'Aさん',
+                        data: [92, 72, 86, 74, 86],
+                        backgroundColor: 'RGBA(225,95,150, 0.5)',
+                        borderColor: 'RGBA(225,95,150, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'RGB(46,106,177)'
+                    },
+                    {
+                        label: 'Bさん',
+                        data: [73, 95, 80, 87, 79],
+                        backgroundColor: 'RGBA(115,255,25, 0.5)',
+                        borderColor: 'RGBA(115,255,25, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'RGB(46,106,177)'
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '試験成績'
+                },
+                scale: {
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        stepSize: 10,
+                        callback: function (value, index, values) {
+                            return value + '点';
+                        }
+                    }
+                }
+            }
+        });
+        new Chart(document.querySelector('#myScatterChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [
+                    {
+                        label: '1組',
+                        data: [{ x: 90, y: 82 }, { x: 39, y: 45 }, { x: 63, y: 65 }, { x: 83, y: 75 }, { x: 83, y: 95 }],
+                        backgroundColor: 'RGBA(225,95,150, 1)',
+                    },
+                    {
+                        label: '2組',
+                        data: [{ x: 97, y: 92 }, { x: 63, y: 70 }, { x: 48, y: 52 }, { x: 83, y: 79 }, { x: 66, y: 74 }],
+                        backgroundColor: 'RGBA(115,255,25, 1)',
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '試験成績'
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            scaleLabel: {
+                                display: true,
+                                labelString: '英語'
+                            },
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                stepSize: 10,
+                                callback: function (value, index, values) {
+                                    return value + '点';
+                                }
+                            }
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            scaleLabel: {
+                                display: true,
+                                labelString: '数学'
+                            },
+                            ticks: {
+                                suggestedMax: 100,
+                                suggestedMin: 0,
+                                stepSize: 10,
+                                callback: function (value, index, values) {
+                                    return value + '点';
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
