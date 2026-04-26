@@ -8,12 +8,12 @@
 </head>
 
 <body>
-    <ul></ul>
+    <ol></ol>
     <script>
         fetch('./index.json').then(response => response.json()).then(data => {
             data.forEach(value => {
                 const li = document.createElement('li');
-                document.querySelector('ul').appendChild(li);
+                document.querySelector('ol').appendChild(li);
                 const a = document.createElement('a');
                 const name = `./${value}`;
                 a.href = name;
