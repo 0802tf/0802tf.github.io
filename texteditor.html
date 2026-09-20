@@ -25,14 +25,14 @@
 <body>
   <div>
     <select>
-      <option>HTML</option>
-      <option>JavaScript</option>
       <option>Markdown</option>
       <option>Mermaid</option>
       <option>LaTeX</option>
       <option>ABC</option>
       <option>QRCode</option>
     </select>
+    <input id="import" type="file">
+    <button id="export">保存</button>
   </div>
   <textarea id="textarea"></textarea>
   <div id="result" class="markdown-body mermaid"></div>
@@ -49,14 +49,6 @@
         result.innerHTML = null;
         result.style = null;
         switch (select.value) {
-          case 'HTML':
-            result.innerHTML = value;
-            break;
-          case 'JavaScript':
-            const script = document.createElement('script');
-            script.textContent = `result.innerHTML = ${value};`;
-            result.append(script);
-            break;
           case 'Markdown':
             result.innerHTML = marked.parse(value);
             hljs.highlightAll();
@@ -89,6 +81,27 @@
       }
     });
     select.addEventListener('change', () => textarea.dispatchEvent(new Event('input')));
+    document.querySelector('#import').addEventListener('change', e => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        textarea.value = reader.result;
+        textarea.dispatchEvent(new Event('input'));
+      };
+      reader.readAsText(file);
+    });
+    document.querySelector('#export').addEventListener('click', () => {
+      const fileName = prompt('ファイル名');
+      if (fileName) {
+        const blob = new Blob([textarea.value], { type: 'text/plain' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+    });
   </script>
 </body>
 
