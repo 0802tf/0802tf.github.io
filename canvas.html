@@ -16,22 +16,29 @@
 <body>
     <div id="option">
         <div>
-            幅: <input type="range" min="1" id="width">
-            高さ: <input type="range" min="1" id="height">
+            <label for="width">幅:</label>
+            <input type="range" min="1" id="width">
+            <label for="height">高さ:</label>
+            <input type="range" min="1" id="height">
         </div>
         <div>
-            線の太さ: <input type="range" value="5" min="1" id="bold">
-            線の先端: <select id="lineCap">
+            <label for="bold">線の太さ:</label>
+            <input type="range" value="5" min="1" id="bold">
+            <label for="checkbox">数値指定</label>
+            <input type="checkbox" id="checkbox">
+        </div>
+        <div>
+            <label for="linecolor">線の色:</label>
+            <input type="color" value="#000000" id="linecolor">
+            <label for="backgroundcolor">背景色:</label>
+            <input type="color" value="#ffffff" id="backgroundcolor">
+            <label for="lineCap">線の先端:</label>
+            <select id="lineCap">
                 <option>round</option>
                 <option>butt</option>
             </select>
         </div>
         <div>
-            線の色: <input type="color" value="#000000" id="linecolor">
-            背景色: <input type="color" value="#ffffff" id="backgroundcolor">
-        </div>
-        <div>
-            <input type="checkbox" id="checkbox">数値指定
             <input type="file" id="file" accept="image/*" multiple>
             <button id="clear">クリア</button>
             <a id="download" href="#">ダウンロード</a>
