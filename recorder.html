@@ -39,6 +39,7 @@
             preview.src = URL.createObjectURL(e.data);
         });
         startButton.addEventListener('click', e => {
+            recordData = [];
             recorder.start();
             e.preventDefault();
             startButton.toggleAttribute('disabled');
@@ -46,6 +47,7 @@
         }, false);
         stopButton.addEventListener('click', () => {
             recorder.stop();
+            console.log(recorder.mimeType);
             startButton.toggleAttribute('disabled');
             stopButton.toggleAttribute('disabled');
         });
