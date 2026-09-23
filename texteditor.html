@@ -14,7 +14,6 @@
   <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   <script src="https://cdn.jsdelivr.net/npm/abcjs@6.5.2/dist/abcjs-basic-min.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     textarea {
       font-size: 16px;
@@ -29,19 +28,20 @@
       <option>Mermaid</option>
       <option>LaTeX</option>
       <option>ABC</option>
-      <option>QRCode</option>
     </select>
-    <input id="import" type="file">
-    <button id="export">保存</button>
+    <input id="import" type="file" accept="text/*">
+    <button id="export">出力</button>
+    <button id="export-html">HTML出力</button>
   </div>
   <textarea id="textarea"></textarea>
   <div id="result" class="markdown-body mermaid"></div>
   <script>
     mermaid.initialize({ startOnLoad: false });
+    let fileName = '';
     const select = document.querySelector('select');
     const textarea = document.querySelector('textarea');
     const result = document.querySelector('.markdown-body.mermaid');
-    textarea.style.width = `${innerWidth * 0.9}px`;
+    textarea.style.width = `${innerWidth}px`;
     textarea.style.height = `${innerHeight / 2}px`;
     textarea.addEventListener('input', async () => {
       try {
@@ -65,16 +65,6 @@
           case 'ABC':
             new ABCJS.Editor('textarea', { canvas_id: 'result' });
             break;
-          case 'QRCode':
-            new QRCode(result, {
-              text: value,
-              width: 128,
-              height: 128,
-              colorDark: '#000000',
-              colorLight: '#ffffff',
-              correctLevel: QRCode.CorrectLevel.H
-            });
-            break;
         }
       } catch (error) {
         result.textContent = JSON.stringify(error);
@@ -83,6 +73,7 @@
     select.addEventListener('change', () => textarea.dispatchEvent(new Event('input')));
     document.querySelector('#import').addEventListener('change', e => {
       const file = e.target.files[0];
+      fileName = file.name;
       const reader = new FileReader();
       reader.onload = () => {
         textarea.value = reader.result;
@@ -91,7 +82,7 @@
       reader.readAsText(file);
     });
     document.querySelector('#export').addEventListener('click', () => {
-      const fileName = prompt('ファイル名');
+      fileName = prompt('ファイル名', fileName);
       if (fileName) {
         const blob = new Blob([textarea.value], { type: 'text/plain' });
         const link = document.createElement('a');
@@ -102,7 +93,42 @@
         URL.revokeObjectURL(url);
       }
     });
+    document.querySelector('#export-html').addEventListener('click', () => {
+      const pos = fileName.lastIndexOf('.');
+      const title = pos > 0 ? fileName.substring(0, pos) : fileName;
+      const htmlFileName = prompt('ファイル名', `${title}.html`);
+      if (htmlFileName) {
+        const content = document.querySelector('template').content.cloneNode(true);
+        const html = document.createElement('html');
+        const head = document.createElement('head');
+        head.append(content);
+        html.append(head);
+        html.querySelector('title').textContent = title;
+        const body = document.createElement('body');
+        body.innerHTML = result.outerHTML;
+        html.append(body);
+        const blob = new Blob([`<!DOCTYPE html>\n${html.outerHTML}`], { type: 'text/html' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = htmlFileName.endsWith('.html') ? htmlFileName : `${htmlFileName}.html`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+    });
   </script>
 </body>
 
 </html>
+
+<template>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title></title>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  </head>
+</template>
