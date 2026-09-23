@@ -27,14 +27,11 @@
         const stopButton = document.querySelector('#stop');
         const downloadButton = document.querySelector('#download');
         const preview = document.querySelector('#preview');
-        navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'environment' },
-            audio: true
-        }).then(stream => new Promise(resolve => {
+        getMedia(false).then(stream => new Promise(resolve => {
             video.srcObject = stream;
             video.play();
             recorder = new MediaRecorder(stream);
-            recorder.ondataavailable = resolve
+            recorder.ondataavailable = resolve;
         })).then(e => {
             preview.width = video.videoWidth;
             preview.height = video.videoHeight;
@@ -72,6 +69,32 @@
             a.click();
             URL.revokeObjectURL(url);
         });
+
+        function getMedia(isDisplayMedia) {
+            const mediaDevices = navigator.mediaDevices;
+            if (isDisplayMedia) {
+                return mediaDevices.getDisplayMedia({
+                    video: {
+                        displaySurface: 'browser',
+                    },
+                    audio: {
+                        suppressLocalAudioPlayback: false,
+                    },
+                    preferCurrentTab: false,
+                    selfBrowserSurface: 'exclude',
+                    systemAudio: 'include',
+                    surfaceSwitching: 'include',
+                    monitorTypeSurfaces: 'include',
+                })
+            } else {
+                return mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'environment',
+                    },
+                    audio: true
+                })
+            }
+        }
     </script>
 </body>
 
