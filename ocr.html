@@ -20,9 +20,12 @@
     <script>
         const dialog = document.querySelector('dialog');
         const textarea = document.querySelector('textarea');
+        const image = document.querySelector('#image');
         document.querySelector('#file').addEventListener('change', async e => {
             textarea.value = '';
+            image.innerHTML = '';
             const files = e.target.files;
+            let index = 1;
             for (const file of files) {
                 await new Promise((resolve, reject) => {
                     const reader = new FileReader();
@@ -33,11 +36,11 @@
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.width = innerWidth / 2;
-                    document.querySelector('#image').append(img);
+                    image.append(img);
                     dialog.showModal();
                     return Tesseract.recognize(img, ['eng', 'jpn'], {
                         logger: m => {
-                            document.querySelector('#status').textContent = m.status;
+                            document.querySelector('#status').innerHTML = `${index}/${files.length}<br>${m.status}`;
                             document.querySelector('progress').value = m.progress;
                         },
                         errorHandler: alert
@@ -45,6 +48,7 @@
                 }).then(result => {
                     textarea.value += `${result.data.text}\n`;
                     dialog.close();
+                    index++;
                 }).catch(alert);
             }
         });
