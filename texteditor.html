@@ -29,7 +29,7 @@
       <option>LaTeX</option>
       <option>ABC</option>
     </select>
-    <input id="import" type="file" accept="text/*">
+    <input id="import" type="file">
     <button id="export">出力</button>
     <button id="export-html">HTML出力</button>
   </div>
@@ -85,11 +85,11 @@
       fileName = prompt('ファイル名', fileName);
       if (fileName) {
         const blob = new Blob([textarea.value], { type: 'text/plain' });
-        const link = document.createElement('a');
+        const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
-        link.href = url;
-        link.download = fileName;
-        link.click();
+        a.href = url;
+        a.download = fileName;
+        a.click();
         URL.revokeObjectURL(url);
       }
     });
@@ -98,21 +98,36 @@
       const title = pos > 0 ? fileName.substring(0, pos) : fileName;
       const htmlFileName = prompt('ファイル名', `${title}.html`);
       if (htmlFileName) {
-        const content = document.querySelector('template').content.cloneNode(true);
         const html = document.createElement('html');
         const head = document.createElement('head');
-        head.append(content);
+        const meta1 = document.createElement('meta');
+        meta1.setAttribute('charset', 'UTF-8');
+        head.append(meta1);
+        const meta2 = document.createElement('meta');
+        meta2.name = 'viewport';
+        meta2.content = 'width=device-width, initial-scale=1.0, viewport-fit=cover';
+        head.append(meta2);
+        const titleElement = document.createElement('title');
+        titleElement.textContent = title;
+        head.append(titleElement);
+        const link1 = document.createElement('link');
+        link1.rel = 'stylesheet';
+        link1.href = 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css';
+        head.append(link1);
+        const link2 = document.createElement('link');
+        link2.rel = 'stylesheet';
+        link2.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
+        head.append(link2);
         html.append(head);
-        html.querySelector('title').textContent = title;
         const body = document.createElement('body');
         body.innerHTML = result.outerHTML;
         html.append(body);
         const blob = new Blob([`<!DOCTYPE html>\n${html.outerHTML}`], { type: 'text/html' });
-        const link = document.createElement('a');
+        const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
-        link.href = url;
-        link.download = htmlFileName.endsWith('.html') ? htmlFileName : `${htmlFileName}.html`;
-        link.click();
+        a.href = url;
+        a.download = htmlFileName.endsWith('.html') ? htmlFileName : `${htmlFileName}.html`;
+        a.click();
         URL.revokeObjectURL(url);
       }
     });
@@ -120,15 +135,3 @@
 </body>
 
 </html>
-
-<template>
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title></title>
-    <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-  </head>
-</template>
