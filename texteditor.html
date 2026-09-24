@@ -98,7 +98,9 @@
       const title = pos > 0 ? fileName.substring(0, pos) : fileName;
       const htmlFileName = prompt('ファイル名', `${title}.html`);
       if (htmlFileName) {
+        const doc = document.implementation.createDocument(null, null, document.implementation.createDocumentType('html', '', ''));
         const html = document.createElement('html');
+        html.lang = 'ja';
         const head = document.createElement('head');
         const meta1 = document.createElement('meta');
         meta1.setAttribute('charset', 'UTF-8');
@@ -110,19 +112,24 @@
         const titleElement = document.createElement('title');
         titleElement.textContent = title;
         head.append(titleElement);
-        const link1 = document.createElement('link');
-        link1.rel = 'stylesheet';
-        link1.href = 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css';
-        head.append(link1);
-        const link2 = document.createElement('link');
-        link2.rel = 'stylesheet';
-        link2.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
-        head.append(link2);
+        if (select.value === 'Markdown') {
+          const link1 = document.createElement('link');
+          link1.rel = 'stylesheet';
+          link1.href = 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css';
+          head.append(link1);
+          const link2 = document.createElement('link');
+          link2.rel = 'stylesheet';
+          link2.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
+          head.append(link2);
+        }
         html.append(head);
         const body = document.createElement('body');
         body.innerHTML = result.outerHTML;
         html.append(body);
-        const blob = new Blob([`<!DOCTYPE html>\n${html.outerHTML}`], { type: 'text/html' });
+        doc.append(html);
+        const serializer = new XMLSerializer();
+        const xmlStr = serializer.serializeToString(doc);
+        const blob = new Blob([xmlStr], { type: 'text/html' });
         const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
         a.href = url;
