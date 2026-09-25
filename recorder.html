@@ -9,6 +9,8 @@
 
 <body>
     <div>
+        <button id="getUserMedia">カメラ</button>
+        <button id="getDisplayMedia">画面収録</button>
         <button id="start">開始</button>
         <button id="stop" disabled>停止</button>
         <button id="download">ダウンロード</button>
@@ -22,22 +24,10 @@
     <script>
         let recorder;
         let recordData = [];
-        const video = document.querySelector('#video');
         const startButton = document.querySelector('#start');
         const stopButton = document.querySelector('#stop');
-        const downloadButton = document.querySelector('#download');
-        const preview = document.querySelector('#preview');
-        getMedia(false).then(stream => new Promise(resolve => {
-            video.srcObject = stream;
-            video.play();
-            recorder = new MediaRecorder(stream);
-            recorder.ondataavailable = resolve;
-        })).then(e => {
-            preview.width = video.videoWidth;
-            preview.height = video.videoHeight;
-            recordData.push(e.data);
-            preview.src = URL.createObjectURL(e.data);
-        });
+        document.querySelector('#getUserMedia').addEventListener('click', () => getMedia(false));
+        document.querySelector('#getDisplayMedia').addEventListener('click', () => getMedia(true));
         startButton.addEventListener('click', e => {
             recordData = [];
             recorder.start();
@@ -47,19 +37,20 @@
         }, false);
         stopButton.addEventListener('click', () => {
             recorder.stop();
-            console.log(recorder.mimeType);
             startButton.toggleAttribute('disabled');
             stopButton.toggleAttribute('disabled');
         });
-        downloadButton.addEventListener('click', () => {
+        document.querySelector('#download').addEventListener('click', () => {
             if (!recordData.length) {
                 return;
             }
-            const blob = new Blob(recordData, { type: 'video/mp4' });
+            const blob = new Blob(recordData, {
+                type: recorder.mimeType
+            });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            const digit = '2-digit';
             a.href = url;
+            const digit = '2-digit';
             a.download = `${new Date().toLocaleString('ja-JP', {
                 year: 'numeric',
                 month: digit,
@@ -67,35 +58,55 @@
                 hour: digit,
                 minute: digit,
                 second: digit
-            }).replaceAll(/[^\d]/g, '')}.mp4`;
+            }).replaceAll(/[^\d]/g, '')}.webm`;
             a.click();
-            URL.revokeObjectURL(url);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
         });
 
         function getMedia(isDisplayMedia) {
             const mediaDevices = navigator.mediaDevices;
-            if (isDisplayMedia) {
-                return mediaDevices.getDisplayMedia({
-                    video: {
-                        displaySurface: 'browser',
-                    },
-                    audio: {
-                        suppressLocalAudioPlayback: false,
-                    },
-                    preferCurrentTab: false,
-                    selfBrowserSurface: 'exclude',
-                    systemAudio: 'include',
-                    surfaceSwitching: 'include',
-                    monitorTypeSurfaces: 'include',
-                })
-            } else {
-                return mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: 'environment',
-                    },
-                    audio: true
-                })
-            }
+            const media = isDisplayMedia ? mediaDevices.getDisplayMedia({
+                video: {
+                    displaySurface: 'browser',
+                },
+                audio: {
+                    suppressLocalAudioPlayback: false,
+                },
+                preferCurrentTab: false,
+                selfBrowserSurface: 'exclude',
+                systemAudio: 'include',
+                surfaceSwitching: 'include',
+                monitorTypeSurfaces: 'include',
+            }) : mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'environment',
+                },
+                audio: true
+            });
+            media.then(stream => {
+                const video = document.querySelector('#video');
+                video.srcObject = stream;
+                video.play();
+                recorder = new MediaRecorder(stream);
+                recorder.ondataavailable = e => {
+                    if (e.data.size > 0) {
+                        recordData.push(e.data);
+                    }
+                };
+                recorder.onstop = () => {
+                    const blob = new Blob(recordData, {
+                        type: recorder.mimeType
+                    });
+                    const preview = document.querySelector('#preview');
+                    preview.src = URL.createObjectURL(blob);
+                    preview.load();
+                    preview.onloadedmetadata = () => {
+                        preview.width = video.videoWidth;
+                        preview.height = video.videoHeight;
+                        preview.play();
+                    };
+                };
+            });
         }
     </script>
 </body>
